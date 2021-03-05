@@ -22,4 +22,3 @@ This app was written as a personal project in order to provide a compact graphic
 * Any use of the provided software must respect the terms of each API used.
 * [The user agent information must be changed if used in a modified application.](https://github.com/pveierland/aix-weather-widget/blob/master/Aix/src/net/veierland/aix/AixUtils.java#L491)
 * [The GeoNames username must be changed if used in a modified application.](https://github.com/pveierland/aix-weather-widget/blob/master/Aix/src/net/veierland/aix/data/AixGeoNamesData.java#L62)
-* `Aix` and `Aixd` are twins with the first being packaged as `net.veierland.aix`, and the second as `net.veierland.aixd`. This was chosen as an early hack in order to be able to publish a separate donation version.
