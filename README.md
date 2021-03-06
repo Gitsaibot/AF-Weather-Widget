@@ -15,11 +15,10 @@ This app was written as a personal project in order to provide a compact graphic
 # License
 
 * All code written as part of the app is licensed as [CC0 Universal](https://creativecommons.org/publicdomain/zero/1.0/). The only exceptions are `MultiKey.java` and `Pair.java` which are licensed under Apache 2.0 as specified in their headers.
-* The weather icons are owned by The Norwegian Meteorological Institute and are as provided via their [weathericon API](http://api.met.no/weatherapi/weathericon/1.1/documentation).
+* The weather icons are owned by The Norwegian Meteorological Institute and are as provided via their [weathericon API](https://api.met.no/weatherapi/weathericon/2.0/documentation).
 
 # Information for use
 
 * Any use of the provided software must respect the terms of each API used.
 * [The user agent information must be changed if used in a modified application.](https://github.com/pveierland/aix-weather-widget/blob/master/Aix/src/net/veierland/aix/AixUtils.java#L491)
 * [The GeoNames username must be changed if used in a modified application.](https://github.com/pveierland/aix-weather-widget/blob/master/Aix/src/net/veierland/aix/data/AixGeoNamesData.java#L62)
-* `Aix` and `Aixd` are twins with the first being packaged as `net.veierland.aix`, and the second as `net.veierland.aixd`. This was chosen as an early hack in order to be able to publish a separate donation version.
