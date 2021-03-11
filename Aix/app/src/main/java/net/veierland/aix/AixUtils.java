@@ -14,18 +14,12 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.zip.GZIPInputStream;
 
-import net.veierland.aix.AixProvider.AixIntervalDataForecastColumns;
 import net.veierland.aix.AixProvider.AixIntervalDataForecasts;
 import net.veierland.aix.AixProvider.AixLocations;
 import net.veierland.aix.AixProvider.AixLocationsColumns;
-import net.veierland.aix.AixProvider.AixPointDataForecastColumns;
 import net.veierland.aix.AixProvider.AixPointDataForecasts;
-import net.veierland.aix.AixProvider.AixSettingsColumns;
 import net.veierland.aix.AixProvider.AixSunMoonData;
-import net.veierland.aix.AixProvider.AixSunMoonDataColumns;
-import net.veierland.aix.AixProvider.AixViewSettings;
 import net.veierland.aix.AixProvider.AixViews;
-import net.veierland.aix.AixProvider.AixWidgetSettingsDatabase;
 import net.veierland.aix.AixProvider.AixWidgets;
 import net.veierland.aix.AixProvider.AixWidgetsColumns;
 
@@ -37,7 +31,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.app.PendingIntent;
@@ -51,7 +44,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -81,81 +73,81 @@ public class AixUtils {
 	public final static int PROVIDER_NWS = 3;
 
 	public static final int[] WEATHER_ICONS_DAY = {
-		R.drawable.weather_icon_day_sun,
-		R.drawable.weather_icon_day_polar_lightcloud,
-		R.drawable.weather_icon_day_partlycloud,
-		R.drawable.weather_icon_cloud,
-		R.drawable.weather_icon_day_lightrainsun,
-		R.drawable.weather_icon_day_polar_lightrainthundersun,
-		R.drawable.weather_icon_day_polar_sleetsun,
-		R.drawable.weather_icon_day_snowsun,
+		R.drawable.weather_icon_clearsky_day,
+		R.drawable.weather_icon_fair_day,
+		R.drawable.weather_icon_partlycloudy_day,
+		R.drawable.weather_icon_cloudy,
+		R.drawable.weather_icon_lightrainshowers_day,
+		R.drawable.weather_icon_lightrainshowersandthunder_day,
+		R.drawable.weather_icon_lightsleetshowers_day,
+		R.drawable.weather_icon_lightsnowshowers_day,
 		R.drawable.weather_icon_lightrain,
 		R.drawable.weather_icon_rain,
-		R.drawable.weather_icon_rainthunder,
-		R.drawable.weather_icon_sleet,
-		R.drawable.weather_icon_snow,
-		R.drawable.weather_icon_snowthunder,
+		R.drawable.weather_icon_lightrainandthunder,
+		R.drawable.weather_icon_lightsleet,
+		R.drawable.weather_icon_lightsnow,
+		R.drawable.weather_icon_lightsnowandthunder,
 		R.drawable.weather_icon_fog,
-		R.drawable.weather_icon_day_sun, // invalid for day
-		R.drawable.weather_icon_day_polar_lightcloud, // invalid for day
-		R.drawable.weather_icon_day_lightrainsun, // invalid for day
-		R.drawable.weather_icon_day_snowsun, // invalid for day
-		R.drawable.weather_icon_day_sleetsunthunder,
-		R.drawable.weather_icon_day_snowsunthunder,
-		R.drawable.weather_icon_lightrainthunder,
-		R.drawable.weather_icon_sleetthunder
+		R.drawable.weather_icon_clearsky_day, // invalid for day
+		R.drawable.weather_icon_fair_day, // invalid for day
+		R.drawable.weather_icon_lightrainshowers_day, // invalid for day
+		R.drawable.weather_icon_lightsnowshowers_day, // invalid for day
+		R.drawable.weather_icon_lightssleetshowersandthunder_day,
+		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_lightrainandthunder,
+		R.drawable.weather_icon_lightsleetandthunder
 	};
 
 	public static final int[] WEATHER_ICONS_NIGHT = {
-		R.drawable.weather_icon_night_sun,
-		R.drawable.weather_icon_night_lightcloud,
-		R.drawable.weather_icon_night_partlycloud,
-		R.drawable.weather_icon_cloud,
-		R.drawable.weather_icon_night_lightrainsun,
-		R.drawable.weather_icon_night_lightrainthundersun,
-		R.drawable.weather_icon_night_sleetsun,
-		R.drawable.weather_icon_night_snowsun,
+		R.drawable.weather_icon_clearsky_night,
+		R.drawable.weather_icon_fair_night,
+		R.drawable.weather_icon_partlycloudy_night,
+		R.drawable.weather_icon_cloudy,
+		R.drawable.weather_icon_lightrainshowers_night,
+		R.drawable.weather_icon_lightrainshowersandthunder_night,
+		R.drawable.weather_icon_lightsleetshowers_night,
+		R.drawable.weather_icon_lightsnowshowers_night,
 		R.drawable.weather_icon_lightrain,
 		R.drawable.weather_icon_rain,
-		R.drawable.weather_icon_rainthunder,
-		R.drawable.weather_icon_sleet,
-		R.drawable.weather_icon_snow,
-		R.drawable.weather_icon_snowthunder,
+		R.drawable.weather_icon_lightrainandthunder,
+		R.drawable.weather_icon_lightsleet,
+		R.drawable.weather_icon_lightsnow,
+		R.drawable.weather_icon_lightsnowandthunder,
 		R.drawable.weather_icon_fog,
-		R.drawable.weather_icon_night_sun, // invalid for night
-		R.drawable.weather_icon_night_lightcloud, // invalid for night
-		R.drawable.weather_icon_night_lightrainsun, // invalid for night
-		R.drawable.weather_icon_night_snowsun, // invalid for night
-		R.drawable.weather_icon_night_sleetsunthunder,
-		R.drawable.weather_icon_night_snowsunthunder,
-		R.drawable.weather_icon_lightrainthunder,
-		R.drawable.weather_icon_sleetthunder
+		R.drawable.weather_icon_clearsky_night, // invalid for night
+		R.drawable.weather_icon_fair_night, // invalid for night
+		R.drawable.weather_icon_lightrainshowers_night, // invalid for night
+		R.drawable.weather_icon_lightsnowshowers_night, // invalid for night
+		R.drawable.weather_icon_lightssleetshowersandthunder_night,
+		R.drawable.weather_icon_lightssnowshowersandthunder_night,
+		R.drawable.weather_icon_lightrainandthunder,
+		R.drawable.weather_icon_lightsleetandthunder
 	};
 
 	public static final int[] WEATHER_ICONS_POLAR = {
-		R.drawable.weather_icon_polar_sun,
-		R.drawable.weather_icon_day_polar_lightcloud,
-		R.drawable.weather_icon_polar_partlycloud,
-		R.drawable.weather_icon_cloud,
-		R.drawable.weather_icon_polar_lightrainsun,
-		R.drawable.weather_icon_day_polar_lightrainthundersun,
-		R.drawable.weather_icon_day_polar_sleetsun,
-		R.drawable.weather_icon_polar_snowsun,
+		R.drawable.weather_icon_clearsky_polartwilight,
+		R.drawable.weather_icon_fair_day,
+		R.drawable.weather_icon_fair_polartwilight,
+		R.drawable.weather_icon_cloudy,
+		R.drawable.weather_icon_lightrainshowers_polartwilight,
+		R.drawable.weather_icon_lightrainshowersandthunder_day,
+		R.drawable.weather_icon_lightsleetshowers_day,
+		R.drawable.weather_icon_lightsnowshowers_polartwilight,
 		R.drawable.weather_icon_lightrain,
 		R.drawable.weather_icon_rain,
-		R.drawable.weather_icon_rainthunder,
-		R.drawable.weather_icon_sleet,
-		R.drawable.weather_icon_snow,
-		R.drawable.weather_icon_snowthunder,
+		R.drawable.weather_icon_lightrainandthunder,
+		R.drawable.weather_icon_lightsleet,
+		R.drawable.weather_icon_lightsnow,
+		R.drawable.weather_icon_lightsnowandthunder,
 		R.drawable.weather_icon_fog,
-		R.drawable.weather_icon_polar_sun,
-		R.drawable.weather_icon_day_polar_lightcloud,
-		R.drawable.weather_icon_polar_lightrainsun,
-		R.drawable.weather_icon_polar_snowsun,
-		R.drawable.weather_icon_polar_sleetsunthunder,
-		R.drawable.weather_icon_polar_snowsunthunder,
-		R.drawable.weather_icon_lightrainthunder,
-		R.drawable.weather_icon_sleetthunder
+		R.drawable.weather_icon_clearsky_polartwilight,
+		R.drawable.weather_icon_fair_day,
+		R.drawable.weather_icon_lightrainshowers_polartwilight,
+		R.drawable.weather_icon_lightsnowshowers_polartwilight,
+		R.drawable.weather_icon_lightssleetshowersandthunder_polartwilight,
+		R.drawable.weather_icon_lightssnowshowersandthunder_polartwilight,
+		R.drawable.weather_icon_lightrainandthunder,
+		R.drawable.weather_icon_lightsleetandthunder
 	};
 	
 	public static final int WEATHER_ICON_DAY_SUN = 1;
