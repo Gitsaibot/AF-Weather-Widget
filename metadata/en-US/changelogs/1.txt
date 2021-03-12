@@ -1,0 +1,4 @@
+- Support new weather api
+- New weather icons
+- Add to F-Droid
+- General bug fixes
