@@ -270,27 +270,27 @@ public class AixUtils {
 	}
 	
 	public static long lcap(long x, long c) {
-		return x > c ? x : c;
+		return Math.max(x, c);
 	}
 	
 	public static long hcap(long x, long c) {
-		return x < c ? x : c;
+		return Math.min(x, c);
 	}
 	
 	public static int lcap(int x, int c) {
-		return x > c ? x : c;
+		return Math.max(x, c);
 	}
 	
 	public static int hcap(int x, int c) {
-		return x < c ? x : c;
+		return Math.min(x, c);
 	}
 	
 	public static float lcap(float x, float c) {
-		return x > c ? x : c;
+		return Math.max(x, c);
 	}
 	
 	public static float hcap(float x, float c) {
-		return x < c ? x : c;
+		return Math.min(x, c);
 	}
 	
 	public static boolean isPrime(long n) {
@@ -326,8 +326,8 @@ public class AixUtils {
 		} else if (TextUtils.isEmpty(heightString.trim())) {
 			throw new IllegalArgumentException("Height is empty");
 		}
-		
-		int width = 0, height = 0;
+
+		int width, height;
 		
 		try {
 			width = Integer.parseInt(widthString);

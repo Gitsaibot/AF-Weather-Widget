@@ -311,7 +311,7 @@ public class AixDetailedWidget {
 		
 		for (int cellIndex = 0; cellIndex < mNumHorizontalCells;)
 		{
-			Float lowVal = null, highVal = null;
+			Float lowVal, highVal = null;
 			
 			if (rainMinValues[cellIndex] != null && rainMaxValues[cellIndex] != null)
 			{
@@ -721,7 +721,7 @@ public class AixDetailedWidget {
 			numCellsBetweenHorizontalLabels = lcap(numCellsBetweenHorizontalLabels, 2);
 		}
 		
-		boolean useShortLabel = false;
+		boolean useShortLabel;
 		boolean use24hours = DateFormat.is24HourFormat(mContext);
 		
 		float longLabelWidth = mLabelPaint.measureText(use24hours ? "24" : "12 pm");
@@ -1117,7 +1117,7 @@ public class AixDetailedWidget {
 			}
 		}
 		
-		PointData Q1 = null, Q2 = null, Q3 = null, Q4 = null;
+		PointData Q1, Q2, Q3, Q4;
 		
 		if (beforeIndex != -1) {
 			if (atIndex == -1 && afterIndex == -1) {

@@ -83,9 +83,9 @@ public class AixWidgetSettings {
 	
 	public static AixWidgetSettings build(Context context, Uri widgetUri) {
 		Map<String, Object> settings = new HashMap<String, Object>();
-		settings.put(context.getString(R.string.temperature_units_string), Integer.valueOf(1));
-		settings.put(context.getString(R.string.precipitation_units_string), Integer.valueOf(1));
-		settings.put(context.getString(R.string.top_text_visibility_string), Integer.valueOf(4));
+		settings.put(context.getString(R.string.temperature_units_string), 1);
+		settings.put(context.getString(R.string.precipitation_units_string), 1);
+		settings.put(context.getString(R.string.top_text_visibility_string), 4);
 		
 		settings.put(context.getString(R.string.day_effect_bool), Boolean.TRUE);
 		settings.put(context.getString(R.string.border_enabled_bool), Boolean.TRUE);
@@ -169,11 +169,11 @@ public class AixWidgetSettings {
 				{ R.string.border_rounding_string, R.string.border_rounding_default },
 				{ R.string.precipitation_scaling_string,
 						useInches() ? R.string.precipitation_scaling_inches_default
-									: R.string.precipitation_scaling_mm_default } }; 
+									: R.string.precipitation_scaling_mm_default } };
 
 		for (int i = 0; i < defaultFloats.length; i++) {
 			String key = r.getString(defaultFloats[i][0]);
-			
+
 			if (key != null && !mSettings.containsKey(key)) {
 				String valueString = r.getString(defaultFloats[i][1]);
 				float value = Float.parseFloat(valueString);

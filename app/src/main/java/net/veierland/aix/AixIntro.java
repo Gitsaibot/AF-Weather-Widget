@@ -22,7 +22,7 @@ public class AixIntro extends Activity {
 		setContentView(R.layout.intro);
 		
 		Uri uri = getIntent().getData();
-		String loadingMessage = null, url = null;
+		String loadingMessage, url;
 		
 		if (uri != null && uri.equals(ACTION_SHOW_HELP))
 		{

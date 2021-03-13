@@ -15,7 +15,7 @@ public class AixWidgetInfo {
 	
 	private int mAppWidgetId, mSize;
 	
-	private AixViewInfo mAixViewInfo = null;
+	private AixViewInfo mAixViewInfo;
 	
 	private AixWidgetSettings mAixWidgetSettings = null;
 	

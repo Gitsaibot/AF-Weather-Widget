@@ -349,7 +349,7 @@ public class AixDeviceProfileActivity extends Activity
 	}
 	
 	private void submitLandscapeDimensions() {
-		Point landscapeDimension = null;
+		Point landscapeDimension;
 		
 		try {
 			landscapeDimension = AixUtils.buildDimension(
@@ -385,7 +385,7 @@ public class AixDeviceProfileActivity extends Activity
 	}
 
 	private void submitPortraitDimensions() {
-		Point portraitDimension = null;
+		Point portraitDimension;
 		
 		try {
 			portraitDimension = AixUtils.buildDimension(

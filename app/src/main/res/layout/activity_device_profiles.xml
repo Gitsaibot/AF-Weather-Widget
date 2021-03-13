@@ -183,7 +183,7 @@
 					android:layout_height="wrap_content"
 					android:padding="10dip"
 					android:background="@drawable/revert_background"
-					android:src="@drawable/undo" />
+					android:src="@drawable/ic_baseline_undo" />
 	
 	</LinearLayout>
 	
@@ -290,7 +290,7 @@
 					android:layout_height="wrap_content"
 					android:padding="10dip"
 					android:background="@drawable/revert_background"
-					android:src="@drawable/undo" />
+					android:src="@drawable/ic_baseline_undo" />
 	
 	</LinearLayout>
 	

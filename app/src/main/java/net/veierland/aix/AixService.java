@@ -142,7 +142,7 @@ public class AixService extends JobIntentService {
 	{
 		int appWidgetId = (int)ContentUris.parseId(widgetUri);
 		
-		AixWidgetInfo widgetInfo = null;
+		AixWidgetInfo widgetInfo;
 		try {
 			widgetInfo = AixWidgetInfo.build(this, widgetUri);
 			widgetInfo.loadSettings(this);

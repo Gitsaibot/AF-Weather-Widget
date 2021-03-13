@@ -46,10 +46,10 @@ public class AixUpdate {
 	
 	private Uri mWidgetUri;
 	
-	private TimeZone mUtcTimeZone = null;
+	private TimeZone mUtcTimeZone;
 	
-	private AixWidgetInfo mAixWidgetInfo = null;
-	private AixSettings mAixSettings = null;
+	private AixWidgetInfo mAixWidgetInfo;
+	private AixSettings mAixSettings;
 	
 	private AixUpdate(Context context, AixWidgetInfo aixWidgetInfo, AixSettings aixSettings) {
 		mContext = context;
@@ -260,7 +260,7 @@ public class AixUpdate {
 	{
 		int orientationMode = mAixSettings.getCachedOrientationMode();
 		
-		RemoteViews updateView = null;
+		RemoteViews updateView;
 		
 		if (orientationMode == AixUtils.ORIENTATION_PORTRAIT_FIXED) {
 			Uri portraitUri = renderWidget(aixDetailedWidget, false);
