@@ -15,7 +15,59 @@
     <string name="widget_name_large_small">Aix Weather (4x2)</string>
 
     <string name="device_profile_guide_link">&lt;a href=\"https://www.veierland.net/aix/device_profiles/\"&gt;Device Profile Guide&lt;/a&gt;</string>
-    
+
+	<string name="quick_start">Quick Start</string>
+	<string name="temperature_graph">Temperature graph</string>
+	<string name="precipitation">Precipitation</string>
+	<string name="top_bar_information">Top bar information</string>
+	<string name="noaa">NOAA NWS data</string>
+
+	<!-- IntroText -->
+	<string name="intro_text">After installing Aix, you must manually add the widget to your homescreen:\n
+		\nWhen setting up a widget for the first time, the only thing which needs to be chosen is the location to view.
+		Later on, you can explore the various configuration options by tapping the widget.
+		Units of measurement can be changed, the user interface can be customized, and settings such as data update rate can be chosen. \n
+		\nThe most recently saved settings will be used automatically when setting up a new widget.
+	</string>
+
+	<!-- Temperature graph -->
+	<string name="temperature_graph_text">The temperature graph shows the temperature for the coming 24 hours, starting at the next full hour from the current time. NB:
+		For areas where data is only available in 3-hour intervals, the time axis will be aligned to match the available data.\n
+
+		\nThe temperature is drawn in a red color for temperatures which are above freezing temperature (0°C or 32°F),
+		and in a blue color for temperatures below the freezing temperature.
+	</string>
+
+	<!-- Precipitation -->
+	<string name="precipitation_text">Precipitation is shown as blue bars, where the height of the bar indicates the amount of precipitation.
+		Each grid cell is a given amount of precipitation, as indicated in the top bar. Normally, each cell will be 1 mm, or 0.05 inches.
+		This means that a bar which is four cells high equates to four millimetres, or 0.2 inches of precipitation.\n
+
+		\nTo indicate the maximum and minimum amount of forecasted precipitation, both filled bars and patterned bars are used.
+		Patterned blue bars indicate the maximum amount of precipitation, while the filled blue bars indicate the minimum amount of precipitation.
+	</string>
+
+	<!-- Top bar information -->
+	<string name="top_bar_information_text">The top bar of the widget is used to indicate information for the current time.\n
+
+    	\n\u2022 Mean-Sea-Level-Pressure (MSLP) is given in hectopascals (SI), which is equivalent to the millibar.
+    	\n\u2022 Relative Humidity (RH) is given as a percentage.
+    	\n\u2022 The number to the right of the relative humidity is the precipitation scaling, as described in the previous paragraph.
+    	\n\u2022 The number in the parenthesis after the location name indicates the current temperature at that location.
+	</string>
+
+	<!-- NOAA NWS data -->
+	<string name="noaa_nws_data_text">NOAA NWS data should improve the forecasts available to US users,
+		compared to what was previously available from the Norwegian Meteorological Institute.
+		A few differences between the two sources means that:\n
+
+    	\n\u2022 Only precipitation amounts are available, maximum/minimum levels are not.
+    	\n\u2022 Pressure data is not available.
+    	\n\u2022 The time between samples varies from 1 to 6 hours.\n
+
+		\nYou can select the weather data source manually from the update settings within the Aix configuration.
+	</string>
+
 	<!-- InfoText -->
 	<string name="pressure_top">MSLP: %1$.0f hPa</string>
 	<string name="pressure_top_short">%1$.0f hPa</string>
@@ -55,25 +107,18 @@
 	<string name="location_search_over_query_limit_toast">Daily search quota filled for your IP address. Try changing to WiFi.</string>
 	<string name="location_search_request_denied_toast">Error: Search request denied</string>
 	<string name="location_search_invalid_request_toast">Error: Invalid search request</string>
-	
-	
+
  	<string name="widget_load_error_please_recreate">Error: Please recreate widget</string>
  	<string name="widget_no_weather_data">No weather data. Retrying in %d minutes</string>
  	<string name="widget_failed_to_draw">Failed to draw widget</string>
- 
- 	
- 
+
 	<string name="must_select_location">You must set a location</string>
 	<string name="apply_settings">Apply Settings</string>
-	
-	
-	
-	
+
 	<string name="header_widget_settings">Widget Settings</string>
 	<string name="header_system_settings">System Settings</string>
 	<string name="header_location_settings">Select location</string>
-	
-	
+
 	<string name="title_configure">Aix Weather: Configure widget</string>
 	<string name="button_add_widget_label">Add widget</string>
 	
@@ -85,8 +130,6 @@
 	<string name="dialog_color_title">Select color</string>
 	<string name="dialog_color_alpha">Alpha:</string>
 	<string name="dialog_color_code">HTML color code:</string>
-
-
 
 	<!-- BEGIN UNIT SETTINGS -->
 	<string name="unit_settings_title">Measurement Units</string>
@@ -107,7 +150,6 @@
 	
 	<string name="precipitation_scaling_title_mm">Millimeters per cell</string>
 	<string name="precipitation_scaling_title_inches">Inches per cell</string>
-    <!-- END UNIT SETTINGS -->
 
 	<!-- BEGIN USER INTERFACE SETTINGS -->
 	<string name="ui_settings_title">UI Settings</string>
@@ -148,7 +190,6 @@
 	<string name="min_rain_color_title">Minimum rain</string>
 	<string name="above_freezing_color_title">Above freezing</string>
 	<string name="below_freezing_color_title">Below freezing</string>
-	<!-- END USER INTERFACE SETTINGS -->
 
 	<!-- BEGIN SYSTEM SETTINGS -->
 	<string name="system_settings_title">Update Settings</string>
@@ -168,15 +209,11 @@
 	
 	<string name="update_rate_title">Update rate</string>
 	<string name="update_rate_summary">Adjust how often weather data will be retrieved</string>
-	<!-- END SYSTEM SETTINGS -->
-	
 	
 	<!-- BEGIN DEVICE PROFILES -->
 	<string name="device_profiles_title">Device Profiles</string>
 	<string name="device_profiles_summary">Set device specific widget dimensions</string>
 	<string name="device_profiles_key">device_profiles</string>
-	
-	<!-- END DEVICE PROFILES -->
 	
 	<!-- BEGIN PREFERENCE STRINGS, DO NOT EDIT -->
 	<string name="temperature_units_string">temperature_units_string</string>
@@ -236,9 +273,7 @@
 	
 	<string name="deviceProfile_string">global_dp_%1$d_%2$d_%3$s_string</string>
 	<string name="preference_deviceProfile_string">global_temp_dp_%1$d_%2$d_%3$s_string</string>
-	
-	
-	
+
 	<string name="calibrationTarget_int">global_dp_calibrationTarget_int</string>
 	<string name="preference_calibrationTarget_int">global_temp_dp_calibrationTarget_int</string>
 	
@@ -260,8 +295,7 @@
 	
 	<string name="calibrationIncrementSymbol">\u002B</string>
 	<string name="calibrationDecrementSymbol">\u2212</string>
-	
-	
+
 	<string name="bufferImageFileName">aix_%1$d_%2$d_%3$s.png</string>
 	
 </resources>

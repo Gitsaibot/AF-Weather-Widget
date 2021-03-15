@@ -18,10 +18,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    
+    buildFeatures {
+        viewBinding true
+    }
 
     useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
     implementation 'androidx.core:core:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 }

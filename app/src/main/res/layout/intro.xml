@@ -1,14 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-	
-	<WebView
-		    android:id="@+id/webview"
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:layout_margin="0px"
-		    android:padding="0px" />
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-</LinearLayout>
+	<TextView
+		android:id="@+id/quickStart"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="24dp"
+		android:text="@string/quick_start"
+		android:textColor="#FFFFFF"
+		android:textSize="24sp"
+		android:textStyle="bold"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_marginTop="16dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/quickStart">
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:id="@+id/introText"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginEnd="8dp"
+				android:text="@string/intro_text"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<TextView
+				android:id="@+id/temperatureGraph"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="20dp"
+				android:text="@string/temperature_graph"
+				android:textColor="#FFFFFF"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/introText" />
+
+			<TextView
+				android:id="@+id/textView2"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="4dp"
+				android:layout_marginEnd="8dp"
+				android:text="@string/temperature_graph_text"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/temperatureGraph" />
+
+			<ImageView
+				android:id="@+id/tempImageView"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="8dp"
+				android:layout_marginEnd="8dp"
+				android:src="@drawable/aix_widget_preview"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+			<TextView
+				android:id="@+id/precipitation"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="20dp"
+				android:text="@string/precipitation"
+				android:textColor="#FFFFFF"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/tempImageView" />
+
+			<TextView
+				android:id="@+id/textView3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="4dp"
+				android:layout_marginEnd="8dp"
+				android:text="@string/precipitation_text"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/precipitation" />
+
+			<TextView
+				android:id="@+id/topBarInformation"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="20dp"
+				android:text="@string/top_bar_information"
+				android:textColor="#FFFFFF"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+			<TextView
+				android:id="@+id/textView4"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="4dp"
+				android:layout_marginEnd="8dp"
+				android:text="@string/top_bar_information_text"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/topBarInformation" />
+
+			<TextView
+				android:id="@+id/noaa"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="20dp"
+				android:text="@string/noaa"
+				android:textColor="#FFFFFF"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+			<TextView
+				android:id="@+id/textView5"
+				android:layout_width="0dp"
+				android:layout_height="200dp"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="4dp"
+				android:layout_marginEnd="8dp"
+				android:layout_marginBottom="8dp"
+				android:text="@string/noaa_nws_data_text"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/noaa" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
