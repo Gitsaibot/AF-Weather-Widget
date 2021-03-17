@@ -475,8 +475,8 @@ public class AixNoaaWeatherData implements AixDataSource {
 			
 			String url = String.format(
 					Locale.US,
-					"https://www.weather.gov/forecasts/xml/sample_products/browser_interface/ndfdXMLclient.php"
-							+ "?lat=%.3f&lon=%.3f&product=time-series",
+					"https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
+							+ "?lat=%.3f&lon=%.3f&product=time-series&temp=temp&rh=rh&icons=icons&qpf=qpf",
 					latitude.doubleValue(),
 					longitude.doubleValue());
 			
