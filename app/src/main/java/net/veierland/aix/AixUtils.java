@@ -486,7 +486,7 @@ public class AixUtils {
 	{
 		StringBuilder userAgent = new StringBuilder();
 		
-		userAgent.append("Aix Weather Widget");
+		userAgent.append("AF Weather Widget");
 
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -494,7 +494,7 @@ public class AixUtils {
 			userAgent.append(pInfo.versionName);
 		} catch (NameNotFoundException e) { }
 		
-		userAgent.append(" (https://www.veierland.net/aix/; aix@veierland.net)");
+		userAgent.append(" (https://github.com/Gitsaibot/AF-Weather-Widget; AF@gitsaibot.net)");
 
 		return userAgent.toString();
 	}
