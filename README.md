@@ -1,10 +1,10 @@
-# Aix Weather Widget
+# AF Weather Widget
 
 Source code for the Android app.
 
-[<img src="fastlane/metadata/en_fdroid.png" height="60" alt="Get it on F-Droid">](https://f-droid.org/packages/net.veierland.aix/)
+[<img src="fastlane/metadata/en_fdroid.png" height="60" alt="Get it on F-Droid">](https://f-droid.org/packages/net.gitsaibot.af/)
 
-This app was written as a personal project in order to provide a compact graphical weather graph as a single row Android widget. The app met its original design goal at an early version, and most subsequent versions have been bug fixes. The source code is dated and not shiny, and there are several hacks used in order to make a graphical widget work on Android. The source code is made public domain as it may provide utility for others. Please respect the various APIs used by the app, and please modify the user agent if you are running a modified version of the app. I can only allocate a minimal amount of time to this app and will not spend further time developing it, but please email me via Google Play if you wish to become a maintainer or plan an improvement of the app.
+This app is a fork of aix weather widget which is no longer actively developed. It is a compact graphical weather graph as a single row Android widget. The source code is made public domain as it may provide utility for others. Please respect the various APIs used by the app, and please modify the user agent if you are running a modified version of the app.
 
 # Acknowledgements
 
@@ -22,5 +22,5 @@ This app was written as a personal project in order to provide a compact graphic
 # Information for use
 
 * Any use of the provided software must respect the terms of each API used.
-* [The user agent information must be changed if used in a modified application.](https://github.com/pveierland/aix-weather-widget/blob/master/Aix/src/net/veierland/aix/AixUtils.java#L491)
-* [The GeoNames username must be changed if used in a modified application.](https://github.com/pveierland/aix-weather-widget/blob/master/Aix/src/net/veierland/aix/data/AixGeoNamesData.java#L62)
+* [The user agent information must be changed if used in a modified application.](https://github.com/Gitsaibot/AF-Weather-Widget/blob/master/app/src/main/java/net/gitsaibot/af/AixUtils.java#L497)
+* [The GeoNames username must be changed if used in a modified application.](https://github.com/Gitsaibot/AF-Weather-Widget/blob/master/app/src/main/java/net/gitsaibot/af/data/AixGeoNamesData.java#L62)
