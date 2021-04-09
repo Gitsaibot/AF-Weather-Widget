@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
 
-    <string name="app_name">Aix Weather Widget</string>
+    <string name="app_name">AF Weather Widget</string>
     <string name="app_description">Weather widget showing detailed 24-hour forecasts in a 4x1 format.</string>
     
     <string name="help">Help</string>
     
-    <string name="widget_name">Aix Weather</string>
-    <string name="widget_loading">Loading Aix...</string>
+    <string name="widget_name" translatable="false">AF Weather</string>
+    <string name="widget_loading">Loading AF...</string>
     
-    <string name="widget_name_small_tiny">Aix Weather (2x1)</string>
-    <string name="widget_name_small_small">Aix Weather (2x2)</string>
-    <string name="widget_name_large_tiny">Aix Weather (4x1)</string>
-    <string name="widget_name_large_small">Aix Weather (4x2)</string>
+    <string name="widget_name_small_tiny" translatable="false">AF Weather (2x1)</string>
+    <string name="widget_name_small_small" translatable="false">AF Weather (2x2)</string>
+    <string name="widget_name_large_tiny" translatable="false">AF Weather (4x1)</string>
+    <string name="widget_name_large_small" translatable="false">AF Weather (4x2)</string>
 
-    <string name="device_profile_guide_link">&lt;a href=\"https://github.com/Gitsaibot/AF-Weather-Widget/wiki/Device-Profiles/\"&gt;Device Profile Guide&lt;/a&gt;</string>
+    <string name="device_profile_guide_link" translatable="false">&lt;a href=\"https://github.com/Gitsaibot/AF-Weather-Widget/wiki/Device-Profiles/\"&gt;Device Profile Guide&lt;/a&gt;</string>
 
 	<string name="quick_start">Quick Start</string>
 	<string name="temperature_graph">Temperature graph</string>
@@ -23,12 +23,7 @@
 	<string name="noaa">NOAA NWS data</string>
 
 	<!-- IntroText -->
-	<string name="intro_text">After installing Aix, you must manually add the widget to your homescreen:\n
-		\nWhen setting up a widget for the first time, the only thing which needs to be chosen is the location to view.
-		Later on, you can explore the various configuration options by tapping the widget.
-		Units of measurement can be changed, the user interface can be customized, and settings such as data update rate can be chosen. \n
-		\nThe most recently saved settings will be used automatically when setting up a new widget.
-	</string>
+	<string name="intro_text">After installing AF, you must manually add the widget to your homescreen:  \t\t When setting up a widget for the first time, the only thing which needs to be chosen is the location to view. \t\tLater on, you can explore the various configuration options by tapping the widget. \t\tUnits of measurement can be changed, the user interface can be customized, and settings such as data update rate can be chosen.   \t\t The most recently saved settings will be used automatically when setting up a new widget. \t</string>
 
 	<!-- Temperature graph -->
 	<string name="temperature_graph_text">The temperature graph shows the temperature for the coming 24 hours, starting at the next full hour from the current time. NB:
@@ -65,28 +60,28 @@
     	\n\u2022 Pressure data is not available.
     	\n\u2022 The time between samples varies from 1 to 6 hours.\n
 
-		\nYou can select the weather data source manually from the update settings within the Aix configuration.
+		\nYou can select the weather data source manually from the update settings within the AF configuration.
 	</string>
 
 	<!-- InfoText -->
-	<string name="pressure_top">MSLP: %1$.0f hPa</string>
-	<string name="pressure_top_short">%1$.0f hPa</string>
-	<string name="humidity_top">RH: %1$.0f%%</string>
-	<string name="humidity_top_short">%1$.0f%%</string>
-	<string name="rain_scale_format">0.###</string>
-	<string name="rain_scale_top">%1$s %2$s</string>
-	<string name="rain_scale_unit_inches">in</string>
-	<string name="rain_scale_unit_mm">mm</string>
-	<string name="temperature_format">0.#</string>
-	<string name="temperature_unit_fahrenheit">\u00B0F</string>
-	<string name="temperature_unit_celsius">\u00B0C</string>
-	<string name="temperature_top">(%1$s%2$s)</string>
+	<string name="pressure_top" translatable="false">MSLP: %1$.0f hPa</string>
+	<string name="pressure_top_short" translatable="false">%1$.0f hPa</string>
+	<string name="humidity_top" translatable="false">RH: %1$.0f%%</string>
+	<string name="humidity_top_short" translatable="false">%1$.0f%%</string>
+	<string name="rain_scale_format" translatable="false">0.###</string>
+	<string name="rain_scale_top" translatable="false">%1$s %2$s</string>
+	<string name="rain_scale_unit_inches" translatable="false">in</string>
+	<string name="rain_scale_unit_mm" translatable="false">mm</string>
+	<string name="temperature_format" translatable="false">0.#</string>
+	<string name="temperature_unit_fahrenheit" translatable="false">\u00B0F</string>
+	<string name="temperature_unit_celsius" translatable="false">\u00B0C</string>
+	<string name="temperature_top" translatable="false">(%1$s%2$s)</string>
 	
 	<string name="location_settings">Select location</string>
 	
 	<!-- Location selector -->
 	<string name="location_settings_title">Select Location</string>
-	<string name="location_settings_key">select_location</string>
+	<string name="location_settings_key" translatable="false">select_location</string>
 	
 	<string name="button_add_location">Add location</string>
 	
@@ -119,7 +114,7 @@
 	<string name="header_system_settings">System Settings</string>
 	<string name="header_location_settings">Select location</string>
 
-	<string name="title_configure">Aix Weather: Configure widget</string>
+	<string name="title_configure">AF Weather: Configure widget</string>
 	<string name="button_add_widget_label">Add widget</string>
 	
 	<string name="location_selector_no_items_title">No locations added</string>
@@ -134,12 +129,10 @@
 	<!-- BEGIN UNIT SETTINGS -->
 	<string name="unit_settings_title">Measurement Units</string>
 	<string name="unit_settings_summary">Set measurement units and rain scaling</string>
-	
-	<string name="unit_settings_category">Unit settings</string>
-	
+
 	<string name="temperature_units_title">Temperature Unit</string>
-	<string name="temperature_units_celsius">Celsius</string>
-	<string name="temperature_units_fahrenheit">Fahrenheit</string>
+	<string name="temperature_units_celsius" translatable="false">Celsius</string>
+	<string name="temperature_units_fahrenheit" translatable="false">Fahrenheit</string>
 	
 	<string name="precipitation_units_title">Precipitation Unit</string>
 	<string name="precipitation_units_mm">Millimeters</string>
@@ -286,16 +279,17 @@
 	<string name="calibrationLandscapeDimension_string">global_dp_calibrationLandscapeDimension_string</string>
 	<string name="preference_calibrationLandscapeDimension_string">global_temp_dp_calibrationLandscapeDimension_string</string>
 
-	<string name="contentDescriptionPortraitCalibrationImage">Aix Weather Widget Calibration (Portrait)</string>
-	<string name="contentDescriptionLandscapeCalibrationImage">Aix Weather Widget Calibration (Landscape)</string>
+	<string name="contentDescriptionPortraitCalibrationImage">AF Weather Widget Calibration (Portrait)</string>
+	<string name="contentDescriptionLandscapeCalibrationImage">AF Weather Widget Calibration (Landscape)</string>
 	
-	<string name="contentDescriptionImage">Aix Weather Widget</string>
-	<string name="contentDescriptionPortraitImage">Aix Weather Widget (Portrait)</string>
-	<string name="contentDescriptionLandscapeImage">Aix Weather Widget (Landscape)</string>
+	<string name="contentDescriptionImage">AF Weather Widget</string>
+	<string name="contentDescriptionPortraitImage">AF Weather Widget (Portrait)</string>
+	<string name="contentDescriptionLandscapeImage">AF Weather Widget (Landscape)</string>
 	
-	<string name="calibrationIncrementSymbol">\u002B</string>
-	<string name="calibrationDecrementSymbol">\u2212</string>
+	<string name="calibrationIncrementSymbol" translatable="false">\u002B</string>
+	<string name="calibrationDecrementSymbol" translatable="false">\u2212</string>
 
-	<string name="bufferImageFileName">aix_%1$d_%2$d_%3$s.png</string>
-	
+	<string name="bufferImageFileName" translatable="false">af_%1$d_%2$d_%3$s.png</string>
+	<string name="unit_settings_category">Unit settings</string>
+
 </resources>

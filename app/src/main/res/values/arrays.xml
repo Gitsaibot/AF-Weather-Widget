@@ -10,10 +10,10 @@
 	
 	<string name="top_text_visibility_default">@string/top_text_visibility_portrait</string>
 	
-	<string name="top_text_visibility_never">1</string>
-	<string name="top_text_visibility_landscape">2</string>
-	<string name="top_text_visibility_portrait">3</string>
-	<string name="top_text_visibility_always">4</string>
+	<string name="top_text_visibility_never" translatable="false">1</string>
+	<string name="top_text_visibility_landscape" translatable="false">2</string>
+	<string name="top_text_visibility_portrait" translatable="false">3</string>
+	<string name="top_text_visibility_always" translatable="false">4</string>
 	
 	<string-array name="top_text_visibility_code">
 		<item>@string/top_text_visibility_never</item>
@@ -64,9 +64,9 @@
 	
 	<string name="provider_default">@string/provider_auto</string>
 	
-	<string name="provider_auto">1</string>
-	<string name="provider_met">2</string>
-	<string name="provider_nws">3</string>
+	<string name="provider_auto" translatable="false">1</string>
+	<string name="provider_met" translatable="false">2</string>
+	<string name="provider_nws" translatable="false">3</string>
 	
 	<string-array name="provider_code">
 		<item>1</item>
