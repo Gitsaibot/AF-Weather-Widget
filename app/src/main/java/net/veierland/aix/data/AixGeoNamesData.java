@@ -59,9 +59,8 @@ public class AixGeoNamesData implements AixDataSource {
 		{
 			String url = String.format(
 					Locale.US,
-					"http://api.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=aix_widget",
-					latitude.doubleValue(),
-					longitude.doubleValue());
+					"http://api.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=af_weather",
+					latitude, longitude);
 			
 			Log.d(TAG, "Retrieving timezone data from URL=" + url);
 			
