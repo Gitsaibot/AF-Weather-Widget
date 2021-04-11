@@ -603,7 +603,7 @@ public class AixUtils {
 		}
 		
 		return Uri.parse(String.format(
-				"content://net.veierland.aix/aixrender/%d/%d/%s",
+				"content://net.gitsaibot.af/aixrender/%d/%d/%s",
 				appWidgetId, time, orientation));
 	}
 	

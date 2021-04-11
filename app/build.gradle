@@ -5,7 +5,7 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "net.veierland.aix"
+        applicationId "net.gitsaibot.af"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

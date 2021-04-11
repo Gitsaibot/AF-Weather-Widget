@@ -41,26 +41,26 @@ public class AixService extends JobIntentService {
 
 	public static final int JOB_ID = 1;
 
-	public final static String ACTION_DELETE_WIDGET = "net.veierland.aix.DELETE_WIDGET";
-	public final static String ACTION_UPDATE_ALL = "net.veierland.aix.UPDATE_ALL";
-	public final static String ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS = "net.veierland.aix.UPDATE_WIDGET_MINIMAL_DIMENSIONS";
-	public final static String ACTION_UPDATE_ALL_PROVIDER_AUTO = "net.veierland.aix.UPDATE_WIDGET_PROVIDER_AUTO";
-	public final static String ACTION_UPDATE_ALL_PROVIDER_CHANGE = "net.veierland.aix.UPDATE_WIDGET_PROVIDER_CHANGE";
-	public final static String ACTION_UPDATE_WIDGET = "net.veierland.aix.UPDATE_WIDGET";
+	public final static String ACTION_DELETE_WIDGET = "net.gitsaibot.af.DELETE_WIDGET";
+	public final static String ACTION_UPDATE_ALL = "net.gitsaibot.af.UPDATE_ALL";
+	public final static String ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS = "net.gitsaibot.af.UPDATE_WIDGET_MINIMAL_DIMENSIONS";
+	public final static String ACTION_UPDATE_ALL_PROVIDER_AUTO = "net.gitsaibot.af.UPDATE_WIDGET_PROVIDER_AUTO";
+	public final static String ACTION_UPDATE_ALL_PROVIDER_CHANGE = "net.gitsaibot.af.UPDATE_WIDGET_PROVIDER_CHANGE";
+	public final static String ACTION_UPDATE_WIDGET = "net.gitsaibot.af.UPDATE_WIDGET";
 
-	public final static String ACTION_DECREASE_LANDSCAPE_HEIGHT = "net.veierland.aix.DECREASE_LANDSCAPE_HEIGHT";
-	public final static String ACTION_DECREASE_LANDSCAPE_WIDTH = "net.veierland.aix.DECREASE_LANDSCAPE_WIDTH";
-	public final static String ACTION_DECREASE_PORTRAIT_HEIGHT = "net.veierland.aix.DECREASE_PORTRAIT_HEIGHT";
-	public final static String ACTION_DECREASE_PORTRAIT_WIDTH = "net.veierland.aix.DECREASE_PORTRAIT_WIDTH";
-	public final static String ACTION_INCREASE_LANDSCAPE_HEIGHT = "net.veierland.aix.INCREASE_LANDSCAPE_HEIGHT";
-	public final static String ACTION_INCREASE_LANDSCAPE_WIDTH = "net.veierland.aix.INCREASE_LANDSCAPE_WIDTH";
-	public final static String ACTION_INCREASE_PORTRAIT_HEIGHT = "net.veierland.aix.INCREASE_PORTRAIT_HEIGHT";
-	public final static String ACTION_INCREASE_PORTRAIT_WIDTH = "net.veierland.aix.INCREASE_PORTRAIT_WIDTH";
+	public final static String ACTION_DECREASE_LANDSCAPE_HEIGHT = "net.gitsaibot.af.DECREASE_LANDSCAPE_HEIGHT";
+	public final static String ACTION_DECREASE_LANDSCAPE_WIDTH = "net.gitsaibot.af.DECREASE_LANDSCAPE_WIDTH";
+	public final static String ACTION_DECREASE_PORTRAIT_HEIGHT = "net.gitsaibot.af.DECREASE_PORTRAIT_HEIGHT";
+	public final static String ACTION_DECREASE_PORTRAIT_WIDTH = "net.gitsaibot.af.DECREASE_PORTRAIT_WIDTH";
+	public final static String ACTION_INCREASE_LANDSCAPE_HEIGHT = "net.gitsaibot.af.INCREASE_LANDSCAPE_HEIGHT";
+	public final static String ACTION_INCREASE_LANDSCAPE_WIDTH = "net.gitsaibot.af.INCREASE_LANDSCAPE_WIDTH";
+	public final static String ACTION_INCREASE_PORTRAIT_HEIGHT = "net.gitsaibot.af.INCREASE_PORTRAIT_HEIGHT";
+	public final static String ACTION_INCREASE_PORTRAIT_WIDTH = "net.gitsaibot.af.INCREASE_PORTRAIT_WIDTH";
 
-	public final static String ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION = "net.veierland.aix.ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION";
-	public final static String ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION = "net.veierland.aix.ACCEPT_PORTRAIT_VERTICAL_CALIBRATION";
-	public final static String ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION = "net.veierland.aix.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION";
-	public final static String ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION = "net.veierland.aix.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION";
+	public final static String ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION";
+	public final static String ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_PORTRAIT_VERTICAL_CALIBRATION";
+	public final static String ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION";
+	public final static String ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION";
 	
 	@SuppressWarnings("serial")
 	Map<String, Pair<String, Integer>> mCalibrationAdjustmentsMap = new HashMap<String, Pair<String, Integer>>() {{

@@ -17,7 +17,7 @@
     	<activity android:name="net.gitsaibot.af.AixConfigure"
     	    	android:label="@string/title_configure"
     			android:windowSoftInputMode="stateHidden|adjustPan"
-    			android:taskAffinity="net.veierland.aix.configure"
+    			android:taskAffinity="net.gitsaibot.af.configure"
         		android:excludeFromRecents="true">
 
             <intent-filter>
@@ -28,19 +28,19 @@
         
         <activity android:name="net.gitsaibot.af.AixDeviceProfileActivity"
 		    	android:label="@string/device_profiles_title"
-		    	android:taskAffinity="net.veierland.aix.configure"
+		    	android:taskAffinity="net.gitsaibot.af.configure"
 		    	android:windowSoftInputMode="stateHidden|adjustPan"
 		    	android:excludeFromRecents="true" />
         
         <activity android:name="net.gitsaibot.af.AixLocationSelectionActivity"
         		android:label="@string/location_settings_title"
-        		android:taskAffinity="net.veierland.aix.configure"
+        		android:taskAffinity="net.gitsaibot.af.configure"
         		android:windowSoftInputMode="stateHidden|adjustPan"
         		android:excludeFromRecents="true" />
         
         <activity android:name="net.gitsaibot.af.AixIntro"
         		android:label="Aix Weather Widget"
-        		android:taskAffinity="net.veierland.aix.intro"
+        		android:taskAffinity="net.gitsaibot.af.intro"
         		android:excludeFromRecents="true">
             
 			<intent-filter>
@@ -65,24 +65,24 @@
     	
     	<receiver android:name="net.gitsaibot.af.AixServiceReceiver" android:enabled="true">
 			<intent-filter>
-				<action android:name="net.veierland.aix.DELETE_WIDGET" />
-				<action android:name="net.veierland.aix.UPDATE_ALL" />
-				<action android:name="net.veierland.aix.UPDATE_WIDGET_MINIMAL_DIMENSIONS" />
-				<action android:name="net.veierland.aix.UPDATE_WIDGET_PROVIDER_AUTO" />
-				<action android:name="net.veierland.aix.UPDATE_WIDGET_PROVIDER_CHANGE" />
-				<action android:name="net.veierland.aix.UPDATE_WIDGET" />
-				<action android:name="net.veierland.aix.DECREASE_LANDSCAPE_HEIGHT" />
-				<action android:name="net.veierland.aix.DECREASE_LANDSCAPE_WIDTH" />
-				<action android:name="net.veierland.aix.DECREASE_PORTRAIT_HEIGHT" />
-				<action android:name="net.veierland.aix.DECREASE_PORTRAIT_WIDTH" />
-				<action android:name="net.veierland.aix.INCREASE_LANDSCAPE_HEIGHT" />
-				<action android:name="net.veierland.aix.INCREASE_LANDSCAPE_WIDTH" />
-				<action android:name="net.veierland.aix.INCREASE_PORTRAIT_HEIGHT" />
-				<action android:name="net.veierland.aix.INCREASE_PORTRAIT_WIDTH" />
-				<action android:name="net.veierland.aix.ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION" />
-				<action android:name="net.veierland.aix.ACCEPT_PORTRAIT_VERTICAL_CALIBRATION" />
-				<action android:name="net.veierland.aix.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION" />
-				<action android:name="net.veierland.aix.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION" />
+				<action android:name="net.gitsaibot.af.DELETE_WIDGET" />
+				<action android:name="net.gitsaibot.af.UPDATE_ALL" />
+				<action android:name="net.gitsaibot.af.UPDATE_WIDGET_MINIMAL_DIMENSIONS" />
+				<action android:name="net.gitsaibot.af.UPDATE_WIDGET_PROVIDER_AUTO" />
+				<action android:name="net.gitsaibot.af.UPDATE_WIDGET_PROVIDER_CHANGE" />
+				<action android:name="net.gitsaibot.af.UPDATE_WIDGET" />
+				<action android:name="net.gitsaibot.af.DECREASE_LANDSCAPE_HEIGHT" />
+				<action android:name="net.gitsaibot.af.DECREASE_LANDSCAPE_WIDTH" />
+				<action android:name="net.gitsaibot.af.DECREASE_PORTRAIT_HEIGHT" />
+				<action android:name="net.gitsaibot.af.DECREASE_PORTRAIT_WIDTH" />
+				<action android:name="net.gitsaibot.af.INCREASE_LANDSCAPE_HEIGHT" />
+				<action android:name="net.gitsaibot.af.INCREASE_LANDSCAPE_WIDTH" />
+				<action android:name="net.gitsaibot.af.INCREASE_PORTRAIT_HEIGHT" />
+				<action android:name="net.gitsaibot.af.INCREASE_PORTRAIT_WIDTH" />
+				<action android:name="net.gitsaibot.af.ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION" />
+				<action android:name="net.gitsaibot.af.ACCEPT_PORTRAIT_VERTICAL_CALIBRATION" />
+				<action android:name="net.gitsaibot.af.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION" />
+				<action android:name="net.gitsaibot.af.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION" />
     		</intent-filter>
     	</receiver>
 

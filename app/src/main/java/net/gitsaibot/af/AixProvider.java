@@ -28,7 +28,7 @@ public class AixProvider extends ContentProvider {
 	private static final String TAG = "AixProvider";
 	private static final boolean LOGD = false;
 	
-	public static final String AUTHORITY = "net.veierland.aix";
+	public static final String AUTHORITY = "net.gitsaibot.af";
 	
 	public interface AixWidgetsColumns {
 		public static final String APPWIDGET_ID = BaseColumns._ID;
@@ -337,7 +337,7 @@ public class AixProvider extends ContentProvider {
 	private static final String TABLE_AIXINTERVALDATAFORECASTS = "aixintervaldataforecasts";
 	private static final String TABLE_AIXSUNMOONDATA = "aixsunmoondata";
 	
-	public static final String AIX_RENDER_FORMATTER = "content://net.veierland.aix/aixrender/%d/%d/%s";
+	public static final String AIX_RENDER_FORMATTER = "content://net.gitsaibot.af/aixrender/%d/%d/%s";
 	
 	private DatabaseHelper mOpenHelper;
 	
