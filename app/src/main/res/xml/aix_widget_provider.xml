@@ -7,5 +7,5 @@
 		android:resizeMode="horizontal|vertical"
 		android:updatePeriodMillis="0"
 		android:initialLayout="@layout/widget_text"
-		android:configure="net.veierland.aix.AixConfigure"
+		android:configure="net.gitsaibot.af.AixConfigure"
 		android:previewImage="@drawable/aix_widget_preview" />

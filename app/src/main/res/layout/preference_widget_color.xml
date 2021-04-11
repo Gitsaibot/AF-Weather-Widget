@@ -7,7 +7,7 @@
 		android:orientation="horizontal"
 		android:gravity="center_vertical">
 	
-	<net.veierland.aix.ColorView
+	<net.gitsaibot.af.ColorView
 			android:id="@+id/color"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
 			android:layout_marginTop="5dip"
 			android:layout_marginBottom="5dip" />
 	
-	<view	class="net.veierland.aix.ColorPreference$RevertHolder"
+	<view	class="net.gitsaibot.af.ColorPreference$RevertHolder"
 			android:id="@+id/revert"
 			android:layout_width="wrap_content"
         	android:layout_height="match_parent"

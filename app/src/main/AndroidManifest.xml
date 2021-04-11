@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		package="net.veierland.aix"
+		package="net.gitsaibot.af"
 		android:installLocation="internalOnly">
     
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
 			android:theme="@style/AixTheme"
 			android:usesCleartextTraffic="true">
 			
-    	<activity android:name=".AixConfigure"
+    	<activity android:name="net.gitsaibot.af.AixConfigure"
     	    	android:label="@string/title_configure"
     			android:windowSoftInputMode="stateHidden|adjustPan"
     			android:taskAffinity="net.veierland.aix.configure"
@@ -26,19 +26,19 @@
 
         </activity>
         
-        <activity android:name=".AixDeviceProfileActivity"
+        <activity android:name="net.gitsaibot.af.AixDeviceProfileActivity"
 		    	android:label="@string/device_profiles_title"
 		    	android:taskAffinity="net.veierland.aix.configure"
 		    	android:windowSoftInputMode="stateHidden|adjustPan"
 		    	android:excludeFromRecents="true" />
         
-        <activity android:name=".AixLocationSelectionActivity"
+        <activity android:name="net.gitsaibot.af.AixLocationSelectionActivity"
         		android:label="@string/location_settings_title"
         		android:taskAffinity="net.veierland.aix.configure"
         		android:windowSoftInputMode="stateHidden|adjustPan"
         		android:excludeFromRecents="true" />
         
-        <activity android:name=".AixIntro"
+        <activity android:name="net.gitsaibot.af.AixIntro"
         		android:label="Aix Weather Widget"
         		android:taskAffinity="net.veierland.aix.intro"
         		android:excludeFromRecents="true">
@@ -51,11 +51,11 @@
 		
 		</activity>
         
-        <provider android:name=".AixProvider" android:authorities="net.veierland.aix" android:exported="true" />
+        <provider android:name="net.gitsaibot.af.AixProvider" android:authorities="net.gitsaibot.af" android:exported="true" />
         
-        <service android:name=".AixService" android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name="net.gitsaibot.af.AixService" android:permission="android.permission.BIND_JOB_SERVICE" />
     	
-    	<receiver android:name=".AixWidget" android:label="@string/widget_name">
+    	<receiver android:name="net.gitsaibot.af.AixWidget" android:label="@string/widget_name">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
     		</intent-filter>
@@ -63,7 +63,7 @@
     				android:resource="@xml/aix_widget_provider" />
     	</receiver>
     	
-    	<receiver android:name=".AixServiceReceiver" android:enabled="true">
+    	<receiver android:name="net.gitsaibot.af.AixServiceReceiver" android:enabled="true">
 			<intent-filter>
 				<action android:name="net.veierland.aix.DELETE_WIDGET" />
 				<action android:name="net.veierland.aix.UPDATE_ALL" />
