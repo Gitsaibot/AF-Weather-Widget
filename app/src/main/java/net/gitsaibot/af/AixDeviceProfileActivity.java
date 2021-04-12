@@ -246,7 +246,7 @@ public class AixDeviceProfileActivity extends Activity
 	@Override
 	public void onClick(View view) {
 		if (view == mSyncButton) {
-			startSync();
+			//startSync();
 		} else if (view == mPortraitSubmitButton) {
 			submitPortraitDimensions();
 		} else if (view == mPortraitRevertButton) {
