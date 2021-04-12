@@ -18,6 +18,7 @@ import net.gitsaibot.af.AixProvider.AixSunMoonDataColumns;
 import net.gitsaibot.af.AixSettings;
 import net.gitsaibot.af.AixUpdate;
 import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.BuildConfig;
 import net.gitsaibot.af.util.AixLocationInfo;
 
 import org.apache.http.HttpResponse;
@@ -299,9 +300,8 @@ public class AixMetSunTimeData implements AixDataSource {
 			{
 				String url = String.format(
 						Locale.US,
-						"https://aa033wckd2azu8v41.api.met.no/weatherapi/sunrise/2.0/?lat=%.1f&lon=%.1f&date=%s&offset=+00:00&days=%d",
-						latitude.doubleValue(),
-						longitude.doubleValue(),
+						"https://" + BuildConfig.API_KEY + "/weatherapi/sunrise/2.0/?lat=%.1f&lon=%.1f&date=%s&offset=+00:00&days=%d",
+						latitude, longitude,
 						mDateFormat.format(mStartDate),
 						NUM_DAYS_REQUEST);
 

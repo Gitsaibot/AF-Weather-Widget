@@ -6,6 +6,7 @@ import java.util.Locale;
 import net.gitsaibot.af.AixSettings;
 import net.gitsaibot.af.AixUpdate;
 import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.BuildConfig;
 import net.gitsaibot.af.util.AixLocationInfo;
 
 import org.apache.http.HttpResponse;
@@ -59,7 +60,7 @@ public class AixGeoNamesData implements AixDataSource {
 		{
 			String url = String.format(
 					Locale.US,
-					"http://api.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=af_weather",
+					"http://api.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=" + BuildConfig.USER_GEONAMES,
 					latitude, longitude);
 			
 			Log.d(TAG, "Retrieving timezone data from URL=" + url);

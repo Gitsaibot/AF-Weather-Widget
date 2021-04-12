@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(project.rootProject.file("local.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
@@ -10,6 +13,9 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName '1.0'
+        buildConfigField("String", "USER_AGENT", "\"" + localProperties['user_agent'] + "\"")
+        buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
+        buildConfigField("String", "USER_GEONAMES", "\"" + localProperties['user_geonames'] + "\"")
     }
 
     buildTypes {

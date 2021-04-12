@@ -14,6 +14,7 @@ import net.gitsaibot.af.AixProvider.AixPointDataForecasts;
 import net.gitsaibot.af.AixSettings;
 import net.gitsaibot.af.AixUpdate;
 import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.BuildConfig;
 import net.gitsaibot.af.util.AixLocationInfo;
 
 import org.apache.http.HttpResponse;
@@ -108,9 +109,8 @@ public class AixMetWeatherData implements AixDataSource {
 			
 			String url = String.format(
 					Locale.US,
-					"https://api.met.no/weatherapi/locationforecast/2.0/classic?lat=%.3f&lon=%.3f",
-					latitude.doubleValue(),
-					longitude.doubleValue());
+					"https://" + BuildConfig.API_KEY + "/weatherapi/locationforecast/2.0/classic?lat=%.3f&lon=%.3f",
+					latitude, longitude);
 			
 			Log.d(TAG, "Attempting to download weather data from URL=" + url);
 			

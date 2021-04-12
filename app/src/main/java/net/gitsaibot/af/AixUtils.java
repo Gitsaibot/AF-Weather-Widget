@@ -494,7 +494,7 @@ public class AixUtils {
 			userAgent.append(pInfo.versionName);
 		} catch (NameNotFoundException e) { }
 		
-		userAgent.append(" (https://github.com/Gitsaibot/AF-Weather-Widget; AF@gitsaibot.net)");
+		userAgent.append("https://github.com/Gitsaibot/AF-Weather-Widget;" + BuildConfig.USER_AGENT);
 
 		return userAgent.toString();
 	}
