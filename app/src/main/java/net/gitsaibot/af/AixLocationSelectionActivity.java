@@ -458,11 +458,11 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 				mAttempts++;
 				
 				try {
-                    URI uri = new URI("http", "api.geonames.org", "/searchJSON",
+                    URI uri = new URI("https", "secure.geonames.org", "/searchJSON",
                             "q=" + params[0].trim() +
                                     "&lang=" + Locale.getDefault().getLanguage() +
                                     "&maxRows=" + MAX_RESULTS +
-                                    "&username=aix_widget", null);
+                                    "&username="+ BuildConfig.USER_GEONAMES, null);
 
 					HttpGet httpGet = new HttpGet(uri);
 					httpGet.addHeader("Accept-Encoding", "gzip");

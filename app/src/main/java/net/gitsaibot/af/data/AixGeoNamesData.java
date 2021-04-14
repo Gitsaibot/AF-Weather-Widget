@@ -60,7 +60,7 @@ public class AixGeoNamesData implements AixDataSource {
 		{
 			String url = String.format(
 					Locale.US,
-					"http://api.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=" + BuildConfig.USER_GEONAMES,
+					"https://secure.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=" + BuildConfig.USER_GEONAMES,
 					latitude, longitude);
 			
 			Log.d(TAG, "Retrieving timezone data from URL=" + url);
