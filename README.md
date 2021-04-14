@@ -13,8 +13,7 @@ This app is a fork of aix weather widget which is no longer actively developed. 
 
 * The Norwegian Meteorological Institute for providing an [open weather data API](https://api.met.no/#english).
 * The National Weather Service for providing an [open weather data API](https://graphical.weather.gov/xml/rest.php).
-* The GeoNames database for providing their [timezone API](http://www.geonames.org/export/web-services.html#timezone).
-* The [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding/intro).
+* The GeoNames database for providing their [timezone and geoname API](http://www.geonames.org/export/web-services.html).
 * Thanks to [bharathp666 from DeviantArt](http://bharathp666.deviantart.com/) for the [application icon](http://bharathp666.deviantart.com/art/Android-Weather-Icons-180719113) (`app_icon.png`).
 
 ## License

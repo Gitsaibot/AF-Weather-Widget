@@ -1,0 +1,2 @@
+- Add key file for F-Droid build
+- Use https for geoname queries
