@@ -1,0 +1,2 @@
+- Rename app title in F-Droid Store
+- Update translations
