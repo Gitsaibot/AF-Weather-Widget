@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AixTheme" parent="@android:style/Theme">
+	<style name="AfTheme" parent="@android:style/Theme">
 		<item name="colorPreferenceStyle">@style/ColorPreference</item>
 	</style>
 	

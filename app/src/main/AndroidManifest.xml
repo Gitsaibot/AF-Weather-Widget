@@ -11,7 +11,7 @@
 			android:icon="@drawable/app_icon"
 			android:label="@string/widget_name"
 			android:description="@string/app_description"
-			android:theme="@style/AixTheme"
+			android:theme="@style/AfTheme"
 			android:usesCleartextTraffic="true">
 			
     	<activity android:name="net.gitsaibot.af.AixConfigure"
@@ -39,7 +39,7 @@
         		android:excludeFromRecents="true" />
         
         <activity android:name="net.gitsaibot.af.AixIntro"
-        		android:label="Aix Weather Widget"
+        		android:label="AF Weather Widget"
         		android:taskAffinity="net.gitsaibot.af.intro"
         		android:excludeFromRecents="true">
             

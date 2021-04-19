@@ -1,6 +1,6 @@
 # AF Weather Widget
 
-![aix_weather_warm](https://user-images.githubusercontent.com/15521729/111474175-107efa80-872c-11eb-9dd9-11a55146fd31.png)
+![af_weather_warm](https://user-images.githubusercontent.com/15521729/111474175-107efa80-872c-11eb-9dd9-11a55146fd31.png)
 
 
 #### Source code for the Android app.

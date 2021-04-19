@@ -8,4 +8,4 @@
 		android:updatePeriodMillis="0"
 		android:initialLayout="@layout/widget_text"
 		android:configure="net.gitsaibot.af.AixConfigure"
-		android:previewImage="@drawable/aix_widget_preview" />
+		android:previewImage="@drawable/af_widget_preview" />
