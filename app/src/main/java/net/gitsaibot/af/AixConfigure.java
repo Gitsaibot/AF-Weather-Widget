@@ -257,7 +257,7 @@ public class AixConfigure extends PreferenceActivity
 		initializePreferences();
 		setupListeners();
 		
-		mAddWidgetButton.setText(mActionEdit ? "Apply Changes" : "Add Widget");
+		mAddWidgetButton.setText(mActionEdit ? getString(R.string.apply_changes) : getString(R.string.add_widget));
 	}
 	
 	@Override

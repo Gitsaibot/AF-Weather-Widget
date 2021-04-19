@@ -126,6 +126,8 @@
 	<string name="dialog_color_alpha">Alpha:</string>
 	<string name="dialog_color_code">HTML color code:</string>
 
+	<string name="apply_changes">Apply Changes</string>
+	<string name="add_widget">Add Widget</string>
 	<!-- BEGIN UNIT SETTINGS -->
 	<string name="unit_settings_title">Measurement Units</string>
 	<string name="unit_settings_summary">Set measurement units and rain scaling</string>

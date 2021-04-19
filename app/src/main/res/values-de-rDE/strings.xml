@@ -73,4 +73,18 @@
     <string name="text_color_title">Textfarbe</string>
     <string name="pattern_color_title">Farbe des Musters</string>
     <string name="top_text_visibility_title">Sichtbarkeit des oberen Texts</string>
+    <string name="apply_changes">Änderungen übernehmen</string>
+    <string name="add_widget">Widget hinzufügen</string>
+    <string name="border_enabled_title">Widget Rahmen</string>
+    <string name="border_enabled_summary_off">Rahmen deaktiviert</string>
+    <string name="border_enabled_summary_on">Rahmen aktiviert</string>
+    <string name="border_color_title">Rahmenfarbe</string>
+    <string name="grid_color_title">Gitter</string>
+    <string name="max_rain_color_title">Maximaler Niederschlag</string>
+    <string name="min_rain_color_title">Minimaler Niederschlag</string>
+    <string name="below_freezing_color_title">Unter dem Gefrierpunkt</string>
+    <string name="above_freezing_color_title">Über dem Gefrierpunkt</string>
+    <string name="grid_outline_color_title">Gitterumrandung</string>
+    <string name="border_thickness_title">Randstärke</string>
+    <string name="border_rounding_title">Widget Randabrundung</string>
 </resources>
