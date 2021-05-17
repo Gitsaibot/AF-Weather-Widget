@@ -165,7 +165,7 @@ public class AixConfigure extends PreferenceActivity
 			boolean globalSettingModified = mAixSettings.saveAllPreferences(mActivateCalibrationMode);
 			
 			PendingIntent configurationIntent = AixUtils.buildConfigurationIntent(this, mAixWidgetInfo.getWidgetUri());
-			AixUtils.updateWidgetRemoteViews(this, mAixWidgetInfo.getAppWidgetId(), "Loading Aix...", true, configurationIntent);
+			AixUtils.updateWidgetRemoteViews(this, mAixWidgetInfo.getAppWidgetId(), getString(R.string.widget_loading), true, configurationIntent);
 			
 			Uri widgetUri = mAixWidgetInfo.getWidgetUri();
 			
