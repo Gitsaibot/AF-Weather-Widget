@@ -378,7 +378,7 @@ public class AixUtils {
 		{
 			String fileName = file.getName();
 
-			if (fileName.startsWith("aix"))
+			if (fileName.startsWith("af"))
 			{
 				String[] s = fileName.split("_");
 
@@ -397,7 +397,7 @@ public class AixUtils {
 
 		for (String fileName : fileNameList)
 		{
-			if (fileName.startsWith("aix"))
+			if (fileName.startsWith("af"))
 			{
 				String[] s = fileName.split("_");
 				if (s.length > 1 && s[1].equals(appWidgetIdString))
@@ -414,7 +414,7 @@ public class AixUtils {
 
 		for (String fileName : fileNameList)
 		{
-			if (fileName.startsWith("aix"))
+			if (fileName.startsWith("af"))
 			{
 				String[] s = fileName.split("_");
 
@@ -590,7 +590,7 @@ public class AixUtils {
 			out = new BufferedOutputStream(new FileOutputStream(f));
 			
 			bitmap.setDensity(Bitmap.DENSITY_NONE);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+			bitmap.compress(Bitmap.CompressFormat.WEBP, 100, out);
 			
 			out.flush();
 		}
