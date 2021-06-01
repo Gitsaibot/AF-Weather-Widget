@@ -5,7 +5,7 @@
 
 #### Source code for the Android app.
 
-[<img src="fastlane/metadata/en_fdroid.png" height="60" alt="Get it on F-Droid">](https://f-droid.org/en/packages/net.gitsaibot.af/) [<img src="fastlane/metadata/IzzyOnDroid.png" height="60" alt="Get it on IzzyOnDroid">](https://apt.izzysoft.de/fdroid/index/apk/net.gitsaibot.af)
+[<img src="fastlane/metadata/en_fdroid.png" height="60" alt="Get it on F-Droid">](https://f-droid.org/en/packages/net.gitsaibot.af/)
 
 This app is a fork of aix weather widget which is no longer actively developed. It is a compact graphical weather graph as a single row Android widget. The source code is made public domain as it may provide utility for others. Please respect the various APIs used by the app, and please modify the user agent if you are running a modified version of the app.
 
