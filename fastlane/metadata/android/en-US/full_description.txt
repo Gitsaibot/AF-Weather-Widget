@@ -6,4 +6,4 @@ The source code is dated and not shiny, and there are several hacks used in orde
 
 * <a href='https://api.met.no/#english'>Norwegian Meteorological Institute</a>
 * <a href='https://graphical.weather.gov/xml/rest.php'>National Weather Service</a>
-* time zones and geonames from the <a href='http://www.geonames.org/export/web-services.html#timezone'>GeoNames database</a>
+* time zones and geonames from the <a href='https://www.geonames.org/export/web-services.html#timezone'>GeoNames database</a>
