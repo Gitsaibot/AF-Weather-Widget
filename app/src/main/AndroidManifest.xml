@@ -12,7 +12,7 @@
 			android:label="@string/widget_name"
 			android:description="@string/app_description"
 			android:theme="@style/AfTheme"
-			android:usesCleartextTraffic="true">
+			android:usesCleartextTraffic="false">
 			
     	<activity android:name="net.gitsaibot.af.AixConfigure"
     	    	android:label="@string/title_configure"
