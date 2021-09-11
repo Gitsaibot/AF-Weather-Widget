@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/ui_settings_title"
+    android:summary="@string/ui_settings_summary">
+
+    <PreferenceCategory
+            android:title="@string/ui_settings_category_widget">
+
+        <net.gitsaibot.af.ColorPreference
+            android:key="@string/background_color_int"
+            android:title="@string/background_color_title"
+            android:defaultValue="@color/background"
+            android:persistent="true" />
+
+        <net.gitsaibot.af.ColorPreference
+            android:key="@string/pattern_color_int"
+            android:title="@string/pattern_color_title"
+            android:defaultValue="@color/pattern"
+            android:persistent="true" />
+
+        <net.gitsaibot.af.ColorPreference
+            android:key="@string/text_color_int"
+            android:title="@string/text_color_title"
+            android:defaultValue="@color/text"
+            android:persistent="true" />
+
+        <ListPreference
+            android:key="@string/top_text_visibility_string"
+            android:title="@string/top_text_visibility_title"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/top_text_visibility_readable"
+            android:entryValues="@array/top_text_visibility_code"
+            android:defaultValue="@string/top_text_visibility_default" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/ui_settings_category_border">
+
+                <CheckBoxPreference
+                    android:key="@string/border_enabled_bool"
+                    android:title="@string/border_enabled_title"
+                    android:layout="@layout/preference_title_checkbox"
+                    android:persistent="true"
+                    android:defaultValue="true"
+                    android:summaryOn="@string/border_enabled_summary_on"
+                    android:summaryOff="@string/border_enabled_summary_off" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/border_color_int"
+                    android:title="@string/border_color_title"
+                    android:dependency="@string/border_enabled_bool"
+                    android:defaultValue="@color/border"
+                    android:persistent="true" />
+
+                <EditTextPreference
+                    android:key="@string/border_thickness_string"
+                    android:title="@string/border_thickness_title"
+                    android:layout="@layout/preference_title"
+                    android:dependency="@string/border_enabled_bool"
+                    android:persistent="true"
+                    android:defaultValue="@string/border_thickness_default"
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:dialogLayout="@layout/edit_text_preference" />
+
+                <EditTextPreference
+                    android:key="@string/border_rounding_string"
+                    android:title="@string/border_rounding_title"
+                    android:layout="@layout/preference_title"
+                    android:summary="@string/border_rounding_summary"
+                    android:persistent="true"
+                    android:defaultValue="@string/border_rounding_default"
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:dialogLayout="@layout/edit_text_preference" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/ui_settings_category_day_effect">
+
+                <CheckBoxPreference
+                    android:key="@string/day_effect_bool"
+                    android:title="@string/day_effect_title"
+                    android:layout="@layout/preference_title_checkbox"
+                    android:persistent="true"
+                    android:defaultValue="true"
+                    android:summaryOn="@string/day_effect_summary_on"
+                    android:summaryOff="@string/day_effect_summary_off" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/day_color_int"
+                    android:title="@string/day_color_title"
+                    android:defaultValue="@color/day"
+                    android:persistent="true"
+                    android:dependency="@string/day_effect_bool" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/night_color_int"
+                    android:title="@string/night_color_title"
+                    android:defaultValue="@color/night"
+                    android:persistent="true"
+                    android:dependency="@string/day_effect_bool" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/ui_settings_category_grid">
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/grid_color_int"
+                    android:title="@string/grid_color_title"
+                    android:defaultValue="@color/grid"
+                    android:persistent="true"
+                    app:allowDividerBelow="true"
+                    app:allowDividerAbove="true"/>
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/grid_outline_color_int"
+                    android:title="@string/grid_outline_color_title"
+                    android:defaultValue="@color/grid_outline"
+                    android:persistent="true"
+                    app:allowDividerAbove="true"/>
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/ui_settings_category_indicator">
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/max_rain_color_int"
+                    android:title="@string/max_rain_color_title"
+                    android:defaultValue="@color/maximum_rain"
+                    android:persistent="true" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/min_rain_color_int"
+                    android:title="@string/min_rain_color_title"
+                    android:defaultValue="@color/minimum_rain"
+                    android:persistent="true" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/above_freezing_color_int"
+                    android:title="@string/above_freezing_color_title"
+                    android:defaultValue="@color/above_freezing"
+                    android:persistent="true" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/below_freezing_color_int"
+                    android:title="@string/below_freezing_color_title"
+                    android:defaultValue="@color/below_freezing"
+                    android:persistent="true" />
+
+        </PreferenceCategory>
+</PreferenceScreen>

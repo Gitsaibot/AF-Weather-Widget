@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import net.gitsaibot.af.util.AixWidgetInfo;
@@ -18,7 +19,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
@@ -52,13 +52,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AixDeviceProfileActivity extends Activity
+import androidx.appcompat.app.AppCompatActivity;
+
+public class AfDeviceProfileActivity extends AppCompatActivity
 		implements OnCheckedChangeListener,
 				   OnClickListener,
 				   OnItemSelectedListener,
 				   OnKeyListener
 {
-	private static final String TAG = "AixDeviceProfileActivity";
+	private static final String TAG = "AfDeviceProfileActivity";
 	
 	private final static int RESULT_FAILED = 1;
 	private final static int RESULT_SYNC_SUCCESSFUL = 2;
@@ -150,7 +152,7 @@ public class AixDeviceProfileActivity extends Activity
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		setContentView(R.layout.activity_device_profiles);
-		
+		Objects.requireNonNull(getSupportActionBar()).show();
 		setupUIElements();
 		initialize();
 		updateUIState();
@@ -320,7 +322,7 @@ public class AixDeviceProfileActivity extends Activity
 	}
 
 	private void startCalibration() {
-		setResult(AixConfigure.EXIT_CONFIGURATION);
+		setResult(AfPreferenceFragment.EXIT_CONFIGURATION);
 		finish();
 	}
 	
@@ -592,13 +594,13 @@ public class AixDeviceProfileActivity extends Activity
 		}
 	}
 	
-	private static class AixDeviceProfileWidgetDimension
+	private static class AfDeviceProfileWidgetDimension
 	{
 		public boolean isLandscape, isPromoted = false;
 		public int numColumns, numRows;
 		public int width, height;
 		
-		public AixDeviceProfileWidgetDimension() { }
+		public AfDeviceProfileWidgetDimension() { }
 	}
 	
 	private class ProfileSyncTask extends AsyncTask<Void, Void, Integer>
@@ -680,7 +682,7 @@ public class AixDeviceProfileActivity extends Activity
 			}
 			
 			if (toastMessage != null) {
-				Toast toast = Toast.makeText(AixDeviceProfileActivity.this, toastMessage, Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(AfDeviceProfileActivity.this, toastMessage, Toast.LENGTH_SHORT);
 				try {
 					((TextView)((LinearLayout)toast.getView()).getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL);
 				} catch (Exception e) { }
@@ -704,7 +706,7 @@ public class AixDeviceProfileActivity extends Activity
 						throw new IOException("Response from download was null");
 					}
 					
-					AixDeviceProfileResult deviceProfile = AixDeviceProfileParser.parse(response);
+					AfDeviceProfileResult deviceProfile = AfDeviceProfileParser.parse(response);
 					
 					if (  !((deviceProfile != null) &&
 							(deviceProfile.device != null) &&
@@ -715,7 +717,7 @@ public class AixDeviceProfileActivity extends Activity
 					
 					if (deviceProfile.widgetDimensions != null) {
 						Editor editor = mSharedPreferences.edit();
-						for (AixDeviceProfileWidgetDimension dimension : deviceProfile.widgetDimensions)
+						for (AfDeviceProfileWidgetDimension dimension : deviceProfile.widgetDimensions)
 						{
 							mAixSettings.editPixelDimensionsByKey(
 									editor,
@@ -747,7 +749,7 @@ public class AixDeviceProfileActivity extends Activity
 				}
 			} else if (mTaskAction == ACTION_SUBMIT_LANDSCAPE || mTaskAction == ACTION_SUBMIT_PORTRAIT) {
 				// Upload the landscape / portrait data for this device for a given dimension
-				mTaskUser = AixInstallation.id(AixDeviceProfileActivity.this);
+				mTaskUser = AixInstallation.id(AfDeviceProfileActivity.this);
 				mTaskIsLandscape = (mTaskAction == ACTION_SUBMIT_LANDSCAPE);
 				
 				try {
@@ -757,7 +759,7 @@ public class AixDeviceProfileActivity extends Activity
 						throw new IOException("Response from upload was null");
 					}
 					
-					AixDeviceProfileResult deviceProfile = AixDeviceProfileParser.parse(response);
+					AfDeviceProfileResult deviceProfile = AfDeviceProfileParser.parse(response);
 					
 					if (  !((deviceProfile != null) &&
 							(deviceProfile.status != null) &&
@@ -776,7 +778,7 @@ public class AixDeviceProfileActivity extends Activity
 						throw new IOException("AixDeviceProfileActivity.ProfileSyncTask.doInBackground(): Invalid upload response: No widget dimension data");
 					}
 
-					AixDeviceProfileWidgetDimension dimension = deviceProfile.widgetDimensions.get(0);
+					AfDeviceProfileWidgetDimension dimension = deviceProfile.widgetDimensions.get(0);
 					
 					if (	dimension == null ||
 							dimension.isLandscape != mTaskIsLandscape ||
@@ -836,7 +838,7 @@ public class AixDeviceProfileActivity extends Activity
 		
 	}
 	
-	private static class AixDeviceProfileResult {
+	private static class AfDeviceProfileResult {
 		
 		public long timeAdded = -1;
 		
@@ -844,12 +846,12 @@ public class AixDeviceProfileActivity extends Activity
 		public String device = null;
 		public String user = null;
 		
-		public ArrayList<AixDeviceProfileWidgetDimension> widgetDimensions =
-				new ArrayList<AixDeviceProfileWidgetDimension>();
+		public ArrayList<AfDeviceProfileWidgetDimension> widgetDimensions =
+				new ArrayList<AfDeviceProfileWidgetDimension>();
 		
 	}
 	
-	private static class AixDeviceProfileParser {
+	private static class AfDeviceProfileParser {
 		
 		private static final int PARSE_STATUS				= 1<<0;
 		private static final int PARSE_DEVICE				= 1<<1;
@@ -863,12 +865,12 @@ public class AixDeviceProfileActivity extends Activity
 		private static final int PARSE_HEIGHT				= 1<<9;
 		private static final int PARSE_PROMOTED				= 1<<10;
 		
-		private static AixDeviceProfileResult parse(InputStream content) throws XmlPullParserException, IOException, ParseException {
+		private static AfDeviceProfileResult parse(InputStream content) throws XmlPullParserException, IOException, ParseException {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 			
-			AixDeviceProfileResult result = new AixDeviceProfileResult();
-			AixDeviceProfileWidgetDimension widgetDimension = null;
+			AfDeviceProfileResult result = new AfDeviceProfileResult();
+			AfDeviceProfileWidgetDimension widgetDimension = null;
 			
 			XmlPullParser parser = Xml.newPullParser();
 			
@@ -934,7 +936,7 @@ public class AixDeviceProfileActivity extends Activity
 					else if (name.equals("widget-dimension"))
 					{
 						state |= PARSE_WIDGET_DIMENSION;
-						widgetDimension = new AixDeviceProfileWidgetDimension();
+						widgetDimension = new AfDeviceProfileWidgetDimension();
 					}
 					else if (name.equals("time-added")) state |= PARSE_TIME_ADDED;
 					else if (name.equals("landscape")) state |= PARSE_LANDSCAPE;

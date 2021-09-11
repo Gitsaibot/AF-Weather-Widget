@@ -648,7 +648,7 @@ public class AixUtils {
 	
 	public static PendingIntent buildConfigurationIntent(Context context, Uri widgetUri)
 	{
-		Intent editWidgetIntent = new Intent(Intent.ACTION_EDIT, widgetUri, context, AixConfigure.class);
+		Intent editWidgetIntent = new Intent(Intent.ACTION_EDIT, widgetUri, context, AfPreferenceActivity.class);
 		editWidgetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		editWidgetIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		return PendingIntent.getActivity(context, 0, editWidgetIntent, 0);

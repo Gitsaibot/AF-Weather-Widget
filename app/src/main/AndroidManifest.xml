@@ -14,11 +14,12 @@
 			android:theme="@style/AfTheme"
 			android:usesCleartextTraffic="false">
 			
-    	<activity android:name="net.gitsaibot.af.AixConfigure"
+    	<activity android:name=".AfPreferenceActivity"
     	    	android:label="@string/title_configure"
     			android:windowSoftInputMode="stateHidden|adjustPan"
     			android:taskAffinity="net.gitsaibot.af.configure"
-        		android:excludeFromRecents="true">
+        		android:excludeFromRecents="true"
+				android:exported="false">
 
             <intent-filter>
             	<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -26,7 +27,7 @@
 
         </activity>
         
-        <activity android:name="net.gitsaibot.af.AixDeviceProfileActivity"
+        <activity android:name="net.gitsaibot.af.AfDeviceProfileActivity"
 		    	android:label="@string/device_profiles_title"
 		    	android:taskAffinity="net.gitsaibot.af.configure"
 		    	android:windowSoftInputMode="stateHidden|adjustPan"
@@ -41,7 +42,8 @@
         <activity android:name="net.gitsaibot.af.AixIntro"
         		android:label="AF Weather Widget"
         		android:taskAffinity="net.gitsaibot.af.intro"
-        		android:excludeFromRecents="true">
+        		android:excludeFromRecents="true"
+				android:exported="true">
             
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -55,15 +57,17 @@
         
         <service android:name="net.gitsaibot.af.AixService" android:permission="android.permission.BIND_JOB_SERVICE" />
     	
-    	<receiver android:name="net.gitsaibot.af.AixWidget" android:label="@string/widget_name">
+    	<receiver android:name="net.gitsaibot.af.AixWidget" android:label="@string/widget_name"
+			android:exported="false">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
     		</intent-filter>
     		<meta-data android:name="android.appwidget.provider"
-    				android:resource="@xml/aix_widget_provider" />
+    				android:resource="@xml/af_widget_provider" />
     	</receiver>
     	
-    	<receiver android:name="net.gitsaibot.af.AixServiceReceiver" android:enabled="true">
+    	<receiver android:name="net.gitsaibot.af.AixServiceReceiver" android:enabled="true"
+			android:exported="false">
 			<intent-filter>
 				<action android:name="net.gitsaibot.af.DELETE_WIDGET" />
 				<action android:name="net.gitsaibot.af.UPDATE_ALL" />

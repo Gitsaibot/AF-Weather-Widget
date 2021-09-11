@@ -18,10 +18,10 @@
 	    	aix:borderColor="#fff" />
 	
 	<View android:id="@+id/divider"
-			android:background="#ff313431"
-			android:layout_width="1dip"
+			android:background="#80706F6F"
+			android:layout_width="1dp"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="12dip"
+			android:layout_marginStart="12dip"
 			android:layout_marginTop="5dip"
 			android:layout_marginBottom="5dip" />
 	
