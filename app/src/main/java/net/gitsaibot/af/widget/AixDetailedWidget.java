@@ -1073,15 +1073,10 @@ public class AixDetailedWidget {
 							weatherIcons = WEATHER_ICONS_POLAR;
 						} else if (smd.sunSet == AixSunMoonData.NEVER_SET) {
 							weatherIcons = WEATHER_ICONS_DAY;
-							Log.d(TAG, "DAY");
 						}
 					}
-					Log.d(TAG, "SunRise" + smd.sunRise);
-					Log.d(TAG, "TimePos" + iconTimePos);
-					Log.d(TAG, "SunSet" + smd.sunSet);
 					if (smd.sunRise < iconTimePos && smd.sunSet > iconTimePos) {
 						weatherIcons = WEATHER_ICONS_DAY;
-						Log.d(TAG, "DAY1");
 					}
 				}
 				
