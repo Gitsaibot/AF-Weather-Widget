@@ -1,0 +1,3 @@
+- Rework preferences
+- Support API 31
+- Small bugfixes
