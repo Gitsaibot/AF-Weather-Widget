@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/system_settings_title"
+    android:summary="@string/system_settings_summary">
+
+        <ListPreference
+            android:key="@string/preference_provider_string"
+            android:title="@string/provider_title"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/provider_readable"
+            android:entryValues="@array/provider_code"
+            android:defaultValue="1" />
+
+        <CheckBoxPreference
+            android:key="@string/preference_awake_only_bool"
+            android:title="@string/awake_only_title"
+            android:layout="@layout/preference_title_checkbox"
+            android:persistent="true"
+            android:summaryOn="@string/awake_only_summary_on"
+            android:summaryOff="@string/awake_only_summary_off" />
+
+        <CheckBoxPreference
+            android:key="@string/preference_wifi_only_bool"
+            android:title="@string/wifi_only_title"
+            android:layout="@layout/preference_title_checkbox"
+            android:persistent="true"
+            android:summaryOn="@string/wifi_only_summary_on"
+            android:summaryOff="@string/wifi_only_summary_off" />
+
+        <ListPreference
+            android:key="@string/preference_update_rate_string"
+            android:title="@string/update_rate_title"
+            android:layout="@layout/preference_title"
+            android:summary="@string/update_rate_summary"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/preference_update_rates_readable"
+            android:entryValues="@array/preference_update_rates_code"
+            android:defaultValue="0" />
+
+</PreferenceScreen>

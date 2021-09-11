@@ -409,7 +409,7 @@ public class ColorView extends View {
 	
 	public interface OnValueChangeListener {
 		
-		public void updateValue(float[] value, Object source);
+		void updateValue(float[] value, Object source);
 		
 	}
 	

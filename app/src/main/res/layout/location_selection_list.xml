@@ -5,14 +5,14 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical">
 	
-	<ListView android:id="@+id/android:list"
+	<ListView android:id="@android:id/list"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
 			android:layout_weight="1"
 			android:drawSelectorOnTop="false"
 			android:scrollbarAlwaysDrawVerticalTrack="true" />
 	
-	<LinearLayout android:id="@+id/android:empty"
+	<LinearLayout android:id="@android:id/empty"
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="0dip"
@@ -54,6 +54,5 @@
         		android:layout_weight="1" />
 	
 	</LinearLayout>
-
 </LinearLayout>
 

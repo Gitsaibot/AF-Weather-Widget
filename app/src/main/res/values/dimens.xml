@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="alert_def_padding">18dp</dimen>
     <dimen name="tiny_portrait_height_min">40dp</dimen>
     <dimen name="tiny_landscape_height_min">40dp</dimen>
     <dimen name="tiny_portrait_height_max">98dp</dimen>

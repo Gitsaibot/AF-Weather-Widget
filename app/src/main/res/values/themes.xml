@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AfTheme" parent="@android:style/Theme">
+	<style name="AfTheme" parent="Theme.AppCompat">
 		<item name="colorPreferenceStyle">@style/ColorPreference</item>
+		<item name="preferenceTheme">@style/Theme.AppCompat</item>
+		<item name="preferenceFragmentCompatStyle">@style/AppSettings.Fragment.Material</item>
 	</style>
-	
+
+	<style name="AppSettings.Category.Material" parent="Preference.Category.Material">
+		<item name="allowDividerAbove">false</item>
+		<item name="allowDividerBelow">false</item>
+		<item name="iconSpaceReserved">false</item>
+	</style>
+
+	<style name="AppSettings.Fragment.Material" parent="PreferenceFragment.Material">
+		<item name="allowDividerAfterLastItem">false</item>
+	</style>
+
 </resources>

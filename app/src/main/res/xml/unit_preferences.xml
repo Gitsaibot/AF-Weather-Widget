@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/unit_settings_title"
+    android:summary="@string/unit_settings_summary">
+
+        <ListPreference
+            android:key="@string/temperature_units_string"
+            android:title="@string/temperature_units_title"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/temperature_units_readable"
+            android:entryValues="@array/temperature_units_code"
+            android:defaultValue="1" />
+
+        <ListPreference
+            android:key="@string/precipitation_units_string"
+            android:title="@string/precipitation_units_title"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/precipitation_units_readable"
+            android:entryValues="@array/precipitation_units_code"
+            android:defaultValue="1" />
+
+        <EditTextPreference
+            android:key="@string/precipitation_scaling_string"
+            android:title="@string/precipitation_scaling_title_mm"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            android:defaultValue="@string/precipitation_scaling_mm_default"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"
+            android:dialogLayout="@layout/edit_text_preference"/>
+
+</PreferenceScreen>

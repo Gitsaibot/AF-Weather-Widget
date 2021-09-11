@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:key="unit_preference"
+        android:summary="@string/unit_settings_summary"
+        android:title="@string/unit_settings_title"
+        android:icon="@drawable/ic_outline_straighten"
+        android:layout="@layout/preference_title"
+        app:allowDividerBelow="false"
+        android:fragment="net.gitsaibot.af.AfUnitPreferenceFragment"/>
+
+    <Preference
+        android:key="ui_preference"
+        android:summary="@string/ui_settings_summary"
+        android:title="@string/ui_settings_title"
+        android:icon="@drawable/ic_outline_imagesearch_roller"
+        android:layout="@layout/preference_title"
+        android:fragment="net.gitsaibot.af.AfUiPreferenceFragment"/>
+
+    <Preference
+        android:key="update_preference"
+        android:summary="@string/system_settings_summary"
+        android:title="@string/system_settings_title"
+        android:icon="@drawable/ic_outline_update"
+        app:allowDividerBelow="false"
+        android:layout="@layout/preference_title"
+        android:fragment="net.gitsaibot.af.AfUpdatePreferenceFragment"/>
+
+    <Preference
+        android:key="@string/device_profiles_key"
+        android:title="@string/device_profiles_title"
+        android:icon="@drawable/ic_outline_fit_screen"
+        android:layout="@layout/preference_title"
+        android:summary="@string/device_profiles_summary"/>
+
+    <Preference
+        android:title="@string/location_settings_title"
+        android:icon="@drawable/ic_outline_location_on"
+        android:layout="@layout/preference_title"
+        android:key="@string/location_settings_key"/>
+
+</PreferenceScreen>
