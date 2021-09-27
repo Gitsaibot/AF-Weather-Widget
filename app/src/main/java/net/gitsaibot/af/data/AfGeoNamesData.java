@@ -3,11 +3,11 @@ package net.gitsaibot.af.data;
 import java.io.InputStream;
 import java.util.Locale;
 
-import net.gitsaibot.af.AixSettings;
-import net.gitsaibot.af.AixUpdate;
-import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.AfSettings;
+import net.gitsaibot.af.AfUpdate;
+import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
-import net.gitsaibot.af.util.AixLocationInfo;
+import net.gitsaibot.af.util.AfLocationInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,35 +17,35 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-public class AixGeoNamesData implements AixDataSource {
+public class AfGeoNamesData implements AfDataSource {
 
 	public final static String TAG = "AixGeoNamesData";
 	
 	private Context mContext;
-	private AixSettings mAixSettings;
-	private AixUpdate mAixUpdate;
+	private AfSettings mAfSettings;
+	private AfUpdate mAfUpdate;
 	
-	private AixGeoNamesData(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	private AfGeoNamesData(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
 		mContext = context;
-		mAixUpdate = aixUpdate;
-		mAixSettings = aixSettings;
+		mAfUpdate = afUpdate;
+		mAfSettings = afSettings;
 	}
 	
-	public static AixGeoNamesData build(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	public static AfGeoNamesData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
-		return new AixGeoNamesData(context, aixUpdate, aixSettings);
+		return new AfGeoNamesData(context, afUpdate, afSettings);
 	}
 	
-	public void update(AixLocationInfo aixLocationInfo, long currentUtcTime) throws AixDataUpdateException
+	public void update(AfLocationInfo afLocationInfo, long currentUtcTime) throws AixDataUpdateException
 	{
-		String timeZone = aixLocationInfo.getTimeZone();
-		String countryCode = mAixSettings.getLocationCountryCode(aixLocationInfo.getId());
+		String timeZone = afLocationInfo.getTimeZone();
+		String countryCode = mAfSettings.getLocationCountryCode(afLocationInfo.getId());
 		
-		mAixUpdate.updateWidgetRemoteViews("Getting timezone data...", false);
+		mAfUpdate.updateWidgetRemoteViews("Getting timezone data...", false);
 		
-		Double latitude = aixLocationInfo.getLatitude();
-		Double longitude = aixLocationInfo.getLongitude();
+		Double latitude = afLocationInfo.getLatitude();
+		Double longitude = afLocationInfo.getLongitude();
 		
 		if (latitude == null || longitude == null)
 		{
@@ -67,7 +67,7 @@ public class AixGeoNamesData implements AixDataSource {
 			
 			try
 			{
-				HttpClient httpClient = AixUtils.setupHttpClient(mContext);
+				HttpClient httpClient = AfUtils.setupHttpClient(mContext);
 				HttpGet httpGet = new HttpGet(url);
 				HttpResponse response = httpClient.execute(httpGet);
 
@@ -78,7 +78,7 @@ public class AixGeoNamesData implements AixDataSource {
 
 				InputStream content = response.getEntity().getContent();
 				
-				String input = AixUtils.convertStreamToString(content);
+				String input = AfUtils.convertStreamToString(content);
 				
 				JSONObject jObject = new JSONObject(input);
 				
@@ -87,10 +87,10 @@ public class AixGeoNamesData implements AixDataSource {
 				
 				Log.d(TAG, "Parsed TimeZone='" + timeZone + "' CountryCode='" + countryCode + "'");
 				
-				mAixSettings.setLocationCountryCode(aixLocationInfo.getId(), countryCode);
+				mAfSettings.setLocationCountryCode(afLocationInfo.getId(), countryCode);
 				
-				aixLocationInfo.setTimeZone(timeZone);
-				aixLocationInfo.commit(mContext);
+				afLocationInfo.setTimeZone(timeZone);
+				afLocationInfo.commit(mContext);
 			}
 			catch (Exception e)
 			{

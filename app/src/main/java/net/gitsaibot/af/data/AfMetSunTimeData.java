@@ -12,14 +12,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import net.gitsaibot.af.AixProvider.AixLocations;
-import net.gitsaibot.af.AixProvider.AixSunMoonData;
-import net.gitsaibot.af.AixProvider.AixSunMoonDataColumns;
-import net.gitsaibot.af.AixSettings;
-import net.gitsaibot.af.AixUpdate;
-import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.AfProvider.AfLocations;
+import net.gitsaibot.af.AfProvider.AfSunMoonData;
+import net.gitsaibot.af.AfProvider.AfSunMoonDataColumns;
+import net.gitsaibot.af.AfSettings;
+import net.gitsaibot.af.AfUpdate;
+import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
-import net.gitsaibot.af.util.AixLocationInfo;
+import net.gitsaibot.af.util.AfLocationInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -35,7 +35,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.Xml;
 
-public class AixMetSunTimeData implements AixDataSource {
+public class AfMetSunTimeData implements AfDataSource {
 
 	public final static String TAG = "AixMetSunTimeData";
 
@@ -44,20 +44,20 @@ public class AixMetSunTimeData implements AixDataSource {
 
 	@SuppressWarnings("serial")
 	private Map<String, Integer> moonPhaseMap = new HashMap<String, Integer>() {{
-		put("new moon", AixSunMoonData.NEW_MOON);
-		put("waxing crescent", AixSunMoonData.WAXING_CRESCENT);
-		put("first quarter", AixSunMoonData.FIRST_QUARTER);
-		put("waxing gibbous", AixSunMoonData.WAXING_GIBBOUS);
-		put("full moon", AixSunMoonData.FULL_MOON);
-		put("waning gibbous", AixSunMoonData.WANING_GIBBOUS);
-		put("third quarter", AixSunMoonData.LAST_QUARTER);
-		put("waning crescent", AixSunMoonData.WANING_CRESCENT);
+		put("new moon", AfSunMoonData.NEW_MOON);
+		put("waxing crescent", AfSunMoonData.WAXING_CRESCENT);
+		put("first quarter", AfSunMoonData.FIRST_QUARTER);
+		put("waxing gibbous", AfSunMoonData.WAXING_GIBBOUS);
+		put("full moon", AfSunMoonData.FULL_MOON);
+		put("waning gibbous", AfSunMoonData.WANING_GIBBOUS);
+		put("third quarter", AfSunMoonData.LAST_QUARTER);
+		put("waning crescent", AfSunMoonData.WANING_CRESCENT);
 	}};
 
 	private Context mContext;
 
 	//private AixSettings mAixSettings;
-	private AixUpdate mAixUpdate;
+	private AfUpdate mAfUpdate;
 
 	private SimpleDateFormat mDateFormat;
 	private SimpleDateFormat mTimeFormat;
@@ -67,10 +67,10 @@ public class AixMetSunTimeData implements AixDataSource {
 	private long mStartDate;
 	private long mEndDate;
 	
-	private AixMetSunTimeData(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	private AfMetSunTimeData(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
 		mContext = context;
-		mAixUpdate = aixUpdate;
+		mAfUpdate = afUpdate;
 		//mAixSettings = aixSettings;
 		
 		mUtcTimeZone = TimeZone.getTimeZone("UTC");
@@ -82,9 +82,9 @@ public class AixMetSunTimeData implements AixDataSource {
 		mTimeFormat.setTimeZone(mUtcTimeZone);
 	}
 	
-	public static AixMetSunTimeData build(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	public static AfMetSunTimeData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
-		return new AixMetSunTimeData(context, aixUpdate, aixSettings);
+		return new AfMetSunTimeData(context, afUpdate, afSettings);
 	}
 	
 	private int getNumExistingDataSets(long locationId)
@@ -94,9 +94,9 @@ public class AixMetSunTimeData implements AixDataSource {
 		Cursor cursor = null;
 		
 		try {
-			final Uri uri = AixLocations.CONTENT_URI.buildUpon()
+			final Uri uri = AfLocations.CONTENT_URI.buildUpon()
 					.appendPath(Long.toString(locationId))
-					.appendPath(AixLocations.TWIG_SUNMOONDATA)
+					.appendPath(AfLocations.TWIG_SUNMOONDATA)
 					.appendQueryParameter("start", Long.toString(mStartDate))
 					.appendQueryParameter("end", Long.toString(mEndDate)).build();
 
@@ -133,26 +133,26 @@ public class AixMetSunTimeData implements AixDataSource {
 			case XmlPullParser.END_TAG:
 				if (parser.getName().equalsIgnoreCase("time") && contentValues != null)
 				{
-					if (!contentValues.containsKey(AixSunMoonDataColumns.SUN_RISE))
+					if (!contentValues.containsKey(AfSunMoonDataColumns.SUN_RISE))
 					{
-						contentValues.put(AixSunMoonDataColumns.SUN_RISE, solarnoonElevationValue >= 0.0f ? 0 : AixSunMoonData.NEVER_RISE);
+						contentValues.put(AfSunMoonDataColumns.SUN_RISE, solarnoonElevationValue >= 0.0f ? 0 : AfSunMoonData.NEVER_RISE);
 					}
 
-					if (!contentValues.containsKey(AixSunMoonDataColumns.SUN_SET))
+					if (!contentValues.containsKey(AfSunMoonDataColumns.SUN_SET))
 					{
-						contentValues.put(AixSunMoonDataColumns.SUN_SET, AixSunMoonData.NEVER_SET);
+						contentValues.put(AfSunMoonDataColumns.SUN_SET, AfSunMoonData.NEVER_SET);
 					}
 
-					if (!contentValues.containsKey(AixSunMoonDataColumns.MOON_RISE))
+					if (!contentValues.containsKey(AfSunMoonDataColumns.MOON_RISE))
 					{
 						contentValues.put(
-							AixSunMoonDataColumns.MOON_RISE,
-							(moonElevationAtStartOfDay != null && moonElevationAtStartOfDay >= 0.0f) ? 0 : AixSunMoonData.NEVER_RISE);
+							AfSunMoonDataColumns.MOON_RISE,
+							(moonElevationAtStartOfDay != null && moonElevationAtStartOfDay >= 0.0f) ? 0 : AfSunMoonData.NEVER_RISE);
 					}
 
-					if (!contentValues.containsKey(AixSunMoonDataColumns.MOON_SET))
+					if (!contentValues.containsKey(AfSunMoonDataColumns.MOON_SET))
 					{
-						contentValues.put(AixSunMoonDataColumns.MOON_SET, AixSunMoonData.NEVER_SET);
+						contentValues.put(AfSunMoonDataColumns.MOON_SET, AfSunMoonData.NEVER_SET);
 					}
 
 					contentValuesList.add(contentValues);
@@ -169,9 +169,9 @@ public class AixMetSunTimeData implements AixDataSource {
 						long date = mDateFormat.parse(dateString).getTime();
 
 						contentValues = new ContentValues();
-						contentValues.put(AixSunMoonDataColumns.LOCATION, locationId);
-						contentValues.put(AixSunMoonDataColumns.TIME_ADDED, currentUtcTime);
-						contentValues.put(AixSunMoonDataColumns.DATE, date);
+						contentValues.put(AfSunMoonDataColumns.LOCATION, locationId);
+						contentValues.put(AfSunMoonDataColumns.TIME_ADDED, currentUtcTime);
+						contentValues.put(AfSunMoonDataColumns.DATE, date);
 					}
 				}
 				else if (contentValues != null)
@@ -184,11 +184,11 @@ public class AixMetSunTimeData implements AixDataSource {
 
 						if (parser.getName().equalsIgnoreCase("sunrise"))
 						{
-							contentValues.put(AixSunMoonDataColumns.SUN_RISE, timeValue);
+							contentValues.put(AfSunMoonDataColumns.SUN_RISE, timeValue);
 						}
 						else if (parser.getName().equalsIgnoreCase("sunset"))
 						{
-							contentValues.put(AixSunMoonDataColumns.SUN_SET, timeValue);
+							contentValues.put(AfSunMoonDataColumns.SUN_SET, timeValue);
 						}
 						else if (parser.getName().equalsIgnoreCase("solarnoon"))
 						{
@@ -197,11 +197,11 @@ public class AixMetSunTimeData implements AixDataSource {
 						}
 						else if (parser.getName().equalsIgnoreCase("moonrise"))
 						{
-							contentValues.put(AixSunMoonDataColumns.MOON_RISE, timeValue);
+							contentValues.put(AfSunMoonDataColumns.MOON_RISE, timeValue);
 						}
 						else if (parser.getName().equalsIgnoreCase("moonset"))
 						{
-							contentValues.put(AixSunMoonDataColumns.MOON_SET, timeValue);
+							contentValues.put(AfSunMoonDataColumns.MOON_SET, timeValue);
 						}
 						else if (parser.getName().equalsIgnoreCase("moonposition"))
 						{
@@ -212,7 +212,7 @@ public class AixMetSunTimeData implements AixDataSource {
 									parser.getAttributeValue(null, "phase"));
 
 							contentValues.put(
-									AixSunMoonDataColumns.MOON_PHASE,
+									AfSunMoonDataColumns.MOON_PHASE,
 									parseMoonPhaseValue(moonphaseValue, parser.getLineNumber()));
 						}
 					}
@@ -228,31 +228,31 @@ public class AixMetSunTimeData implements AixDataSource {
 	private int parseMoonPhaseValue(float value, int parserLineNumber) throws ParseException
 	{
 		if (value >= 0.0 && value < 0.5) {
-			return AixSunMoonData.NEW_MOON;
+			return AfSunMoonData.NEW_MOON;
 		}
 		else if (value >= 0.5 && value < 20.0) {
-			return AixSunMoonData.WAXING_CRESCENT;
+			return AfSunMoonData.WAXING_CRESCENT;
 		}
 		else if (value >= 20.0 && value < 30.0) {
-			return AixSunMoonData.FIRST_QUARTER;
+			return AfSunMoonData.FIRST_QUARTER;
 		}
 		else if (value >= 30.0 && value < 49.5) {
-			return AixSunMoonData.WAXING_GIBBOUS;
+			return AfSunMoonData.WAXING_GIBBOUS;
 		}
 		else if (value >= 49.5 && value < 50.5) {
-			return AixSunMoonData.FULL_MOON;
+			return AfSunMoonData.FULL_MOON;
 		}
 		else if (value >= 50.5 && value < 70.0) {
-			return AixSunMoonData.WANING_GIBBOUS;
+			return AfSunMoonData.WANING_GIBBOUS;
 		}
 		else if (value >= 70.0 && value < 80.0) {
-			return AixSunMoonData.LAST_QUARTER;
+			return AfSunMoonData.LAST_QUARTER;
 		}
 		else if (value >= 80.0 && value < 99.5) {
-			return AixSunMoonData.WANING_CRESCENT;
+			return AfSunMoonData.WANING_CRESCENT;
 		}
 		else if (value > 99.5 && value <= 100.0) {
-			return AixSunMoonData.NEW_MOON;
+			return AfSunMoonData.NEW_MOON;
 		}
 		else {
 			throw new ParseException(
@@ -266,7 +266,7 @@ public class AixMetSunTimeData implements AixDataSource {
 		Calendar calendar = Calendar.getInstance(mUtcTimeZone);
 		
 		calendar.setTimeInMillis(time);
-		AixUtils.truncateDay(calendar);
+		AfUtils.truncateDay(calendar);
 		
 		calendar.add(Calendar.DAY_OF_YEAR, -1);
 		mStartDate = calendar.getTimeInMillis();
@@ -275,14 +275,14 @@ public class AixMetSunTimeData implements AixDataSource {
 		mEndDate = calendar.getTimeInMillis();
 	}
 	
-	public void update(AixLocationInfo aixLocationInfo, long currentUtcTime)
+	public void update(AfLocationInfo afLocationInfo, long currentUtcTime)
 			throws AixDataUpdateException
 	{
 		try {
-			mAixUpdate.updateWidgetRemoteViews("Getting sun time data...", false);
+			mAfUpdate.updateWidgetRemoteViews("Getting sun time data...", false);
 			
-			Double latitude = aixLocationInfo.getLatitude();
-			Double longitude = aixLocationInfo.getLongitude();
+			Double latitude = afLocationInfo.getLatitude();
+			Double longitude = afLocationInfo.getLongitude();
 			
 			if (latitude == null || longitude == null)
 			{
@@ -291,10 +291,10 @@ public class AixMetSunTimeData implements AixDataSource {
 			
 			setupDateParameters(currentUtcTime);
 			
-			int numExistingDataSets = getNumExistingDataSets(aixLocationInfo.getId());
+			int numExistingDataSets = getNumExistingDataSets(afLocationInfo.getId());
 			
 			Log.d(TAG, String.format("update(): For location %s (%d), there are %d existing datasets.",
-					aixLocationInfo.getTitle(), aixLocationInfo.getId(), numExistingDataSets));
+					afLocationInfo.getTitle(), afLocationInfo.getId(), numExistingDataSets));
 			
 			if (numExistingDataSets < NUM_DAYS_MINIMUM)
 			{
@@ -305,8 +305,8 @@ public class AixMetSunTimeData implements AixDataSource {
 						mDateFormat.format(mStartDate),
 						NUM_DAYS_REQUEST);
 
-				HttpClient httpClient = AixUtils.setupHttpClient(mContext);
-				HttpGet httpGet = AixUtils.buildGzipHttpGet(url);
+				HttpClient httpClient = AfUtils.setupHttpClient(mContext);
+				HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
 				HttpResponse httpResponse = httpClient.execute(httpGet);
 
 				if (httpResponse.getStatusLine().getStatusCode() == 429)
@@ -314,10 +314,10 @@ public class AixMetSunTimeData implements AixDataSource {
 					throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
 				}
 
-				InputStream content = AixUtils.getGzipInputStream(httpResponse);
+				InputStream content = AfUtils.getGzipInputStream(httpResponse);
 
 				List<ContentValues> contentValuesList = parseData(
-						content, aixLocationInfo.getId(), currentUtcTime, NUM_DAYS_REQUEST);
+						content, afLocationInfo.getId(), currentUtcTime, NUM_DAYS_REQUEST);
 
 				if (contentValuesList != null && contentValuesList.size() > 0)
 				{
@@ -325,15 +325,15 @@ public class AixMetSunTimeData implements AixDataSource {
 				}
 
 				Log.d(TAG, String.format("update(): %d datasets were added to location %s (%d).",
-						contentValuesList.size(), aixLocationInfo.getTitle(), aixLocationInfo.getId()));
+						contentValuesList.size(), afLocationInfo.getTitle(), afLocationInfo.getId()));
 			}
 		}
 		catch (Exception e)
 		{
-			if (aixLocationInfo != null)
+			if (afLocationInfo != null)
 			{
 				Log.d(TAG, String.format("update(): " + e.getMessage() + " thrown for location %s (%d).",
-						aixLocationInfo.getTitle(), aixLocationInfo.getId()));
+						afLocationInfo.getTitle(), afLocationInfo.getId()));
 			}
 			throw new AixDataUpdateException();
 		}
@@ -345,7 +345,7 @@ public class AixMetSunTimeData implements AixDataSource {
 		
 		for (ContentValues contentValues : contentValuesArray)
 		{
-			contentResolver.insert(AixSunMoonData.CONTENT_URI, contentValues);
+			contentResolver.insert(AfSunMoonData.CONTENT_URI, contentValues);
 		}
 	}
 }

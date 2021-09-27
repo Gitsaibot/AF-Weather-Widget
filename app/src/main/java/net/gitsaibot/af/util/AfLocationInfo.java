@@ -2,8 +2,8 @@ package net.gitsaibot.af.util;
 
 import java.util.TimeZone;
 
-import net.gitsaibot.af.AixProvider.AixLocations;
-import net.gitsaibot.af.AixProvider.AixLocationsColumns;
+import net.gitsaibot.af.AfProvider.AfLocations;
+import net.gitsaibot.af.AfProvider.AfLocationsColumns;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class AixLocationInfo {
+public class AfLocationInfo {
 
 	private String mTitle = null;
 	private String mTitleDetailed = null;
@@ -27,9 +27,9 @@ public class AixLocationInfo {
 	
 	private Uri mLocationUri = null;
 	
-	public AixLocationInfo() { }
+	public AfLocationInfo() { }
 	
-	public static AixLocationInfo build(Context context, Uri locationUri)
+	public static AfLocationInfo build(Context context, Uri locationUri)
 			throws Exception
 	{
 		Cursor cursor = null;
@@ -40,7 +40,7 @@ public class AixLocationInfo {
 			
 			if (cursor != null && cursor.moveToFirst())
 			{
-				return AixLocationInfo.buildFromCursor(cursor);
+				return AfLocationInfo.buildFromCursor(cursor);
 			}
 			else
 			{
@@ -62,132 +62,132 @@ public class AixLocationInfo {
 		
 		if (mTitle != null)
 		{
-			values.put(AixLocationsColumns.TITLE, mTitle);
+			values.put(AfLocationsColumns.TITLE, mTitle);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.TITLE);
+			values.putNull(AfLocationsColumns.TITLE);
 		}
 		
 		if (mTitleDetailed != null)
 		{
-			values.put(AixLocationsColumns.TITLE_DETAILED, mTitleDetailed);
+			values.put(AfLocationsColumns.TITLE_DETAILED, mTitleDetailed);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.TITLE_DETAILED);
+			values.putNull(AfLocationsColumns.TITLE_DETAILED);
 		}
 		
 		if (mTimeZone != null)
 		{
-			values.put(AixLocationsColumns.TIME_ZONE, mTimeZone);
+			values.put(AfLocationsColumns.TIME_ZONE, mTimeZone);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.TIME_ZONE);
+			values.putNull(AfLocationsColumns.TIME_ZONE);
 		}
 		
 		if (mType != null)
 		{
-			values.put(AixLocationsColumns.TYPE, mType);
+			values.put(AfLocationsColumns.TYPE, mType);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.TYPE);
+			values.putNull(AfLocationsColumns.TYPE);
 		}
 		
 		if (mTimeOfLastFix != null)
 		{
-			values.put(AixLocationsColumns.TIME_OF_LAST_FIX, mTimeOfLastFix);
+			values.put(AfLocationsColumns.TIME_OF_LAST_FIX, mTimeOfLastFix);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.TIME_OF_LAST_FIX);
+			values.putNull(AfLocationsColumns.TIME_OF_LAST_FIX);
 		}
 		
 		if (mLatitude != null)
 		{
-			values.put(AixLocationsColumns.LATITUDE, mLatitude);
+			values.put(AfLocationsColumns.LATITUDE, mLatitude);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.LATITUDE);
+			values.putNull(AfLocationsColumns.LATITUDE);
 		}
 		
 		if (mLongitude != null)
 		{
-			values.put(AixLocationsColumns.LONGITUDE, mLongitude);
+			values.put(AfLocationsColumns.LONGITUDE, mLongitude);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.LONGITUDE);
+			values.putNull(AfLocationsColumns.LONGITUDE);
 		}
 		
 		if (mLastForecastUpdate != null)
 		{
-			values.put(AixLocationsColumns.LAST_FORECAST_UPDATE, mLastForecastUpdate);
+			values.put(AfLocationsColumns.LAST_FORECAST_UPDATE, mLastForecastUpdate);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.LAST_FORECAST_UPDATE);
+			values.putNull(AfLocationsColumns.LAST_FORECAST_UPDATE);
 		}
 		
 		if (mForecastValidTo != null)
 		{
-			values.put(AixLocationsColumns.FORECAST_VALID_TO, mForecastValidTo);
+			values.put(AfLocationsColumns.FORECAST_VALID_TO, mForecastValidTo);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.FORECAST_VALID_TO);
+			values.putNull(AfLocationsColumns.FORECAST_VALID_TO);
 		}
 		
 		if (mNextForecastUpdate != null)
 		{
-			values.put(AixLocationsColumns.NEXT_FORECAST_UPDATE, mNextForecastUpdate);
+			values.put(AfLocationsColumns.NEXT_FORECAST_UPDATE, mNextForecastUpdate);
 		}
 		else
 		{
-			values.putNull(AixLocationsColumns.NEXT_FORECAST_UPDATE);
+			values.putNull(AfLocationsColumns.NEXT_FORECAST_UPDATE);
 		}
 		
 		return values;
 	}
 	
-	public static AixLocationInfo buildFromCursor(Cursor c) {
-		AixLocationInfo locationInfo = new AixLocationInfo();
+	public static AfLocationInfo buildFromCursor(Cursor c) {
+		AfLocationInfo locationInfo = new AfLocationInfo();
 		
 		int columnIndex = c.getColumnIndexOrThrow(BaseColumns._ID);
 		long locationId = c.getLong(columnIndex);
-		locationInfo.mLocationUri = ContentUris.withAppendedId(AixLocations.CONTENT_URI, locationId);
+		locationInfo.mLocationUri = ContentUris.withAppendedId(AfLocations.CONTENT_URI, locationId);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.TITLE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.TITLE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mTitle = c.getString(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.TITLE_DETAILED);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.TITLE_DETAILED);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mTitleDetailed = c.getString(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.TIME_ZONE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.TIME_ZONE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mTimeZone = c.getString(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.TYPE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.TYPE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mType = c.getInt(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.TIME_OF_LAST_FIX);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.TIME_OF_LAST_FIX);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mTimeOfLastFix = c.getLong(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.LATITUDE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.LATITUDE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mLatitude = c.getDouble(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.LONGITUDE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.LONGITUDE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mLongitude = c.getDouble(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.LAST_FORECAST_UPDATE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.LAST_FORECAST_UPDATE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mLastForecastUpdate = c.getLong(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.FORECAST_VALID_TO);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.FORECAST_VALID_TO);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mForecastValidTo = c.getLong(columnIndex);
 		
-		columnIndex = c.getColumnIndex(AixLocationsColumns.NEXT_FORECAST_UPDATE);
+		columnIndex = c.getColumnIndex(AfLocationsColumns.NEXT_FORECAST_UPDATE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) locationInfo.mNextForecastUpdate = c.getLong(columnIndex);
 		
 		return locationInfo;
@@ -215,7 +215,7 @@ public class AixLocationInfo {
 		}
 		else
 		{
-			mLocationUri = resolver.insert(AixLocations.CONTENT_URI, values);
+			mLocationUri = resolver.insert(AfLocations.CONTENT_URI, values);
 		}
 		
 		return mLocationUri;

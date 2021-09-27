@@ -1,18 +1,18 @@
 package net.gitsaibot.af;
 
-import static net.gitsaibot.af.AixSettings.CALIBRATION_STATE_FINISHED;
-import static net.gitsaibot.af.AixSettings.CALIBRATION_STATE_VERTICAL;
-import static net.gitsaibot.af.AixSettings.LANDSCAPE_HEIGHT;
-import static net.gitsaibot.af.AixSettings.LANDSCAPE_WIDTH;
-import static net.gitsaibot.af.AixSettings.PORTRAIT_HEIGHT;
-import static net.gitsaibot.af.AixSettings.PORTRAIT_WIDTH;
+import static net.gitsaibot.af.AfSettings.CALIBRATION_STATE_FINISHED;
+import static net.gitsaibot.af.AfSettings.CALIBRATION_STATE_VERTICAL;
+import static net.gitsaibot.af.AfSettings.LANDSCAPE_HEIGHT;
+import static net.gitsaibot.af.AfSettings.LANDSCAPE_WIDTH;
+import static net.gitsaibot.af.AfSettings.PORTRAIT_HEIGHT;
+import static net.gitsaibot.af.AfSettings.PORTRAIT_WIDTH;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.gitsaibot.af.AixProvider.AixWidgets;
-import net.gitsaibot.af.util.AixWidgetInfo;
+import net.gitsaibot.af.AfProvider.AfWidgets;
+import net.gitsaibot.af.util.AfWidgetInfo;
 import net.gitsaibot.af.util.Pair;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -33,7 +33,7 @@ import androidx.core.app.JobIntentService;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class AixService extends JobIntentService {
+public class AfService extends JobIntentService {
 	
 	private static final String TAG = "AixService";
 	
@@ -83,7 +83,7 @@ public class AixService extends JobIntentService {
 	}};
 
 	public static void enqueueWork(Context context, Intent work) {
-		enqueueWork(context, AixService.class, JOB_ID, work);
+		enqueueWork(context, AfService.class, JOB_ID, work);
 	}
 
 	@Override
@@ -104,17 +104,17 @@ public class AixService extends JobIntentService {
 		}
 		else if (action.equals(ACTION_UPDATE_ALL_PROVIDER_CHANGE))
 		{
-			AixUtils.clearProviderData(getContentResolver());
+			AfUtils.clearProviderData(getContentResolver());
 			updateAllWidgets(widgetUri);
 		}
 		else if (action.equals(ACTION_UPDATE_ALL_PROVIDER_AUTO))
 		{
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 			Editor editor = sharedPreferences.edit();
-			editor.putInt(getString(R.string.provider_string), AixUtils.PROVIDER_AUTO);
+			editor.putInt(getString(R.string.provider_string), AfUtils.PROVIDER_AUTO);
 			editor.commit();
 			
-			AixUtils.clearProviderData(getContentResolver());
+			AfUtils.clearProviderData(getContentResolver());
 			
 			updateAllWidgets(widgetUri);
 		}
@@ -131,7 +131,7 @@ public class AixService extends JobIntentService {
 		else if (action.equals(ACTION_DELETE_WIDGET))
 		{
 			int appWidgetId = (int)ContentUris.parseId(widgetUri);
-			AixUtils.deleteWidget(this, appWidgetId);
+			AfUtils.deleteWidget(this, appWidgetId);
 		}
 		else {
 			Log.d(TAG, "onHandleIntent() called with unhandled action (" + action + ")");
@@ -142,31 +142,31 @@ public class AixService extends JobIntentService {
 	{
 		int appWidgetId = (int)ContentUris.parseId(widgetUri);
 		
-		AixWidgetInfo widgetInfo;
+		AfWidgetInfo widgetInfo;
 		try {
-			widgetInfo = AixWidgetInfo.build(this, widgetUri);
+			widgetInfo = AfWidgetInfo.build(this, widgetUri);
 			widgetInfo.loadSettings(this);
 		} catch (Exception e) {
-			PendingIntent pendingIntent = AixUtils.buildConfigurationIntent(this, widgetUri);
-			AixUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to get widget information", true, pendingIntent);
+			PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetUri);
+			AfUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to get widget information", true, pendingIntent);
 			Log.d(TAG, "onHandleIntent() failed: Could not retrieve widget information (" + e.getMessage() + ")");
 			return;
 		}
 		
-		AixSettings aixSettings = AixSettings.build(this, widgetInfo);
-		aixSettings.loadSettings();
+		AfSettings afSettings = AfSettings.build(this, widgetInfo);
+		afSettings.loadSettings();
 		
-		int calibrationTarget = aixSettings.getCalibrationTarget();
+		int calibrationTarget = afSettings.getCalibrationTarget();
 		
 		if (calibrationTarget == widgetInfo.getAppWidgetId()) {
-			calibrationMethod(widgetInfo, aixSettings, action);
+			calibrationMethod(widgetInfo, afSettings, action);
 		} else {
 			try {
-				AixUpdate aixUpdate = AixUpdate.build(this, widgetInfo, aixSettings);
-				aixUpdate.process();
+				AfUpdate afUpdate = AfUpdate.build(this, widgetInfo, afSettings);
+				afUpdate.process();
 			} catch (Exception e) {
-				PendingIntent pendingIntent = AixUtils.buildConfigurationIntent(this, widgetUri);
-				AixUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to update widget", true, pendingIntent);
+				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetUri);
+				AfUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to update widget", true, pendingIntent);
 				Log.d(TAG, "AixUpdate of " + widgetUri + " failed! (" + e.getMessage() + ")");
 				e.printStackTrace();
 			}
@@ -175,7 +175,7 @@ public class AixService extends JobIntentService {
 	
 	private void updateAllWidgets(Uri widgetUri)
 	{
-		AixSettings.clearAllWidgetStates(PreferenceManager.getDefaultSharedPreferences(this));
+		AfSettings.clearAllWidgetStates(PreferenceManager.getDefaultSharedPreferences(this));
 		
 		// Update all widgets except widgetUri
 		int widgetIdExclude = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -188,55 +188,55 @@ public class AixService extends JobIntentService {
 		}
 		
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
-		int[] appWidgetIds = manager.getAppWidgetIds(new ComponentName(this, AixWidget.class));
+		int[] appWidgetIds = manager.getAppWidgetIds(new ComponentName(this, AfWidget.class));
 		for (int appWidgetId : appWidgetIds) {
 			if (appWidgetId != widgetIdExclude)
 			{
 				Intent updateIntent = new Intent(
 						ACTION_UPDATE_WIDGET,
-						ContentUris.withAppendedId(AixWidgets.CONTENT_URI, appWidgetId),
-						this, AixService.class);
-				AixService.enqueueWork(getApplicationContext(), updateIntent);
+						ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId),
+						this, AfService.class);
+				AfService.enqueueWork(getApplicationContext(), updateIntent);
 			}
 		}
 	}
 	
-	private void calibrationMethod(AixWidgetInfo widgetInfo, AixSettings aixSettings, String action) {
+	private void calibrationMethod(AfWidgetInfo widgetInfo, AfSettings afSettings, String action) {
 		Log.d(TAG, "calibrationMethod() " + action);
 		
 		if (mCalibrationAcceptActionsMap.containsKey(action)) {
 			String property = mCalibrationAcceptActionsMap.get(action);
 			
-			aixSettings.saveCalibratedDimension(property);
+			afSettings.saveCalibratedDimension(property);
 			
 			if (	action.equals(ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION) ||
 					action.equals(ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION))
 			{
-				aixSettings.setCalibrationState(CALIBRATION_STATE_VERTICAL);
+				afSettings.setCalibrationState(CALIBRATION_STATE_VERTICAL);
 				
 				// Update relevant widget only, still calibrating
-				Intent updateIntent = new Intent(ACTION_UPDATE_WIDGET, widgetInfo.getWidgetUri(), this, AixService.class);
-				AixService.enqueueWork(getApplicationContext(), updateIntent);
+				Intent updateIntent = new Intent(ACTION_UPDATE_WIDGET, widgetInfo.getWidgetUri(), this, AfService.class);
+				AfService.enqueueWork(getApplicationContext(), updateIntent);
 			} else {
-				aixSettings.setCalibrationState(CALIBRATION_STATE_FINISHED);
-				aixSettings.exitCalibrationMode();
+				afSettings.setCalibrationState(CALIBRATION_STATE_FINISHED);
+				afSettings.exitCalibrationMode();
 				
-				PendingIntent pendingIntent = AixUtils.buildConfigurationIntent(this, widgetInfo.getWidgetUri());
-				AixUtils.updateWidgetRemoteViews(this, widgetInfo.getAppWidgetId(), getString(R.string.widget_loading), true, pendingIntent);
+				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetInfo.getWidgetUri());
+				AfUtils.updateWidgetRemoteViews(this, widgetInfo.getAppWidgetId(), getString(R.string.widget_loading), true, pendingIntent);
 				
 				// Update all widgets after ended calibration
-				Intent updateIntent = new Intent(ACTION_UPDATE_ALL, widgetInfo.getWidgetUri(), this, AixService.class);
-				AixService.enqueueWork(getApplicationContext(), updateIntent);
+				Intent updateIntent = new Intent(ACTION_UPDATE_ALL, widgetInfo.getWidgetUri(), this, AfService.class);
+				AfService.enqueueWork(getApplicationContext(), updateIntent);
 			}
 		} else {
 			Pair<String, Integer> adjustParams = mCalibrationAdjustmentsMap.get(action);
 			
 			if (adjustParams != null) {
-				aixSettings.adjustCalibrationDimension(adjustParams.first, adjustParams.second);
+				afSettings.adjustCalibrationDimension(adjustParams.first, adjustParams.second);
 			}
 
 			try {
-				setupCalibrationWidget(widgetInfo, aixSettings);
+				setupCalibrationWidget(widgetInfo, afSettings);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -266,23 +266,23 @@ public class AixService extends JobIntentService {
 		return bitmap;
 	}
 	
-	private void setupCalibrationWidget(AixWidgetInfo aixWidgetInfo, AixSettings aixSettings) throws IOException {
-		int calibrationState = aixSettings.getCalibrationState();
-		boolean vertical = (calibrationState == AixSettings.CALIBRATION_STATE_VERTICAL);
+	private void setupCalibrationWidget(AfWidgetInfo afWidgetInfo, AfSettings afSettings) throws IOException {
+		int calibrationState = afSettings.getCalibrationState();
+		boolean vertical = (calibrationState == AfSettings.CALIBRATION_STATE_VERTICAL);
 		
-		int appWidgetId = aixWidgetInfo.getAppWidgetId();
-		Uri widgetUri = aixWidgetInfo.getWidgetUri();
+		int appWidgetId = afWidgetInfo.getAppWidgetId();
+		Uri widgetUri = afWidgetInfo.getWidgetUri();
 		
-		Point portraitDimensions = aixSettings.getCalibrationPixelDimensionsOrStandard(false);
-		Point landscapeDimensions = aixSettings.getCalibrationPixelDimensionsOrStandard(true);
+		Point portraitDimensions = afSettings.getCalibrationPixelDimensionsOrStandard(false);
+		Point landscapeDimensions = afSettings.getCalibrationPixelDimensionsOrStandard(true);
 		
 		Bitmap portraitBitmap = renderCalibrationBitmap(portraitDimensions.x, portraitDimensions.y, vertical);
 		Bitmap landscapeBitmap = renderCalibrationBitmap(landscapeDimensions.x, landscapeDimensions.y, vertical);
 		
 		long now = System.currentTimeMillis();
 		
-		Uri portraitUri = AixUtils.storeBitmap(this, portraitBitmap, appWidgetId, now, false);
-		Uri landscapeUri = AixUtils.storeBitmap(this, landscapeBitmap, appWidgetId, now, true);
+		Uri portraitUri = AfUtils.storeBitmap(this, portraitBitmap, appWidgetId, now, false);
+		Uri landscapeUri = AfUtils.storeBitmap(this, landscapeBitmap, appWidgetId, now, true);
 		
 		RemoteViews updateView = new RemoteViews(getPackageName(), R.layout.aix_calibrate);
 		
@@ -304,7 +304,7 @@ public class AixService extends JobIntentService {
 	}
 	
 	private void setupPendingIntent(RemoteViews remoteViews, Uri widgetUri, int resource, String action) {
-		Intent intent = new Intent(action, widgetUri, this, AixServiceReceiver.class);
+		Intent intent = new Intent(action, widgetUri, this, AfServiceReceiver.class);
 		remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, 0));
 	}
 

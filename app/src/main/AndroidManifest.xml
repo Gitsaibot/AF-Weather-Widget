@@ -33,13 +33,13 @@
 		    	android:windowSoftInputMode="stateHidden|adjustPan"
 		    	android:excludeFromRecents="true" />
         
-        <activity android:name="net.gitsaibot.af.AixLocationSelectionActivity"
+        <activity android:name="net.gitsaibot.af.AfLocationSelectionActivity"
         		android:label="@string/location_settings_title"
         		android:taskAffinity="net.gitsaibot.af.configure"
         		android:windowSoftInputMode="stateHidden|adjustPan"
         		android:excludeFromRecents="true" />
         
-        <activity android:name="net.gitsaibot.af.AixIntro"
+        <activity android:name="net.gitsaibot.af.AfIntro"
         		android:label="AF Weather Widget"
         		android:taskAffinity="net.gitsaibot.af.intro"
         		android:excludeFromRecents="true"
@@ -53,11 +53,11 @@
 		
 		</activity>
         
-        <provider android:name="net.gitsaibot.af.AixProvider" android:authorities="net.gitsaibot.af" android:exported="true" />
+        <provider android:name="net.gitsaibot.af.AfProvider" android:authorities="net.gitsaibot.af" android:exported="true" />
         
-        <service android:name="net.gitsaibot.af.AixService" android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name="net.gitsaibot.af.AfService" android:permission="android.permission.BIND_JOB_SERVICE" />
     	
-    	<receiver android:name="net.gitsaibot.af.AixWidget" android:label="@string/widget_name"
+    	<receiver android:name="net.gitsaibot.af.AfWidget" android:label="@string/widget_name"
 			android:exported="false">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -66,7 +66,7 @@
     				android:resource="@xml/af_widget_provider" />
     	</receiver>
     	
-    	<receiver android:name="net.gitsaibot.af.AixServiceReceiver" android:enabled="true"
+    	<receiver android:name="net.gitsaibot.af.AfServiceReceiver" android:enabled="true"
 			android:exported="false">
 			<intent-filter>
 				<action android:name="net.gitsaibot.af.DELETE_WIDGET" />

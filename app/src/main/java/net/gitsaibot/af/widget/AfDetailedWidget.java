@@ -1,13 +1,13 @@
 package net.gitsaibot.af.widget;
 
-import static net.gitsaibot.af.AixUtils.WEATHER_ICONS_DAY;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICONS_NIGHT;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICONS_POLAR;
-import static net.gitsaibot.af.AixUtils.hcap;
-import static net.gitsaibot.af.AixUtils.isPrime;
-import static net.gitsaibot.af.AixUtils.lcap;
-import static net.gitsaibot.af.AixUtils.truncateDay;
-import static net.gitsaibot.af.AixUtils.truncateHour;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICONS_DAY;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICONS_NIGHT;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICONS_POLAR;
+import static net.gitsaibot.af.AfUtils.hcap;
+import static net.gitsaibot.af.AfUtils.isPrime;
+import static net.gitsaibot.af.AfUtils.lcap;
+import static net.gitsaibot.af.AfUtils.truncateDay;
+import static net.gitsaibot.af.AfUtils.truncateHour;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -20,15 +20,15 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import net.gitsaibot.af.AixProvider.AixLocations;
-import net.gitsaibot.af.AixProvider.AixSunMoonData;
+import net.gitsaibot.af.AfProvider.AfLocations;
+import net.gitsaibot.af.AfProvider.AfSunMoonData;
 import net.gitsaibot.af.IntervalData;
 import net.gitsaibot.af.PointData;
 import net.gitsaibot.af.R;
 import net.gitsaibot.af.SunMoonData;
-import net.gitsaibot.af.util.AixLocationInfo;
-import net.gitsaibot.af.util.AixWidgetInfo;
-import net.gitsaibot.af.util.AixWidgetSettings;
+import net.gitsaibot.af.util.AfLocationInfo;
+import net.gitsaibot.af.util.AfWidgetInfo;
+import net.gitsaibot.af.util.AfWidgetSettings;
 import net.gitsaibot.af.util.CatmullRomSpline;
 import net.gitsaibot.af.util.Cubic;
 import net.gitsaibot.af.util.Cubic.CubicResult;
@@ -62,7 +62,7 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-public class AixDetailedWidget {
+public class AfDetailedWidget {
 	
 	private static final String TAG = "AixDetailedWidget";
 	
@@ -73,9 +73,9 @@ public class AixDetailedWidget {
 	
 	private final Context mContext;
 	
-	private final AixLocationInfo mAixLocationInfo;
-	private final AixWidgetInfo mAixWidgetInfo;
-	private final AixWidgetSettings mWidgetSettings;
+	private final AfLocationInfo mAfLocationInfo;
+	private final AfWidgetInfo mAfWidgetInfo;
+	private final AfWidgetSettings mWidgetSettings;
 	
 	/* Common Properties */
 	
@@ -133,24 +133,24 @@ public class AixDetailedWidget {
 	private RectF mBackgroundRect = new RectF();
 	private RectF mBorderRect = new RectF();
 	
-	private AixDetailedWidget(final Context context, AixWidgetInfo widgetInfo, AixLocationInfo locationInfo) {
+	private AfDetailedWidget(final Context context, AfWidgetInfo widgetInfo, AfLocationInfo locationInfo) {
 		mContext = context;
 		
 		mNumHours = 24;
 		mNumWeatherDataBufferHours = 6;
 		
-		mAixWidgetInfo = widgetInfo;
-		mAixLocationInfo = locationInfo;
+		mAfWidgetInfo = widgetInfo;
+		mAfLocationInfo = locationInfo;
 		
 		mWidgetSettings = widgetInfo.getWidgetSettings();
 	}
 	
-	public static AixDetailedWidget build(final Context context, AixWidgetInfo widgetInfo, AixLocationInfo locationInfo) throws AixWidgetDrawException, AixWidgetDataException {
-		AixDetailedWidget widget = new AixDetailedWidget(context, widgetInfo, locationInfo);
+	public static AfDetailedWidget build(final Context context, AfWidgetInfo widgetInfo, AfLocationInfo locationInfo) throws AfWidgetDrawException, AfWidgetDataException {
+		AfDetailedWidget widget = new AfDetailedWidget(context, widgetInfo, locationInfo);
 		return widget.initialize();
 	}
 	
-	private AixDetailedWidget initialize() throws AixWidgetDrawException, AixWidgetDataException {
+	private AfDetailedWidget initialize() throws AfWidgetDrawException, AfWidgetDataException {
 		mResolver = mContext.getContentResolver();
 
 		setupTimesAndPointData();
@@ -176,7 +176,7 @@ public class AixDetailedWidget {
 		return this;
 	}
 	
-	public Bitmap render(int width, int height, boolean isLandscape) throws AixWidgetDrawException {
+	public Bitmap render(int width, int height, boolean isLandscape) throws AfWidgetDrawException {
 		setupWidgetDimensions(width, height, isLandscape);
 		Bitmap bitmap = Bitmap.createBitmap(mWidgetWidth, mWidgetHeight, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -383,11 +383,11 @@ public class AixDetailedWidget {
 		return points;
 	}
 	
-	private int calculateNumberOfHorizontalCells(int numMaxCells, double minimumCellSize, double availableCellSpace) throws AixWidgetDrawException {
+	private int calculateNumberOfHorizontalCells(int numMaxCells, double minimumCellSize, double availableCellSpace) throws AfWidgetDrawException {
 		int numCells = 0;
 		
 		if (availableCellSpace < minimumCellSize) {
-			throw new AixWidgetDrawException("Not enough horizontal graph space");
+			throw new AfWidgetDrawException("Not enough horizontal graph space");
 		}
 		
 		for (int i = 1; i <= numMaxCells; i++) {
@@ -411,14 +411,14 @@ public class AixDetailedWidget {
 			double minimumCellSize,
 			double maxDataValue,
 			double minDataValue,
-			double numUnitsPerCell) throws AixWidgetDrawException
+			double numUnitsPerCell) throws AfWidgetDrawException
 	{
 		if (availableCellSpace < reservedSpaceAbove + reservedSpaceBelow) {
-			throw new AixWidgetDrawException("Not enough reserved vertical graph space");
+			throw new AfWidgetDrawException("Not enough reserved vertical graph space");
 		}
 		
 		if (availableCellSpace < minimumCellSize) {
-			throw new AixWidgetDrawException("Not enough vertical graph space");
+			throw new AfWidgetDrawException("Not enough vertical graph space");
 		}
 		
 		// Start by calculating the minimum number of vertical cells required to
@@ -502,7 +502,7 @@ public class AixDetailedWidget {
 		return startCell;
 	}
 	
-	private Rect calculateGraphRect(double verticalLabelWidth, double horizontalLabelHeight, boolean drawTopText, RectF parentRect) throws AixWidgetDrawException {
+	private Rect calculateGraphRect(double verticalLabelWidth, double horizontalLabelHeight, boolean drawTopText, RectF parentRect) throws AfWidgetDrawException {
 		Rect graphRect = new Rect();
 		
 		double topSpacing = drawTopText
@@ -516,7 +516,7 @@ public class AixDetailedWidget {
 		
 		// Sanity check
 		if ((graphRect.left >= graphRect.right) || (graphRect.top >= graphRect.bottom)) {
-			throw new AixWidgetDrawException("Failed to fit basic graph elements");
+			throw new AfWidgetDrawException("Failed to fit basic graph elements");
 		}
 		
 		return graphRect;
@@ -530,7 +530,7 @@ public class AixDetailedWidget {
 			final double reservedSpaceAboveGraph,
 			final double reservedSpaceBelowGraph
 	)
-		throws AixWidgetDrawException
+		throws AfWidgetDrawException
 	{
 		double[] degreesPerCellOptions = { 0.5, 1.0, 2.0, 2.5, 5.0, 10.0, 20.0, 25.0, 50.0, 100.0 };
 		double textLabelWidth = 0.0;
@@ -576,7 +576,7 @@ public class AixDetailedWidget {
 			textLabelWidth = tempMaxLabelWidth;
 		}
 		
-		throw new AixWidgetDrawException("Failed to calculate graph dimensions");
+		throw new AfWidgetDrawException("Failed to calculate graph dimensions");
 	}
 	
 	private void drawBackground(Canvas canvas)
@@ -701,13 +701,13 @@ public class AixDetailedWidget {
 		canvas.drawPath(gridOutline, mGridOutlinePaint);
 	}
 	
-	private void drawHourLabels(Canvas canvas) throws AixWidgetDrawException {
+	private void drawHourLabels(Canvas canvas) throws AfWidgetDrawException {
 		// Draw time stamp labels and horizontal notches
 		float notchHeight = 3.5f * mDP;
 		
 		mLabelPaint.setTextAlign(Paint.Align.CENTER);
 		
-		Calendar calendar = Calendar.getInstance(mAixLocationInfo.buildTimeZone());
+		Calendar calendar = Calendar.getInstance(mAfLocationInfo.buildTimeZone());
 		calendar.setTimeInMillis(mTimeFrom);
 		
 		int startHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -737,7 +737,7 @@ public class AixDetailedWidget {
 			{
 				if (numCellsBetweenHorizontalLabels > mNumHorizontalCells)
 				{
-					throw new AixWidgetDrawException("Failed to space horizontal cells");
+					throw new AfWidgetDrawException("Failed to space horizontal cells");
 				}
 				else
 				{
@@ -788,7 +788,7 @@ public class AixDetailedWidget {
 	{
 		float topTextSidePadding = 1.0f * mDP;
 		
-		String locationName = mAixLocationInfo.getTitle();
+		String locationName = mAfLocationInfo.getTitle();
 		
 		String pressureString = pressure != null ? mContext.getString(R.string.pressure_top, pressure) : "";
 		String humidityString = humidity != null ? mContext.getString(R.string.humidity_top, humidity) : "";
@@ -1069,9 +1069,9 @@ public class AixDetailedWidget {
 				
 				for (SunMoonData smd : mSunMoonData) {
 					if (smd.date == iconDate) {
-						if (smd.sunRise == AixSunMoonData.NEVER_RISE) {
+						if (smd.sunRise == AfSunMoonData.NEVER_RISE) {
 							weatherIcons = WEATHER_ICONS_POLAR;
-						} else if (smd.sunSet == AixSunMoonData.NEVER_SET) {
+						} else if (smd.sunSet == AfSunMoonData.NEVER_SET) {
 							weatherIcons = WEATHER_ICONS_DAY;
 						}
 					}
@@ -1217,8 +1217,8 @@ public class AixDetailedWidget {
 
 		boolean useInches = mWidgetSettings.useInches();
 
-		final Uri uri = mAixLocationInfo.getLocationUri().buildUpon()
-				.appendPath(AixLocations.TWIG_INTERVALDATAFORECASTS)
+		final Uri uri = mAfLocationInfo.getLocationUri().buildUpon()
+				.appendPath(AfLocations.TWIG_INTERVALDATAFORECASTS)
 				.appendQueryParameter("start", Long.toString(mTimeFrom))
 				.appendQueryParameter("end", Long.toString(mTimeTo)).build();
 		
@@ -1332,8 +1332,8 @@ public class AixDetailedWidget {
 		
 		ArrayList<SunMoonData> sunMoonData = new ArrayList<SunMoonData>();
 
-		final Uri uri = mAixLocationInfo.getLocationUri().buildUpon()
-				.appendPath(AixLocations.TWIG_SUNMOONDATA)
+		final Uri uri = mAfLocationInfo.getLocationUri().buildUpon()
+				.appendPath(AfLocations.TWIG_SUNMOONDATA)
 				.appendQueryParameter("start", Long.toString(dateFrom))
 				.appendQueryParameter("end", Long.toString(dateTo)).build();
 
@@ -1379,7 +1379,7 @@ public class AixDetailedWidget {
 			Pair<Date, DayState> firstTransition = transitions.size() > 0 ? transitions.get(0) : null;
 
 			if (firstTransition == null || firstSunMoonData.date < firstTransition.first.getTime()) {
-				if (firstSunMoonData.sunRise == AixSunMoonData.NEVER_RISE) {
+				if (firstSunMoonData.sunRise == AfSunMoonData.NEVER_RISE) {
 					// Polar night
 					transitions.add(0, Pair.create(new Date(firstSunMoonData.date), DayState.NIGHT));
 				} else if (firstSunMoonData.sunRise == 0) {
@@ -1457,9 +1457,9 @@ public class AixDetailedWidget {
 		mTimeTo = calendar.getTimeInMillis();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf.setTimeZone(mAixLocationInfo.buildTimeZone());
+		sdf.setTimeZone(mAfLocationInfo.buildTimeZone());
 		
-		Log.d(TAG, mAixLocationInfo.getTitle() + " (" + mAixLocationInfo.buildTimeZone().getDisplayName() + "): " + sdf.format(new Date(mTimeNow)) +
+		Log.d(TAG, mAfLocationInfo.getTitle() + " (" + mAfLocationInfo.buildTimeZone().getDisplayName() + "): " + sdf.format(new Date(mTimeNow)) +
 				" nextHour=" + sdf.format(new Date(nextHour)) +
 				" -> firstIntervalSampleAfter=" + sdf.format(new Date(firstIntervalSampleAfter)) +
 				",firstPointSample=" + sdf.format(new Date(firstPointSample)) +
@@ -1468,7 +1468,7 @@ public class AixDetailedWidget {
 				",timeTo=" + sdf.format(new Date(mTimeTo))); 
 	}
 	
-	private void setupSampleTimes() throws AixWidgetDrawException, AixWidgetDataException {
+	private void setupSampleTimes() throws AfWidgetDrawException, AfWidgetDataException {
 		long sampleResolutionHrs = Long.MAX_VALUE;
 		
 		long lastIntervalPos = -1;
@@ -1500,13 +1500,13 @@ public class AixDetailedWidget {
 		}
 		
 		if ((sampleResolutionHrs < 1) || (sampleResolutionHrs > mNumHours / 2)) {
-			throw new AixWidgetDataException("Invalid sample resolution");
+			throw new AfWidgetDataException("Invalid sample resolution");
 		}
 		
 		mNumHoursBetweenSamples = (int)sampleResolutionHrs;
 	}
 	
-	private void setupTimesAndPointData() throws AixWidgetDrawException {
+	private void setupTimesAndPointData() throws AfWidgetDrawException {
 		// Set up time variables
 		Calendar calendar = Calendar.getInstance(mUtcTimeZone);
 		mTimeNow = calendar.getTimeInMillis();
@@ -1525,8 +1525,8 @@ public class AixDetailedWidget {
 		Cursor cursor = null;
 		
 		try {
-			final Uri uri = mAixLocationInfo.getLocationUri().buildUpon()
-					.appendPath(AixLocations.TWIG_POINTDATAFORECASTS)
+			final Uri uri = mAfLocationInfo.getLocationUri().buildUpon()
+					.appendPath(AfLocations.TWIG_POINTDATAFORECASTS)
 					.appendQueryParameter("start", Long.toString(mTimeFrom))
 					.appendQueryParameter("end", Long.toString(mTimeTo)).build();
 
@@ -1570,7 +1570,7 @@ public class AixDetailedWidget {
 				mWidgetWidth, mWidgetHeight);
 	}
 	
-	private void validatePointData() throws AixWidgetDrawException, AixWidgetDataException {
+	private void validatePointData() throws AfWidgetDrawException, AfWidgetDataException {
 		float maxTemperature = Float.NEGATIVE_INFINITY;
 		float minTemperature = Float.POSITIVE_INFINITY;
 		
@@ -1588,7 +1588,7 @@ public class AixDetailedWidget {
 		
 		// Ensure that there are enough point data samples within the time period
 		if (validPointDataSamples < 2) {
-			throw new AixWidgetDataException("Too few temperature samples");
+			throw new AfWidgetDataException("Too few temperature samples");
 		}
 		
 		mTemperatureValueMax = maxTemperature;

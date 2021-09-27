@@ -1,8 +1,8 @@
 package net.gitsaibot.af.util;
 
-import net.gitsaibot.af.AixProvider.AixLocations;
-import net.gitsaibot.af.AixProvider.AixViews;
-import net.gitsaibot.af.AixProvider.AixViewsColumns;
+import net.gitsaibot.af.AfProvider.AfLocations;
+import net.gitsaibot.af.AfProvider.AfViews;
+import net.gitsaibot.af.AfProvider.AfViewsColumns;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -10,20 +10,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-public class AixViewInfo {
+public class AfViewInfo {
 	
 	private int mType;
-	private AixLocationInfo mAixLocationInfo;
+	private AfLocationInfo mAfLocationInfo;
 	private Uri mViewUri;
 	
-	public AixViewInfo(Uri viewUri, AixLocationInfo aixLocationInfo, int type)
+	public AfViewInfo(Uri viewUri, AfLocationInfo afLocationInfo, int type)
 	{
 		mViewUri = viewUri;
-		mAixLocationInfo = aixLocationInfo;
+		mAfLocationInfo = afLocationInfo;
 		mType = type;
 	}
 	
-	public static AixViewInfo build(Context context, Uri viewUri)
+	public static AfViewInfo build(Context context, Uri viewUri)
 			throws Exception
 	{
 		Cursor cursor = null;
@@ -34,24 +34,24 @@ public class AixViewInfo {
 			
 			if (cursor != null && cursor.moveToFirst())
 			{
-				AixLocationInfo aixLocationInfo = null;
+				AfLocationInfo afLocationInfo = null;
 				
-				int columnIndex = cursor.getColumnIndex(AixViewsColumns.LOCATION);
+				int columnIndex = cursor.getColumnIndex(AfViewsColumns.LOCATION);
 				if (columnIndex != -1 && !cursor.isNull(columnIndex))
 				{
 					long locationId = cursor.getLong(columnIndex);
-					Uri aixLocationUri = ContentUris.withAppendedId(AixLocations.CONTENT_URI, locationId);
-					aixLocationInfo = AixLocationInfo.build(context, aixLocationUri);
+					Uri aixLocationUri = ContentUris.withAppendedId(AfLocations.CONTENT_URI, locationId);
+					afLocationInfo = AfLocationInfo.build(context, aixLocationUri);
 				}
 				
-				int type = AixViewsColumns.TYPE_DETAILED;
-				columnIndex = cursor.getColumnIndex(AixViewsColumns.TYPE);
+				int type = AfViewsColumns.TYPE_DETAILED;
+				columnIndex = cursor.getColumnIndex(AfViewsColumns.TYPE);
 				if (columnIndex != -1 && !cursor.isNull(columnIndex))
 				{
 					type = cursor.getInt(columnIndex);
 				}
 				
-				return new AixViewInfo(viewUri, aixLocationInfo, type);
+				return new AfViewInfo(viewUri, afLocationInfo, type);
 			}
 			else
 			{
@@ -71,25 +71,25 @@ public class AixViewInfo {
 	{
 		ContentValues values = new ContentValues();
 		
-		if (mAixLocationInfo != null)
+		if (mAfLocationInfo != null)
 		{
-			values.put(AixViewsColumns.LOCATION, mAixLocationInfo.getId());
+			values.put(AfViewsColumns.LOCATION, mAfLocationInfo.getId());
 		}
 		else
 		{
-			values.putNull(AixViewsColumns.LOCATION);
+			values.putNull(AfViewsColumns.LOCATION);
 		}
 		
-		values.put(AixViewsColumns.TYPE, mType);
+		values.put(AfViewsColumns.TYPE, mType);
 		
 		return values;
 	}
 
 	public Uri commit(Context context)
 	{
-		if (mAixLocationInfo != null)
+		if (mAfLocationInfo != null)
 		{
-			mAixLocationInfo.commit(context);
+			mAfLocationInfo.commit(context);
 		}
 		
 		ContentValues values = buildContentValues();
@@ -101,7 +101,7 @@ public class AixViewInfo {
 		}
 		else
 		{
-			mViewUri = resolver.insert(AixViews.CONTENT_URI, values);
+			mViewUri = resolver.insert(AfViews.CONTENT_URI, values);
 		}
 		
 		return mViewUri;
@@ -118,17 +118,17 @@ public class AixViewInfo {
 		}
 	}
 	
-	public AixLocationInfo getLocationInfo() {
-		return mAixLocationInfo;
+	public AfLocationInfo getLocationInfo() {
+		return mAfLocationInfo;
 	}
 	
 	public int getType() {
 		return mType;
 	}
 
-	public void setAixLocationInfo(AixLocationInfo aixLocationInfo)
+	public void setAixLocationInfo(AfLocationInfo afLocationInfo)
 	{
-		mAixLocationInfo = aixLocationInfo;
+		mAfLocationInfo = afLocationInfo;
 	}
 	
 	public void setType(int type)
@@ -143,7 +143,7 @@ public class AixViewInfo {
 	
 	@Override
 	public String toString() {
-		return "AixViewInfo(" + mViewUri + "," + mType + "," + mAixLocationInfo + ")";
+		return "AixViewInfo(" + mViewUri + "," + mType + "," + mAfLocationInfo + ")";
 	}
 	
 }

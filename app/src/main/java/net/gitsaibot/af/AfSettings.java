@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.gitsaibot.af.AixProvider.AixSettingsColumns;
-import net.gitsaibot.af.AixProvider.AixWidgets;
-import net.gitsaibot.af.util.AixWidgetInfo;
+import net.gitsaibot.af.AfProvider.AfSettingsColumns;
+import net.gitsaibot.af.AfProvider.AfWidgets;
+import net.gitsaibot.af.util.AfWidgetInfo;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-public class AixSettings {
+public class AfSettings {
 	
 	private static final String TAG = "AixSettings";
 	
@@ -64,28 +64,28 @@ public class AixSettings {
 	private Context mContext;
 	private DisplayMetrics mDisplayMetrics;
 	private SharedPreferences mSharedPreferences;
-	private AixWidgetInfo mAixWidgetInfo;
+	private AfWidgetInfo mAfWidgetInfo;
 	
 	private boolean mAwakeOnly, mUseSpecificDimensions, mWifiOnly;
 	private int mNumUpdateHours, mOrientationMode, mProvider;
 	
-	private AixSettings(
+	private AfSettings(
 			Context context,
 			DisplayMetrics displayMetrics,
 			SharedPreferences sharedPreferences,
-			AixWidgetInfo aixWidgetInfo)
+			AfWidgetInfo afWidgetInfo)
 	{
 		mContext = context;
 		mDisplayMetrics = displayMetrics;
 		mSharedPreferences = sharedPreferences;
-		mAixWidgetInfo = aixWidgetInfo;
+		mAfWidgetInfo = afWidgetInfo;
 	}
 	
-	public static AixSettings build(Context context, AixWidgetInfo widgetInfo)
+	public static AfSettings build(Context context, AfWidgetInfo widgetInfo)
 	{
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return new AixSettings(context, displayMetrics, sharedPreferences, widgetInfo);
+		return new AfSettings(context, displayMetrics, sharedPreferences, widgetInfo);
 	}
 	
 	public boolean getCachedAwakeOnly() {
@@ -162,8 +162,8 @@ public class AixSettings {
 				if (valueString != null)
 				{
 					ContentValues contentValues = new ContentValues();
-					contentValues.put(AixSettingsColumns.KEY, key);
-					contentValues.put(AixSettingsColumns.VALUE, valueString);
+					contentValues.put(AfSettingsColumns.KEY, key);
+					contentValues.put(AfSettingsColumns.VALUE, valueString);
 					settingList.add(contentValues);
 				}
 			}
@@ -265,15 +265,15 @@ public class AixSettings {
 	
 	public Editor editLoadFromProvider(Editor editor) {
 		Cursor widgetSettingsCursor = mContext.getContentResolver().query(
-				Uri.withAppendedPath(mAixWidgetInfo.getWidgetUri(), AixWidgets.TWIG_SETTINGS),
+				Uri.withAppendedPath(mAfWidgetInfo.getWidgetUri(), AfWidgets.TWIG_SETTINGS),
 				null, null, null, null);
 		
 		if (widgetSettingsCursor != null) {
 			try {
 				if (widgetSettingsCursor.moveToFirst()) {
 					do {
-						String key = widgetSettingsCursor.getString(AixSettingsColumns.KEY_COLUMN);
-						String value = widgetSettingsCursor.getString(AixSettingsColumns.VALUE_COLUMN);
+						String key = widgetSettingsCursor.getString(AfSettingsColumns.KEY_COLUMN);
+						String value = widgetSettingsCursor.getString(AfSettingsColumns.VALUE_COLUMN);
 						
 						if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
 							insertKey(editor, key, value);
@@ -458,8 +458,8 @@ public class AixSettings {
 		{
 			editCalibrationMode(editor);
 			
-			int numColumns = mAixWidgetInfo.getNumColumns();
-			int numRows = mAixWidgetInfo.getNumRows();
+			int numColumns = mAfWidgetInfo.getNumColumns();
+			int numRows = mAfWidgetInfo.getNumRows();
 
 			// When calibrating, avoid storing the settings which are being modified
 			avoidKeys = new HashSet<String>();
@@ -473,7 +473,7 @@ public class AixSettings {
 		}
 		else
 		{
-			AixUtils.editWidgetState(editor, mAixWidgetInfo.getAppWidgetId(), 0);
+			AfUtils.editWidgetState(editor, mAfWidgetInfo.getAppWidgetId(), 0);
 		}
 		
 		editSaveGlobalSettings(editor, settingsMap, avoidKeys);
@@ -499,7 +499,7 @@ public class AixSettings {
 	public void savePreferencesToProvider(Map<String, ?> settingsMap) {
 		ContentResolver resolver = mContext.getContentResolver();
 		Uri aixWidgetSettingsUri = Uri.withAppendedPath(
-				mAixWidgetInfo.getWidgetUri(), AixWidgets.TWIG_SETTINGS);
+				mAfWidgetInfo.getWidgetUri(), AfWidgets.TWIG_SETTINGS);
 		ContentValues[] values = buildContentValues(settingsMap);
 		resolver.bulkInsert(aixWidgetSettingsUri, values);
 	}
@@ -510,7 +510,7 @@ public class AixSettings {
 	
 	public int getWidgetState() 
 	{
-		return getWidgetState(mAixWidgetInfo.getAppWidgetId());
+		return getWidgetState(mAfWidgetInfo.getAppWidgetId());
 	}
 	
 	public int getWidgetState(int widgetId) 
@@ -561,7 +561,7 @@ public class AixSettings {
 	
 	public void setWidgetState(int widgetState)
 	{
-		setWidgetState(mAixWidgetInfo.getAppWidgetId(), widgetState);
+		setWidgetState(mAfWidgetInfo.getAppWidgetId(), widgetState);
 	}
 	
 	public void setWidgetState(int widgetId, int widgetState)
@@ -705,7 +705,7 @@ public class AixSettings {
 	
 	public boolean isProviderPreferenceModified()
 	{
-		String defaultValue = Integer.toString(AixUtils.PROVIDER_AUTO);
+		String defaultValue = Integer.toString(AfUtils.PROVIDER_AUTO);
 		String providerValue = mSharedPreferences.getString(mContext.getString(R.string.provider_string), defaultValue);
 		String providerPreferenceValue = mSharedPreferences.getString(mContext.getString(R.string.preference_provider_string), defaultValue);
 		return !providerValue.equals(providerPreferenceValue);
@@ -742,8 +742,8 @@ public class AixSettings {
 		
 		Point dimensions = getPixelDimensionsFromKey(calibrationKey);
 		
-		int numColumns = mAixWidgetInfo.getNumColumns();
-		int numRows = mAixWidgetInfo.getNumRows();
+		int numColumns = mAfWidgetInfo.getNumColumns();
+		int numRows = mAfWidgetInfo.getNumRows();
 		
 		if (dimensions == null) {
 			dimensions = getStandardPixelDimensions(numColumns, numRows, isLandscape, false);
@@ -763,7 +763,7 @@ public class AixSettings {
 	
 	public Editor editCalibrationMode(Editor editor)
 	{
-		int appWidgetId = mAixWidgetInfo.getAppWidgetId();
+		int appWidgetId = mAfWidgetInfo.getAppWidgetId();
 		
 		Point portraitDimensions = getPixelDimensionsPreferenceOrStandard(false);
 		Point landscapeDimensions = getPixelDimensionsPreferenceOrStandard(true);
@@ -809,8 +809,8 @@ public class AixSettings {
 		
 		Point dimensions = getPixelDimensionsFromKey(calibrationKey);
 		
-		int numColumns = mAixWidgetInfo.getNumColumns();
-		int numRows = mAixWidgetInfo.getNumRows();
+		int numColumns = mAfWidgetInfo.getNumColumns();
+		int numRows = mAfWidgetInfo.getNumRows();
 		
 		if (dimensions == null) {
 			dimensions = getStandardPixelDimensions(numColumns, numRows, isLandscape, false);
@@ -902,8 +902,8 @@ public class AixSettings {
 	public Point getCalibrationPixelDimensionsOrStandard(boolean isLandscape)
 	{
 		return getCalibrationPixelDimensionsOrStandard(
-				mAixWidgetInfo.getNumColumns(),
-				mAixWidgetInfo.getNumRows(),
+				mAfWidgetInfo.getNumColumns(),
+				mAfWidgetInfo.getNumRows(),
 				isLandscape);
 	}
 	
@@ -957,8 +957,8 @@ public class AixSettings {
 	public Point getPixelDimensionsOrStandard(boolean isLandscape)
 	{
 		return getPixelDimensionsOrStandard(
-				mAixWidgetInfo.getNumColumns(),
-				mAixWidgetInfo.getNumRows(),
+				mAfWidgetInfo.getNumColumns(),
+				mAfWidgetInfo.getNumRows(),
 				isLandscape);
 	}
 	
@@ -983,8 +983,8 @@ public class AixSettings {
 	public Point getPixelDimensionsPreferenceOrStandard(boolean isLandscape)
 	{
 		return getPixelDimensionsPreferenceOrStandard(
-				mAixWidgetInfo.getNumColumns(),
-				mAixWidgetInfo.getNumRows(),
+				mAfWidgetInfo.getNumColumns(),
+				mAfWidgetInfo.getNumRows(),
 				isLandscape);
 	}
 	

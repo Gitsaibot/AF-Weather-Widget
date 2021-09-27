@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import net.gitsaibot.af.AixProvider.AixIntervalDataForecastColumns;
-import net.gitsaibot.af.AixProvider.AixIntervalDataForecasts;
-import net.gitsaibot.af.AixProvider.AixPointDataForecastColumns;
-import net.gitsaibot.af.AixProvider.AixPointDataForecasts;
-import net.gitsaibot.af.AixSettings;
-import net.gitsaibot.af.AixUpdate;
-import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.AfProvider.AfIntervalDataForecastColumns;
+import net.gitsaibot.af.AfProvider.AfIntervalDataForecasts;
+import net.gitsaibot.af.AfProvider.AfPointDataForecastColumns;
+import net.gitsaibot.af.AfProvider.AfPointDataForecasts;
+import net.gitsaibot.af.AfSettings;
+import net.gitsaibot.af.AfUpdate;
+import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
-import net.gitsaibot.af.util.AixLocationInfo;
+import net.gitsaibot.af.util.AfLocationInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -28,24 +28,24 @@ import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
 
-public class AixMetWeatherData implements AixDataSource {
+public class AfMetWeatherData implements AfDataSource {
 
 	public static final String TAG = "AixMetWeatherData";
 	
 	private Context mContext;
 	//private AixSettings mAixSettings;
-	private AixUpdate mAixUpdate;
+	private AfUpdate mAfUpdate;
 	
-	private AixMetWeatherData(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	private AfMetWeatherData(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
 		mContext = context;
-		mAixUpdate = aixUpdate;
+		mAfUpdate = afUpdate;
 		//mAixSettings = aixSettings;
 	}
 	
-	public static AixMetWeatherData build(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	public static AfMetWeatherData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
-		return new AixMetWeatherData(context, aixUpdate, aixSettings);
+		return new AfMetWeatherData(context, afUpdate, afSettings);
 	}
 	
 	private static int mapWeatherIconToOldApi(int id)
@@ -54,53 +54,53 @@ public class AixMetWeatherData implements AixDataSource {
 		{
 			case 24: // DrizzleThunderSun
 			case 25: // RainThunderSun
-				return AixUtils.WEATHER_ICON_DAY_POLAR_LIGHTRAINTHUNDERSUN; // LightRainThunderSun
+				return AfUtils.WEATHER_ICON_DAY_POLAR_LIGHTRAINTHUNDERSUN; // LightRainThunderSun
 			case 26: // LightSleetThunderSun
 			case 27: // HeavySleetThunderSun
-				return AixUtils.WEATHER_ICON_DAY_SLEETSUNTHUNDER; // SleetSunThunder
+				return AfUtils.WEATHER_ICON_DAY_SLEETSUNTHUNDER; // SleetSunThunder
 			case 28: // LightSnowThunderSun
 			case 29: // HeavySnowThunderSun
-				return AixUtils.WEATHER_ICON_DAY_SNOWSUNTHUNDER; // SnowSunThunder
+				return AfUtils.WEATHER_ICON_DAY_SNOWSUNTHUNDER; // SnowSunThunder
 			case 30: // DrizzleThunder
-				return AixUtils.WEATHER_ICON_LIGHTRAINTHUNDER; // LightRainThunder
+				return AfUtils.WEATHER_ICON_LIGHTRAINTHUNDER; // LightRainThunder
 			case 31: // LightSleetThunder
 			case 32: // HeavySleetThunder
-				return AixUtils.WEATHER_ICON_SLEETTHUNDER; // SleetThunder
+				return AfUtils.WEATHER_ICON_SLEETTHUNDER; // SleetThunder
 			case 33: // LightSnowThunder
 			case 34: // HeavySnowThunder
-				return AixUtils.WEATHER_ICON_SNOWTHUNDER; // SnowThunder
+				return AfUtils.WEATHER_ICON_SNOWTHUNDER; // SnowThunder
 			case 40: // DrizzleSun
 			case 41: // RainSun
-				return AixUtils.WEATHER_ICON_DAY_LIGHTRAINSUN; // LightRainSun
+				return AfUtils.WEATHER_ICON_DAY_LIGHTRAINSUN; // LightRainSun
 			case 42: // LightSleetSun
 			case 43: // HeavySleetSun
-				return AixUtils.WEATHER_ICON_DAY_POLAR_SLEETSUN; // SleetSun
+				return AfUtils.WEATHER_ICON_DAY_POLAR_SLEETSUN; // SleetSun
 			case 44: // LightSnowSun
 			case 45: // HeavysnowSun
-				return AixUtils.WEATHER_ICON_DAY_SNOWSUN; // SnowSun
+				return AfUtils.WEATHER_ICON_DAY_SNOWSUN; // SnowSun
 			case 46: // Drizzle
-				return AixUtils.WEATHER_ICON_LIGHTRAIN; // LightRain
+				return AfUtils.WEATHER_ICON_LIGHTRAIN; // LightRain
 			case 47: // LightSleet
 			case 48: // HeavySleet
-				return AixUtils.WEATHER_ICON_SLEET; // Sleet
+				return AfUtils.WEATHER_ICON_SLEET; // Sleet
 			case 49: // LightSnow
 			case 50: // HeavySnow
-				return AixUtils.WEATHER_ICON_SNOW; // Snow
+				return AfUtils.WEATHER_ICON_SNOW; // Snow
 			default:
 				return id;
 		}
 	}
 	
-	public void update(AixLocationInfo aixLocationInfo, long currentUtcTime)
+	public void update(AfLocationInfo afLocationInfo, long currentUtcTime)
 			throws AixDataUpdateException
 	{
 		try {
-			Log.d(TAG, "update(): Started update operation. (aixLocationInfo=" + aixLocationInfo + ",currentUtcTime=" + currentUtcTime + ")");
+			Log.d(TAG, "update(): Started update operation. (aixLocationInfo=" + afLocationInfo + ",currentUtcTime=" + currentUtcTime + ")");
 			
-			mAixUpdate.updateWidgetRemoteViews("Downloading NMI weather data...", false);
+			mAfUpdate.updateWidgetRemoteViews("Downloading NMI weather data...", false);
 			
-			Double latitude = aixLocationInfo.getLatitude();
-			Double longitude = aixLocationInfo.getLongitude();
+			Double latitude = afLocationInfo.getLatitude();
+			Double longitude = afLocationInfo.getLongitude();
 			
 			if (latitude == null || longitude == null)
 			{
@@ -114,8 +114,8 @@ public class AixMetWeatherData implements AixDataSource {
 			
 			Log.d(TAG, "Attempting to download weather data from URL=" + url);
 			
-			HttpClient httpClient = AixUtils.setupHttpClient(mContext);
-			HttpGet httpGet = AixUtils.buildGzipHttpGet(url);
+			HttpClient httpClient = AfUtils.setupHttpClient(mContext);
+			HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 
 			if (httpResponse.getStatusLine().getStatusCode() == 429)
@@ -123,9 +123,9 @@ public class AixMetWeatherData implements AixDataSource {
 				throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
 			}
 
-			InputStream content = AixUtils.getGzipInputStream(httpResponse);
+			InputStream content = AfUtils.getGzipInputStream(httpResponse);
 			
-			mAixUpdate.updateWidgetRemoteViews("Parsing NMI weather data...", false);
+			mAfUpdate.updateWidgetRemoteViews("Parsing NMI weather data...", false);
 			
 			TimeZone utcTimeZone = TimeZone.getTimeZone("UTC");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
@@ -170,15 +170,15 @@ public class AixMetWeatherData implements AixDataSource {
 							
 							if (from != to) {
 								currentList = intervalDataValues;
-								contentValues.put(AixIntervalDataForecastColumns.LOCATION, aixLocationInfo.getId());
-								contentValues.put(AixIntervalDataForecastColumns.TIME_ADDED, currentUtcTime);
-								contentValues.put(AixIntervalDataForecastColumns.TIME_FROM, from);
-								contentValues.put(AixIntervalDataForecastColumns.TIME_TO, to);
+								contentValues.put(AfIntervalDataForecastColumns.LOCATION, afLocationInfo.getId());
+								contentValues.put(AfIntervalDataForecastColumns.TIME_ADDED, currentUtcTime);
+								contentValues.put(AfIntervalDataForecastColumns.TIME_FROM, from);
+								contentValues.put(AfIntervalDataForecastColumns.TIME_TO, to);
 							} else {
 								currentList = pointDataValues;
-								contentValues.put(AixPointDataForecastColumns.LOCATION, aixLocationInfo.getId());
-								contentValues.put(AixPointDataForecastColumns.TIME_ADDED, currentUtcTime);
-								contentValues.put(AixPointDataForecastColumns.TIME, from);
+								contentValues.put(AfPointDataForecastColumns.LOCATION, afLocationInfo.getId());
+								contentValues.put(AfPointDataForecastColumns.TIME_ADDED, currentUtcTime);
+								contentValues.put(AfPointDataForecastColumns.TIME, from);
 							}
 						} catch (Exception e) {
 							Log.d(TAG, "Error parsing from & to values. from="
@@ -187,39 +187,39 @@ public class AixMetWeatherData implements AixDataSource {
 						}
 					} else if (parser.getName().equals("temperature")) {
 						if (contentValues != null) {
-							contentValues.put(AixPointDataForecastColumns.TEMPERATURE,
+							contentValues.put(AfPointDataForecastColumns.TEMPERATURE,
 									Float.parseFloat(parser.getAttributeValue(null, "value")));
 						}
 					} else if (parser.getName().equals("humidity")) {
 						if (contentValues != null) {
-							contentValues.put(AixPointDataForecastColumns.HUMIDITY,
+							contentValues.put(AfPointDataForecastColumns.HUMIDITY,
 									Float.parseFloat(parser.getAttributeValue(null, "value")));
 						}
 					} else if (parser.getName().equals("pressure")) {
 						if (contentValues != null) {
-							contentValues.put(AixPointDataForecastColumns.PRESSURE,
+							contentValues.put(AfPointDataForecastColumns.PRESSURE,
 									Float.parseFloat(parser.getAttributeValue(null, "value")));
 						}
 					} else if (parser.getName().equals("symbol")) {
 						if (contentValues != null) {
-							contentValues.put(AixIntervalDataForecastColumns.WEATHER_ICON,
+							contentValues.put(AfIntervalDataForecastColumns.WEATHER_ICON,
 									mapWeatherIconToOldApi(
 											Integer.parseInt(parser.getAttributeValue(null, "number"))));
 						}
 					} else if (parser.getName().equals("precipitation")) {
 						if (contentValues != null) {
-							contentValues.put(AixIntervalDataForecastColumns.RAIN_VALUE,
+							contentValues.put(AfIntervalDataForecastColumns.RAIN_VALUE,
 									Float.parseFloat(
 											parser.getAttributeValue(null, "value")));
 							try {
-								contentValues.put(AixIntervalDataForecastColumns.RAIN_MINVAL,
+								contentValues.put(AfIntervalDataForecastColumns.RAIN_MINVAL,
     									Float.parseFloat(
     											parser.getAttributeValue(null, "minvalue")));
 							} catch (Exception e) {
 								/* LOW VALUE IS OPTIONAL */
 							}
 							try {
-    							contentValues.put(AixIntervalDataForecastColumns.RAIN_MAXVAL,
+    							contentValues.put(AfIntervalDataForecastColumns.RAIN_MAXVAL,
     									Float.parseFloat(
     											parser.getAttributeValue(null, "maxvalue")));
 							} catch (Exception e) {
@@ -248,20 +248,20 @@ public class AixMetWeatherData implements AixDataSource {
 			}
 			
 			ContentResolver resolver = mContext.getContentResolver();
-			resolver.bulkInsert(AixPointDataForecasts.CONTENT_URI, pointDataValues.toArray(new ContentValues[pointDataValues.size()]));
-			resolver.bulkInsert(AixIntervalDataForecasts.CONTENT_URI, intervalDataValues.toArray(new ContentValues[intervalDataValues.size()]));
+			resolver.bulkInsert(AfPointDataForecasts.CONTENT_URI, pointDataValues.toArray(new ContentValues[pointDataValues.size()]));
+			resolver.bulkInsert(AfIntervalDataForecasts.CONTENT_URI, intervalDataValues.toArray(new ContentValues[intervalDataValues.size()]));
 
 			// Remove duplicates from weather data
-			int numRedundantPointDataEntries = resolver.update(AixPointDataForecasts.CONTENT_URI, null, null, null);
-			int numRedundantIntervalDataEntries = resolver.update(AixIntervalDataForecasts.CONTENT_URI, null, null, null);
+			int numRedundantPointDataEntries = resolver.update(AfPointDataForecasts.CONTENT_URI, null, null, null);
+			int numRedundantIntervalDataEntries = resolver.update(AfIntervalDataForecasts.CONTENT_URI, null, null, null);
 			
 			Log.d(TAG, String.format("update(): %d new PointData entries! %d redundant entries removed.", pointDataValues.size(), numRedundantPointDataEntries));
 			Log.d(TAG, String.format("update(): %d new IntervalData entries! %d redundant entries removed.", intervalDataValues.size(), numRedundantIntervalDataEntries));
 			
-			aixLocationInfo.setLastForecastUpdate(currentUtcTime);
-			aixLocationInfo.setForecastValidTo(forecastValidTo);
-			aixLocationInfo.setNextForecastUpdate(nextUpdate);
-			aixLocationInfo.commit(mContext);
+			afLocationInfo.setLastForecastUpdate(currentUtcTime);
+			afLocationInfo.setForecastValidTo(forecastValidTo);
+			afLocationInfo.setNextForecastUpdate(nextUpdate);
+			afLocationInfo.commit(mContext);
 			
 			long endTime = System.currentTimeMillis();
 			

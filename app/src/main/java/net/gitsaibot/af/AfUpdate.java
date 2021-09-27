@@ -6,16 +6,16 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import net.gitsaibot.af.data.AixDataUpdateException;
-import net.gitsaibot.af.data.AixGeoNamesData;
-import net.gitsaibot.af.data.AixMetSunTimeData;
-import net.gitsaibot.af.data.AixMetWeatherData;
-import net.gitsaibot.af.data.AixNoaaWeatherData;
-import net.gitsaibot.af.util.AixLocationInfo;
-import net.gitsaibot.af.util.AixViewInfo;
-import net.gitsaibot.af.util.AixWidgetInfo;
-import net.gitsaibot.af.widget.AixDetailedWidget;
-import net.gitsaibot.af.widget.AixWidgetDataException;
-import net.gitsaibot.af.widget.AixWidgetDrawException;
+import net.gitsaibot.af.data.AfGeoNamesData;
+import net.gitsaibot.af.data.AfMetSunTimeData;
+import net.gitsaibot.af.data.AfMetWeatherData;
+import net.gitsaibot.af.data.AfNoaaWeatherData;
+import net.gitsaibot.af.util.AfLocationInfo;
+import net.gitsaibot.af.util.AfViewInfo;
+import net.gitsaibot.af.util.AfWidgetInfo;
+import net.gitsaibot.af.widget.AfDetailedWidget;
+import net.gitsaibot.af.widget.AfWidgetDataException;
+import net.gitsaibot.af.widget.AfWidgetDrawException;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -33,7 +33,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class AixUpdate {
+public class AfUpdate {
 	
 	private final static String TAG = "AixUpdate";
 	
@@ -48,45 +48,45 @@ public class AixUpdate {
 	
 	private TimeZone mUtcTimeZone;
 	
-	private AixWidgetInfo mAixWidgetInfo;
-	private AixSettings mAixSettings;
+	private AfWidgetInfo mAfWidgetInfo;
+	private AfSettings mAfSettings;
 	
-	private AixUpdate(Context context, AixWidgetInfo aixWidgetInfo, AixSettings aixSettings) {
+	private AfUpdate(Context context, AfWidgetInfo afWidgetInfo, AfSettings afSettings) {
 		mContext = context;
-		mAixWidgetInfo = aixWidgetInfo;
-		mWidgetUri = aixWidgetInfo.getWidgetUri();
-		mAixSettings = aixSettings;
+		mAfWidgetInfo = afWidgetInfo;
+		mWidgetUri = afWidgetInfo.getWidgetUri();
+		mAfSettings = afSettings;
 		
 		mUtcTimeZone = TimeZone.getTimeZone("UTC");
 	}
 	
-	public static AixUpdate build(Context context, AixWidgetInfo aixWidgetInfo, AixSettings aixSettings)
+	public static AfUpdate build(Context context, AfWidgetInfo afWidgetInfo, AfSettings afSettings)
 	{
-		return new AixUpdate(context, aixWidgetInfo, aixSettings);
+		return new AfUpdate(context, afWidgetInfo, afSettings);
 	}
 	
 	public void process() throws Exception {
-		if (mAixWidgetInfo == null)
+		if (mAfWidgetInfo == null)
 		{
 			Log.d(TAG, "process(): Failed to start update. Missing widget info.");
 			return;
 		}
 		
-		AixViewInfo aixViewInfo = mAixWidgetInfo.getViewInfo();
-		if (aixViewInfo == null)
+		AfViewInfo afViewInfo = mAfWidgetInfo.getViewInfo();
+		if (afViewInfo == null)
 		{
 			Log.d(TAG, "process(): Failed to start update. Missing view info.");
 			return;
 		}
 		
-		AixLocationInfo aixLocationInfo = aixViewInfo.getLocationInfo();
-		if (aixLocationInfo == null)
+		AfLocationInfo afLocationInfo = afViewInfo.getLocationInfo();
+		if (afLocationInfo == null)
 		{
 			Log.d(TAG, "process(): Failed to start update. Missing location info.");
 			return;
 		}
 		
-		Log.d(TAG, "process(): Started processing. " + mAixWidgetInfo.toString());
+		Log.d(TAG, "process(): Started processing. " + mAfWidgetInfo.toString());
 		
 		mCurrentUtcTime = Calendar.getInstance(mUtcTimeZone).getTimeInMillis(); 
 
@@ -94,7 +94,7 @@ public class AixUpdate {
 		int numAttemptsRemaining = totalNumAttempts;
 		boolean updateSuccess = false, drawSuccess = false;
 
-		boolean shouldUpdate = isDataUpdateNeeded(aixLocationInfo);
+		boolean shouldUpdate = isDataUpdateNeeded(afLocationInfo);
 		boolean isWifiConnectionMissing = false;
 		boolean isRateLimited = false;
 		
@@ -105,9 +105,9 @@ public class AixUpdate {
 			}
 			
 			if (shouldUpdate) {
-				if (!mAixSettings.getCachedWifiOnly() || isWiFiAvailable()) {
+				if (!mAfSettings.getCachedWifiOnly() || isWiFiAvailable()) {
 					try {
-						updateData(aixLocationInfo);
+						updateData(afLocationInfo);
 						updateSuccess = true;
 						isWifiConnectionMissing = false;
 					}
@@ -127,16 +127,16 @@ public class AixUpdate {
 			}
 			
 			try {
-				AixDetailedWidget widget = AixDetailedWidget.build(mContext, mAixWidgetInfo, aixLocationInfo);
+				AfDetailedWidget widget = AfDetailedWidget.build(mContext, mAfWidgetInfo, afLocationInfo);
 				updateWidgetRemoteViews(widget);
 				drawSuccess = true;
 			}
-			catch (AixWidgetDrawException e) {
+			catch (AfWidgetDrawException e) {
 				Log.d(TAG, "process(): Failed to draw widget. AixWidgetDrawException=" + e.getMessage());
 				e.printStackTrace();
 				break;
 			}
-			catch (AixWidgetDataException e)
+			catch (AfWidgetDataException e)
 			{
 				Log.d(TAG, "process(): Failed to draw widget. AixWidgetDataException=" + e.getMessage());
 				e.printStackTrace();
@@ -162,7 +162,7 @@ public class AixUpdate {
 		long updateTime = Long.MAX_VALUE;
 
 		if (shouldUpdate && !updateSuccess) {
-			if (mAixSettings.getCachedWifiOnly()) {
+			if (mAfSettings.getCachedWifiOnly()) {
 				SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
 				Editor editor = settings.edit();
 				editor.putBoolean("global_needwifi", true);
@@ -171,7 +171,7 @@ public class AixUpdate {
 				Log.d(TAG, "WiFi needed, but not connected!");
 			}
 
-			clearUpdateTimestamps(aixLocationInfo);
+			clearUpdateTimestamps(afLocationInfo);
 			updateTime = Math.min(updateTime,
 				System.currentTimeMillis()
 				+ 10 * DateUtils.MINUTE_IN_MILLIS
@@ -180,9 +180,9 @@ public class AixUpdate {
 
 		if (!drawSuccess) {
 			if (shouldUpdate && !updateSuccess) {
-				if (mAixSettings.getCachedProvider() == AixUtils.PROVIDER_NWS && !isLocationInUS(aixLocationInfo)) {
-					PendingIntent pendingIntent = AixUtils.buildWidgetProviderAutoIntent(mContext, mWidgetUri);
-					AixUtils.updateWidgetRemoteViews(mContext, mAixWidgetInfo.getAppWidgetId(), "NWS source cannot be used outside US.\nTap widget to revert to auto", true, pendingIntent);
+				if (mAfSettings.getCachedProvider() == AfUtils.PROVIDER_NWS && !isLocationInUS(afLocationInfo)) {
+					PendingIntent pendingIntent = AfUtils.buildWidgetProviderAutoIntent(mContext, mWidgetUri);
+					AfUtils.updateWidgetRemoteViews(mContext, mAfWidgetInfo.getAppWidgetId(), "NWS source cannot be used outside US.\nTap widget to revert to auto", true, pendingIntent);
 				} else if (isRateLimited) {
 					updateWidgetRemoteViews("API is currently rate limited", true);
 				} else if (isWifiConnectionMissing) {
@@ -191,9 +191,9 @@ public class AixUpdate {
 					updateWidgetRemoteViews("Failed to get weather data", true);
 				}
 			} else {
-				if (mAixSettings.getCachedUseSpecificDimensions()) {
-					PendingIntent pendingIntent = AixUtils.buildDisableSpecificDimensionsIntent(mContext, mWidgetUri);
-					AixUtils.updateWidgetRemoteViews(mContext, mAixWidgetInfo.getAppWidgetId(), "Draw failed!\nTap widget to revert to minimal dimensions", true, pendingIntent);
+				if (mAfSettings.getCachedUseSpecificDimensions()) {
+					PendingIntent pendingIntent = AfUtils.buildDisableSpecificDimensionsIntent(mContext, mWidgetUri);
+					AfUtils.updateWidgetRemoteViews(mContext, mAfWidgetInfo.getAppWidgetId(), "Draw failed!\nTap widget to revert to minimal dimensions", true, pendingIntent);
 				} else {
 					updateWidgetRemoteViews("Failed to draw widget", true);
 				}
@@ -216,7 +216,7 @@ public class AixUpdate {
 		}
 	}
 
-	private boolean isLocationInUS(AixLocationInfo locationInfo) {
+	private boolean isLocationInUS(AfLocationInfo locationInfo) {
 		String widgetCountryCode = "global_lcountry_" + locationInfo.getId();
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
 		boolean isUS = settings.getString(widgetCountryCode, "").toLowerCase().equals("us");
@@ -225,7 +225,7 @@ public class AixUpdate {
 	
 	private void scheduleUpdate(long updateTime) {
 		Calendar calendar = Calendar.getInstance();
-		AixUtils.truncateHour(calendar);
+		AfUtils.truncateHour(calendar);
 		calendar.add(Calendar.HOUR, 1);
 		
 		// Add random interval to spread traffic
@@ -233,49 +233,49 @@ public class AixUpdate {
 		
 		updateTime = Math.min(updateTime, calendar.getTimeInMillis());
 
-		Intent updateIntent = new Intent(AixService.ACTION_UPDATE_WIDGET, mWidgetUri, mContext, AixServiceReceiver.class);
+		Intent updateIntent = new Intent(AfService.ACTION_UPDATE_WIDGET, mWidgetUri, mContext, AfServiceReceiver.class);
 		PendingIntent pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, 0);
 		
-		boolean awakeOnly = mAixSettings.getCachedAwakeOnly();
+		boolean awakeOnly = mAfSettings.getCachedAwakeOnly();
 		
 		AlarmManager alarmManager = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.set(awakeOnly ? AlarmManager.RTC : AlarmManager.RTC_WAKEUP, updateTime, pendingUpdateIntent);
 		Log.d(TAG, "Scheduling next update for: " + (new SimpleDateFormat().format(updateTime)) + " AwakeOnly=" + awakeOnly);
 	}
 	
-	private Uri renderWidget(AixDetailedWidget widget, boolean isLandscape) throws AixWidgetDrawException, IOException {		
+	private Uri renderWidget(AfDetailedWidget widget, boolean isLandscape) throws AfWidgetDrawException, IOException {
 		Point dimensions;
 		
-		if (mAixSettings.getCachedUseSpecificDimensions()) {
-			dimensions = mAixSettings.getPixelDimensionsOrStandard(isLandscape);
+		if (mAfSettings.getCachedUseSpecificDimensions()) {
+			dimensions = mAfSettings.getPixelDimensionsOrStandard(isLandscape);
 		} else {
-			dimensions = mAixSettings.getStandardPixelDimensions(mAixWidgetInfo.getNumColumns(), mAixWidgetInfo.getNumRows(), isLandscape, true);
+			dimensions = mAfSettings.getStandardPixelDimensions(mAfWidgetInfo.getNumColumns(), mAfWidgetInfo.getNumRows(), isLandscape, true);
 		}
 
 		Bitmap bitmap = widget.render(dimensions.x, dimensions.y, isLandscape);
-		return AixUtils.storeBitmap(mContext, bitmap, mAixWidgetInfo.getAppWidgetId(), mCurrentUtcTime, isLandscape);
+		return AfUtils.storeBitmap(mContext, bitmap, mAfWidgetInfo.getAppWidgetId(), mCurrentUtcTime, isLandscape);
 	}
 	
-	private void updateWidgetRemoteViews(AixDetailedWidget aixDetailedWidget) throws AixWidgetDrawException, IOException
+	private void updateWidgetRemoteViews(AfDetailedWidget afDetailedWidget) throws AfWidgetDrawException, IOException
 	{
-		int orientationMode = mAixSettings.getCachedOrientationMode();
+		int orientationMode = mAfSettings.getCachedOrientationMode();
 		
 		RemoteViews updateView;
 		
-		if (orientationMode == AixUtils.ORIENTATION_PORTRAIT_FIXED) {
-			Uri portraitUri = renderWidget(aixDetailedWidget, false);
+		if (orientationMode == AfUtils.ORIENTATION_PORTRAIT_FIXED) {
+			Uri portraitUri = renderWidget(afDetailedWidget, false);
 			updateView = new RemoteViews(mContext.getPackageName(),
-					mAixSettings.getCachedUseSpecificDimensions()
+					mAfSettings.getCachedUseSpecificDimensions()
 					? R.layout.widget_custom_fixed
 					: R.layout.widget_large_tiny_portrait);
 			updateView.setImageViewUri(R.id.widgetImage, portraitUri);
 			Log.d(TAG, "Updating portrait mode");
 		}
-		else if (orientationMode == AixUtils.ORIENTATION_LANDSCAPE_FIXED)
+		else if (orientationMode == AfUtils.ORIENTATION_LANDSCAPE_FIXED)
 		{
-			Uri landscapeUri = renderWidget(aixDetailedWidget, true);
+			Uri landscapeUri = renderWidget(afDetailedWidget, true);
 			updateView = new RemoteViews(mContext.getPackageName(),
-					mAixSettings.getCachedUseSpecificDimensions()
+					mAfSettings.getCachedUseSpecificDimensions()
 					? R.layout.widget_custom_fixed
 					: R.layout.widget_large_tiny_landscape);
 			updateView.setImageViewUri(R.id.widgetImage, landscapeUri);
@@ -283,11 +283,11 @@ public class AixUpdate {
 		}
 		else
 		{
-			Uri portraitUri = renderWidget(aixDetailedWidget, false);
-			Uri landscapeUri = renderWidget(aixDetailedWidget, true);
+			Uri portraitUri = renderWidget(afDetailedWidget, false);
+			Uri landscapeUri = renderWidget(afDetailedWidget, true);
 			
 			updateView = new RemoteViews(mContext.getPackageName(),
-					mAixSettings.getCachedUseSpecificDimensions()
+					mAfSettings.getCachedUseSpecificDimensions()
 					? R.layout.widget_custom
 					: R.layout.widget_large_tiny);
 			
@@ -297,14 +297,14 @@ public class AixUpdate {
 			Log.d(TAG, "Updating both portrait and landscape mode");
 		}
 		
-		mAixSettings.setWidgetState(WIDGET_STATE_RENDER);
+		mAfSettings.setWidgetState(WIDGET_STATE_RENDER);
 		
-		PendingIntent configurationIntent = AixUtils.buildConfigurationIntent(mContext, mAixWidgetInfo.getWidgetUri());
+		PendingIntent configurationIntent = AfUtils.buildConfigurationIntent(mContext, mAfWidgetInfo.getWidgetUri());
 		updateView.setOnClickPendingIntent(R.id.widgetContainer, configurationIntent);
-		AppWidgetManager.getInstance(mContext).updateAppWidget(mAixWidgetInfo.getAppWidgetId(), updateView);
+		AppWidgetManager.getInstance(mContext).updateAppWidget(mAfWidgetInfo.getAppWidgetId(), updateView);
 	}
 	
-	private boolean isDataUpdateNeeded(AixLocationInfo locationInfo) {
+	private boolean isDataUpdateNeeded(AfLocationInfo locationInfo) {
 		if (locationInfo.getLastForecastUpdate() == null ||
 				locationInfo.getForecastValidTo() == null ||
 				locationInfo.getNextForecastUpdate() == null)
@@ -313,7 +313,7 @@ public class AixUpdate {
 		}
 		
 		boolean shouldUpdate = false;
-		int updateHours = mAixSettings.getCachedNumUpdateHours();
+		int updateHours = mAfSettings.getCachedNumUpdateHours();
 		
 		if (updateHours == 0) {
 			if (	   (mCurrentUtcTime >= locationInfo.getLastForecastUpdate() + DateUtils.MINUTE_IN_MILLIS)
@@ -329,7 +329,7 @@ public class AixUpdate {
 		return shouldUpdate;
 	}
 	
-	private void clearUpdateTimestamps(AixLocationInfo locationInfo) {
+	private void clearUpdateTimestamps(AfLocationInfo locationInfo) {
 		locationInfo.setLastForecastUpdate(null);
 		locationInfo.setForecastValidTo(null);
 		locationInfo.setNextForecastUpdate(null);
@@ -338,23 +338,23 @@ public class AixUpdate {
 	
 	public void updateWidgetRemoteViews(String message, boolean overwrite)
 	{
-		PendingIntent configurationIntent = AixUtils.buildConfigurationIntent(mContext, mAixWidgetInfo.getWidgetUri());
-		AixUtils.updateWidgetRemoteViews(mContext, mAixWidgetInfo.getAppWidgetId(), message, overwrite, configurationIntent);
+		PendingIntent configurationIntent = AfUtils.buildConfigurationIntent(mContext, mAfWidgetInfo.getWidgetUri());
+		AfUtils.updateWidgetRemoteViews(mContext, mAfWidgetInfo.getAppWidgetId(), message, overwrite, configurationIntent);
 	}
 	
-	private void updateData(AixLocationInfo aixLocationInfo) throws AixDataUpdateException {
-		Log.d(TAG, "updateData() started uri=" + aixLocationInfo.getLocationUri());
+	private void updateData(AfLocationInfo afLocationInfo) throws AixDataUpdateException {
+		Log.d(TAG, "updateData() started uri=" + afLocationInfo.getLocationUri());
 
-		AixUtils.clearOldProviderData(mContext.getContentResolver());
-		AixGeoNamesData.build(mContext, this, mAixSettings).update(aixLocationInfo, mCurrentUtcTime);
-		AixMetSunTimeData.build(mContext, this, mAixSettings).update(aixLocationInfo, mCurrentUtcTime);
+		AfUtils.clearOldProviderData(mContext.getContentResolver());
+		AfGeoNamesData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
+		AfMetSunTimeData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
 
-		int provider = mAixSettings.getCachedProvider();
+		int provider = mAfSettings.getCachedProvider();
 
-		if ((provider == AixUtils.PROVIDER_AUTO && isLocationInUS(aixLocationInfo)) || provider == AixUtils.PROVIDER_NWS) {
-			AixNoaaWeatherData.build(mContext, this, mAixSettings).update(aixLocationInfo, mCurrentUtcTime);
+		if ((provider == AfUtils.PROVIDER_AUTO && isLocationInUS(afLocationInfo)) || provider == AfUtils.PROVIDER_NWS) {
+			AfNoaaWeatherData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
 		} else {
-			AixMetWeatherData.build(mContext, this, mAixSettings).update(aixLocationInfo, mCurrentUtcTime);
+			AfMetWeatherData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
 		}
 	}
 	

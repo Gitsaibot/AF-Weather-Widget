@@ -14,14 +14,14 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.zip.GZIPInputStream;
 
-import net.gitsaibot.af.AixProvider.AixIntervalDataForecasts;
-import net.gitsaibot.af.AixProvider.AixLocations;
-import net.gitsaibot.af.AixProvider.AixLocationsColumns;
-import net.gitsaibot.af.AixProvider.AixPointDataForecasts;
-import net.gitsaibot.af.AixProvider.AixSunMoonData;
-import net.gitsaibot.af.AixProvider.AixViews;
-import net.gitsaibot.af.AixProvider.AixWidgets;
-import net.gitsaibot.af.AixProvider.AixWidgetsColumns;
+import net.gitsaibot.af.AfProvider.AfIntervalDataForecasts;
+import net.gitsaibot.af.AfProvider.AfLocations;
+import net.gitsaibot.af.AfProvider.AfLocationsColumns;
+import net.gitsaibot.af.AfProvider.AfPointDataForecasts;
+import net.gitsaibot.af.AfProvider.AfSunMoonData;
+import net.gitsaibot.af.AfProvider.AfViews;
+import net.gitsaibot.af.AfProvider.AfWidgets;
+import net.gitsaibot.af.AfProvider.AfWidgetsColumns;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -56,7 +56,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class AixUtils {
+public class AfUtils {
 	
 	private final static String TAG = "AixUtils";
 	
@@ -203,7 +203,7 @@ public class AixUtils {
 	public static final int TOP_TEXT_PORTRAIT = 3;
 	public static final int TOP_TEXT_ALWAYS = 4;
 	
-	private AixUtils() {
+	private AfUtils() {
 		
 	}
 	
@@ -443,7 +443,7 @@ public class AixUtils {
 	
 	public static void deleteWidget(Context context, int appWidgetId) {
 		try {
-			AixSettings.removeWidgetSettings(context, null, null, appWidgetId).commit();
+			AfSettings.removeWidgetSettings(context, null, null, appWidgetId).commit();
 		} catch (Exception e) {
 			Log.d(TAG, "Failed to successfully remove widget settings. (appWidgetId=" + appWidgetId + ")");
 		}
@@ -514,7 +514,7 @@ public class AixUtils {
 			{
 				if (widgetCursor.moveToFirst())
 				{
-					int viewColumnIndex = widgetCursor.getColumnIndex(AixWidgetsColumns.VIEWS);
+					int viewColumnIndex = widgetCursor.getColumnIndex(AfWidgetsColumns.VIEWS);
 					if (viewColumnIndex != -1)
 					{
 						viewRowId = widgetCursor.getLong(viewColumnIndex);
@@ -535,10 +535,10 @@ public class AixUtils {
 	
 	public static void removeWidgetFromProvider(Context context, int appWidgetId)
 	{
-		Uri widgetUri = Uri.withAppendedPath(AixWidgets.CONTENT_URI, Integer.toString(appWidgetId));
+		Uri widgetUri = Uri.withAppendedPath(AfWidgets.CONTENT_URI, Integer.toString(appWidgetId));
 		
 		long viewRowId = getWidgetViewId(context, widgetUri);
-		Uri viewUri = ContentUris.withAppendedId(AixViews.CONTENT_URI, viewRowId);
+		Uri viewUri = ContentUris.withAppendedId(AfViews.CONTENT_URI, viewRowId);
 		
 		ContentResolver resolver = context.getContentResolver();
 		
@@ -553,14 +553,14 @@ public class AixUtils {
 			resolver.delete(
 					Uri.withAppendedPath(
 							ContentUris.withAppendedId(
-									AixWidgets.CONTENT_URI, appWidgetId), AixWidgets.TWIG_SETTINGS),
+									AfWidgets.CONTENT_URI, appWidgetId), AfWidgets.TWIG_SETTINGS),
 					null, null);
 		}
 		if (viewRowId != -1) {
 			resolver.delete(
 					Uri.withAppendedPath(
 							ContentUris.withAppendedId(
-									AixViews.CONTENT_URI, viewRowId), AixViews.TWIG_SETTINGS),
+									AfViews.CONTENT_URI, viewRowId), AfViews.TWIG_SETTINGS),
 					null, null);
 		}
 	}
@@ -656,26 +656,26 @@ public class AixUtils {
 	
 	public static PendingIntent buildDisableSpecificDimensionsIntent(Context context, Uri widgetUri)
 	{
-		Intent intent = new Intent(AixService.ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS, widgetUri, context, AixServiceReceiver.class);
+		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS, widgetUri, context, AfServiceReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}
 	
 	public static PendingIntent buildWidgetProviderAutoIntent(Context context, Uri widgetUri)
 	{
-		Intent intent = new Intent(AixService.ACTION_UPDATE_ALL_PROVIDER_AUTO, widgetUri, context, AixServiceReceiver.class);
+		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_PROVIDER_AUTO, widgetUri, context, AfServiceReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}
 	
 	public static void clearProviderData(ContentResolver contentResolver)
 	{
-		contentResolver.delete(AixPointDataForecasts.CONTENT_URI, null, null);
-		contentResolver.delete(AixIntervalDataForecasts.CONTENT_URI, null, null);
+		contentResolver.delete(AfPointDataForecasts.CONTENT_URI, null, null);
+		contentResolver.delete(AfIntervalDataForecasts.CONTENT_URI, null, null);
 		
 		ContentValues values = new ContentValues();
-		values.put(AixLocationsColumns.LAST_FORECAST_UPDATE, 0);
-		values.put(AixLocationsColumns.FORECAST_VALID_TO, 0);
-		values.put(AixLocationsColumns.NEXT_FORECAST_UPDATE, 0);
-		contentResolver.update(AixLocations.CONTENT_URI, values, null, null);
+		values.put(AfLocationsColumns.LAST_FORECAST_UPDATE, 0);
+		values.put(AfLocationsColumns.FORECAST_VALID_TO, 0);
+		values.put(AfLocationsColumns.NEXT_FORECAST_UPDATE, 0);
+		contentResolver.update(AfLocations.CONTENT_URI, values, null, null);
 	}
 	
 	public static boolean isWifiConnected(Context context)
@@ -690,22 +690,22 @@ public class AixUtils {
 	public static void clearOldProviderData(ContentResolver contentResolver)
 	{
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-		AixUtils.truncateHour(calendar);
+		AfUtils.truncateHour(calendar);
 		
 		// Clear old data
 		calendar.add(Calendar.HOUR_OF_DAY, -12);
 
 		contentResolver.delete(
-				AixPointDataForecasts.CONTENT_URI.buildUpon().appendQueryParameter(
+				AfPointDataForecasts.CONTENT_URI.buildUpon().appendQueryParameter(
 						"before", Long.toString(calendar.getTimeInMillis())).build(),
 				null, null);
 		contentResolver.delete(
-				AixIntervalDataForecasts.CONTENT_URI.buildUpon().appendQueryParameter(
+				AfIntervalDataForecasts.CONTENT_URI.buildUpon().appendQueryParameter(
 						"before", Long.toString(calendar.getTimeInMillis())).build(),
 				null, null);
 		calendar.add(Calendar.HOUR_OF_DAY, -36);
 		contentResolver.delete(
-				AixSunMoonData.CONTENT_URI.buildUpon().appendQueryParameter(
+				AfSunMoonData.CONTENT_URI.buildUpon().appendQueryParameter(
 						"before", Long.toString(calendar.getTimeInMillis())).build(),
 				null, null);
 	}

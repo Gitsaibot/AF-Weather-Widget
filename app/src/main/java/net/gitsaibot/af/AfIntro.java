@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import net.gitsaibot.af.databinding.IntroBinding;
 
-public class AixIntro extends Activity {
+public class AfIntro extends Activity {
 	
 	public final static String ACTION_SHOW_HELP = "aix.intent.action.SHOW_HELP";
 	private IntroBinding binding;

@@ -22,8 +22,8 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import net.gitsaibot.af.util.AixLocationInfo;
-import net.gitsaibot.af.util.AixWidgetInfo;
+import net.gitsaibot.af.util.AfLocationInfo;
+import net.gitsaibot.af.util.AfWidgetInfo;
 
 public class AfPreferenceFragment extends PreferenceFragmentCompat implements
         Preference.OnPreferenceChangeListener {
@@ -35,8 +35,8 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
 
     public final static int EXIT_CONFIGURATION = 77;
 
-    private AixWidgetInfo mAixWidgetInfo = null;
-    private AixSettings mAixSettings = null;
+    private AfWidgetInfo mAfWidgetInfo = null;
+    private AfSettings mAfSettings = null;
 
     private Button mAddWidgetButton;
 
@@ -105,7 +105,7 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
             }
 
             try {
-                mAixWidgetInfo = AixWidgetInfo.build(getContext(), widgetUri);
+                mAfWidgetInfo = AfWidgetInfo.build(getContext(), widgetUri);
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Failed to get widget information from database. Try removing the widget and creating a new one.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -119,21 +119,21 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
                 return;
             }
 
-            AixUtils.deleteWidget(getContext(), appWidgetId);
+            AfUtils.deleteWidget(getContext(), appWidgetId);
 
-            mAixWidgetInfo = new AixWidgetInfo(appWidgetId, AixProvider.AixWidgets.SIZE_LARGE_TINY, null);
+            mAfWidgetInfo = new AfWidgetInfo(appWidgetId, AfProvider.AfWidgets.SIZE_LARGE_TINY, null);
 
-            Log.d(TAG, "Commit=" + mAixWidgetInfo.commit(getContext()));
+            Log.d(TAG, "Commit=" + mAfWidgetInfo.commit(getContext()));
         }
 
-        Log.d(TAG, "onCreate(): " + mAixWidgetInfo.toString());
+        Log.d(TAG, "onCreate(): " + mAfWidgetInfo.toString());
 
-        mAixSettings = AixSettings.build(getContext(), mAixWidgetInfo);
+        mAfSettings = AfSettings.build(getContext(), mAfWidgetInfo);
 
         if (mActionEdit) {
-            mAixSettings.initializePreferencesExistingWidget();
+            mAfSettings.initializePreferencesExistingWidget();
         } else {
-            mAixSettings.initializePreferencesNewWidget();
+            mAfSettings.initializePreferencesNewWidget();
         }
     }
 
@@ -155,41 +155,41 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
 
                 Context mContext = getActivity().getApplicationContext();
 
-                if (mAixWidgetInfo.getViewInfo() == null || mAixWidgetInfo.getViewInfo().getLocationInfo() == null) {
+                if (mAfWidgetInfo.getViewInfo() == null || mAfWidgetInfo.getViewInfo().getLocationInfo() == null) {
                     Toast.makeText(mContext, getString(R.string.must_select_location), Toast.LENGTH_SHORT).show();
 
                 }
 
-                Log.d(TAG, "onClick(): " + mAixWidgetInfo.toString());
-                mAixWidgetInfo.commit(mContext);
-                Log.d(TAG, "onClick(): Committed=" + mAixWidgetInfo.toString());
+                Log.d(TAG, "onClick(): " + mAfWidgetInfo.toString());
+                mAfWidgetInfo.commit(mContext);
+                Log.d(TAG, "onClick(): Committed=" + mAfWidgetInfo.toString());
 
-                boolean isProviderModified = mAixSettings.isProviderPreferenceModified();
-                boolean globalSettingModified = mAixSettings.saveAllPreferences(mActivateCalibrationMode);
+                boolean isProviderModified = mAfSettings.isProviderPreferenceModified();
+                boolean globalSettingModified = mAfSettings.saveAllPreferences(mActivateCalibrationMode);
 
-                PendingIntent configurationIntent = AixUtils.buildConfigurationIntent(mContext, mAixWidgetInfo.getWidgetUri());
-                AixUtils.updateWidgetRemoteViews(mContext, mAixWidgetInfo.getAppWidgetId(), getString(R.string.widget_loading), true, configurationIntent);
+                PendingIntent configurationIntent = AfUtils.buildConfigurationIntent(mContext, mAfWidgetInfo.getWidgetUri());
+                AfUtils.updateWidgetRemoteViews(mContext, mAfWidgetInfo.getAppWidgetId(), getString(R.string.widget_loading), true, configurationIntent);
 
-                Uri widgetUri = mAixWidgetInfo.getWidgetUri();
+                Uri widgetUri = mAfWidgetInfo.getWidgetUri();
 
                 if (isProviderModified || globalSettingModified) {
-                    AixService.enqueueWork(
+                    AfService.enqueueWork(
                             mContext,
                             new Intent(isProviderModified
-                                    ? AixService.ACTION_UPDATE_ALL_PROVIDER_CHANGE
-                                    : AixService.ACTION_UPDATE_ALL,
-                                    widgetUri, mContext, AixService.class));
+                                    ? AfService.ACTION_UPDATE_ALL_PROVIDER_CHANGE
+                                    : AfService.ACTION_UPDATE_ALL,
+                                    widgetUri, mContext, AfService.class));
                 } else {
-                    AixService.enqueueWork(
+                    AfService.enqueueWork(
                             mContext,
-                            new Intent(AixService.ACTION_UPDATE_WIDGET, widgetUri, mContext, AixService.class));
+                            new Intent(AfService.ACTION_UPDATE_WIDGET, widgetUri, mContext, AfService.class));
                 }
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAixWidgetInfo.getAppWidgetId());
+                resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAfWidgetInfo.getAppWidgetId());
                 getActivity().setResult(Activity.RESULT_OK, resultIntent);
 
-                if(getActivity() != null & !(mAixWidgetInfo.getViewInfo() == null || mAixWidgetInfo.getViewInfo().getLocationInfo() == null)) {
+                if(getActivity() != null & !(mAfWidgetInfo.getViewInfo() == null || mAfWidgetInfo.getViewInfo().getLocationInfo() == null)) {
                     getActivity().finish();
                 }
 
@@ -226,9 +226,9 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
                 if (resultCode == Activity.RESULT_OK) {
                     Uri locationUri = Uri.parse(data.getStringExtra("location"));
                     try {
-                        AixLocationInfo aixLocationInfo = AixLocationInfo.build(getActivity().getApplicationContext(), locationUri);
-                        mAixWidgetInfo.setViewInfo(aixLocationInfo, AixProvider.AixViews.TYPE_DETAILED);
-                        Log.d(TAG, "onActivityResult(): locationInfo=" + aixLocationInfo);
+                        AfLocationInfo afLocationInfo = AfLocationInfo.build(getActivity().getApplicationContext(), locationUri);
+                        mAfWidgetInfo.setViewInfo(afLocationInfo, AfProvider.AfViews.TYPE_DETAILED);
+                        Log.d(TAG, "onActivityResult(): locationInfo=" + afLocationInfo);
                     } catch (Exception e) {
                         Toast.makeText(getContext(), "Failed to set up location info", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onActivityResult(): Failed to get location data.");
@@ -244,33 +244,33 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
                     boolean editMode = Intent.ACTION_EDIT.equals(getActivity().getIntent().getAction());
 
                     if (editMode) {
-                        int activeCalibrationTarget = mAixSettings.getCalibrationTarget();
+                        int activeCalibrationTarget = mAfSettings.getCalibrationTarget();
 
-                        boolean isProviderModified = mAixSettings.isProviderPreferenceModified();
-                        boolean globalSettingModified = mAixSettings.saveAllPreferences(mActivateCalibrationMode);
+                        boolean isProviderModified = mAfSettings.isProviderPreferenceModified();
+                        boolean globalSettingModified = mAfSettings.saveAllPreferences(mActivateCalibrationMode);
 
                         if (activeCalibrationTarget != AppWidgetManager.INVALID_APPWIDGET_ID) {
                             // Redraw the currently active calibration widget
-                            AixService.enqueueWork(getContext(), new Intent(
-                                    AixService.ACTION_UPDATE_WIDGET,
-                                    ContentUris.withAppendedId(AixProvider.AixWidgets.CONTENT_URI, activeCalibrationTarget),
-                                    getContext(), AixService.class));
+                            AfService.enqueueWork(getContext(), new Intent(
+                                    AfService.ACTION_UPDATE_WIDGET,
+                                    ContentUris.withAppendedId(AfProvider.AfWidgets.CONTENT_URI, activeCalibrationTarget),
+                                    getContext(), AfService.class));
                         }
 
-                        Uri widgetUri = mAixWidgetInfo.getWidgetUri();
+                        Uri widgetUri = mAfWidgetInfo.getWidgetUri();
 
                         if (isProviderModified || globalSettingModified) {
-                            AixService.enqueueWork(
+                            AfService.enqueueWork(
                                     getActivity().getApplicationContext(),
                                     new Intent(isProviderModified
-                                            ? AixService.ACTION_UPDATE_ALL_PROVIDER_CHANGE
-                                            : AixService.ACTION_UPDATE_ALL,
-                                            widgetUri, getContext(), AixService.class));
+                                            ? AfService.ACTION_UPDATE_ALL_PROVIDER_CHANGE
+                                            : AfService.ACTION_UPDATE_ALL,
+                                            widgetUri, getContext(), AfService.class));
                         } else {
-                            AixService.enqueueWork(
+                            AfService.enqueueWork(
                                     getActivity().getApplicationContext(),
-                                    new Intent(AixService.ACTION_UPDATE_WIDGET,
-                                            widgetUri, getContext(), AixService.class));
+                                    new Intent(AfService.ACTION_UPDATE_WIDGET,
+                                            widgetUri, getContext(), AfService.class));
                         }
 
                     }
@@ -294,12 +294,12 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
         } else if (preference == mDeviceProfilePref) {
             Intent intent = new Intent(getContext(), AfDeviceProfileActivity.class);
             intent.setAction(getActivity().getIntent().getAction());
-            intent.setData(mAixWidgetInfo.getWidgetUri());
+            intent.setData(mAfWidgetInfo.getWidgetUri());
             startActivityForResult(intent, DEVICE_PROFILES);
             return true;
 
         } else if (preference == mLocationPref) {
-            Intent intent = new Intent(getContext(), AixLocationSelectionActivity.class);
+            Intent intent = new Intent(getContext(), AfLocationSelectionActivity.class);
             startActivityForResult(intent, SELECT_LOCATION);
             return true;
         }
@@ -313,8 +313,8 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
 
         String locationName = null;
 
-        if (mAixWidgetInfo.getViewInfo() != null && mAixWidgetInfo.getViewInfo().getLocationInfo() != null) {
-            AixLocationInfo locationInfo = mAixWidgetInfo.getViewInfo().getLocationInfo();
+        if (mAfWidgetInfo.getViewInfo() != null && mAfWidgetInfo.getViewInfo().getLocationInfo() != null) {
+            AfLocationInfo locationInfo = mAfWidgetInfo.getViewInfo().getLocationInfo();
             if (locationInfo != null && locationInfo.getTitle() != null) {
                 locationName = locationInfo.getTitle();
             }

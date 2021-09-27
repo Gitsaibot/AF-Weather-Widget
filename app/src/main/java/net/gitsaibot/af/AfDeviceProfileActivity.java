@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import net.gitsaibot.af.util.AixWidgetInfo;
+import net.gitsaibot.af.util.AfWidgetInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -81,8 +81,8 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 	private boolean mValidLandscapeWidth;
 	private boolean mValidLandscapeHeight;
 	
-	private AixSettings mAixSettings = null;
-	private AixWidgetInfo mAixWidgetInfo = null;
+	private AfSettings mAfSettings = null;
+	private AfWidgetInfo mAfWidgetInfo = null;
 	
 	private ProfileSyncTask mSyncTask = null;
 	private ProfileSyncTask mPortraitUploadTask = null;
@@ -136,7 +136,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		}
 		
 		try {
-			mAixWidgetInfo = AixWidgetInfo.build(this, widgetUri);
+			mAfWidgetInfo = AfWidgetInfo.build(this, widgetUri);
 		} catch (Exception e) {
 			Toast.makeText(this, "Error: Failed to get widget information!", Toast.LENGTH_SHORT).show();
 			Log.d(TAG, "Killed AixDeviceProfileActivity: Failed to get widget information! (uri=" + widgetUri +")");
@@ -145,10 +145,10 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 			return;
 		}
 		
-		mNumColumns = mAixWidgetInfo.getNumColumns();
-		mNumRows = mAixWidgetInfo.getNumRows();
+		mNumColumns = mAfWidgetInfo.getNumColumns();
+		mNumRows = mAfWidgetInfo.getNumRows();
 		
-		mAixSettings = AixSettings.build(this, mAixWidgetInfo);
+		mAfSettings = AfSettings.build(this, mAfWidgetInfo);
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		setContentView(R.layout.activity_device_profiles);
@@ -176,12 +176,12 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		mValidLandscapeHeight = true;
 		
 		// Use Device Specific Dimension Property
-		boolean useDeviceSpecificDimensions = mAixSettings.getUseDeviceProfilePreference();
+		boolean useDeviceSpecificDimensions = mAfSettings.getUseDeviceProfilePreference();
 		mActivateSpecificDimensionsCheckBox.setChecked(useDeviceSpecificDimensions);
 		mActivateSpecificDimensionsCheckBox.setOnCheckedChangeListener(this);
 		
 		// Orientation Mode Property
-		int orientationMode = mAixSettings.getOrientationModePreference();
+		int orientationMode = mAfSettings.getOrientationModePreference();
 		mOrientationModeSpinner.setSelection(orientationMode);
 		mOrientationModeSpinner.setOnItemSelectedListener(this);
 		
@@ -240,7 +240,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		if (buttonView == mActivateSpecificDimensionsCheckBox) {
-			mAixSettings.setUseDeviceProfilePreference(isChecked);
+			mAfSettings.setUseDeviceProfilePreference(isChecked);
 			updateUIState();
 		}
 	}
@@ -252,12 +252,12 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		} else if (view == mPortraitSubmitButton) {
 			submitPortraitDimensions();
 		} else if (view == mPortraitRevertButton) {
-			mAixSettings.revertPixelDimensionsPreference(mNumColumns, mNumRows, false);
+			mAfSettings.revertPixelDimensionsPreference(mNumColumns, mNumRows, false);
 			updateUIState();
 		} else if (view == mLandscapeSubmitButton) {
 			submitLandscapeDimensions();
 		} else if (view == mLandscapeRevertButton) {
-			mAixSettings.revertPixelDimensionsPreference(mNumColumns, mNumRows, true);
+			mAfSettings.revertPixelDimensionsPreference(mNumColumns, mNumRows, true);
 			updateUIState();
 		} else if (view == mPortraitCalibrateButton || view == mLandscapeCalibrateButton) {
 			startCalibration();
@@ -268,7 +268,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 	public void onItemSelected (AdapterView<?> parent, View view, int position, long id) {
 		if (parent == mOrientationModeSpinner) {
 			if (position >= 0 && position <= 2) {
-				mAixSettings.setOrientationModePreference(position);
+				mAfSettings.setOrientationModePreference(position);
 			}
 		}
 	}
@@ -286,15 +286,15 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 				final String widthString = mPortraitWidthEditText.getText().toString();
 				final String heightString = mPortraitHeightEditText.getText().toString();
 				
-				int portraitWidth = mAixSettings.validateStringValue(widthString);
-				int portraitHeight = mAixSettings.validateStringValue(heightString);
+				int portraitWidth = mAfSettings.validateStringValue(widthString);
+				int portraitHeight = mAfSettings.validateStringValue(heightString);
 	
 				mValidPortraitWidth = (portraitWidth != -1);
 				mValidPortraitHeight = (portraitHeight != -1);
 				
 				if (mValidPortraitWidth && mValidPortraitHeight)
 				{
-					mAixSettings.storePixelDimensionsPreference(mNumColumns, mNumRows, false, new Point(portraitWidth, portraitHeight));
+					mAfSettings.storePixelDimensionsPreference(mNumColumns, mNumRows, false, new Point(portraitWidth, portraitHeight));
 				}
 				
 				updateUIState(false);
@@ -302,15 +302,15 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 				final String widthString = mLandscapeWidthEditText.getText().toString();
 				final String heightString = mLandscapeHeightEditText.getText().toString();
 				
-				int landscapeWidth = mAixSettings.validateStringValue(widthString);
-				int landscapeHeight = mAixSettings.validateStringValue(heightString);
+				int landscapeWidth = mAfSettings.validateStringValue(widthString);
+				int landscapeHeight = mAfSettings.validateStringValue(heightString);
 				
 				mValidLandscapeWidth = (landscapeWidth != -1);
 				mValidLandscapeHeight = (landscapeHeight != -1);
 				
 				if (mValidLandscapeWidth && mValidLandscapeHeight)
 				{
-					mAixSettings.storePixelDimensionsPreference(mNumColumns, mNumRows, true, new Point(landscapeWidth, landscapeHeight));
+					mAfSettings.storePixelDimensionsPreference(mNumColumns, mNumRows, true, new Point(landscapeWidth, landscapeHeight));
 				}
 				
 				updateUIState(false);
@@ -354,7 +354,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		Point landscapeDimension;
 		
 		try {
-			landscapeDimension = AixUtils.buildDimension(
+			landscapeDimension = AfUtils.buildDimension(
 					mLandscapeWidthEditText.getText().toString(),
 					mLandscapeHeightEditText.getText().toString());
 		} catch (Exception e) {
@@ -390,7 +390,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		Point portraitDimension;
 		
 		try {
-			portraitDimension = AixUtils.buildDimension(
+			portraitDimension = AfUtils.buildDimension(
 					mPortraitWidthEditText.getText().toString(),
 					mPortraitHeightEditText.getText().toString());
 		} catch (Exception e) {
@@ -496,7 +496,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 			mPortraitProgressBar.setVisibility(View.VISIBLE);
 			mPortraitSubmitButton.setEnabled(false);
 		} else {
-			boolean isPortraitModified = mAixSettings.isPixelDimensionsPreferenceModified(mNumColumns, mNumRows, false);
+			boolean isPortraitModified = mAfSettings.isPixelDimensionsPreferenceModified(mNumColumns, mNumRows, false);
 			
 			mPortraitSubmitButton.setEnabled(enablePortraitControls && isPortraitModified);
 			mPortraitProgressBar.setVisibility(View.GONE);
@@ -506,7 +506,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 			mLandscapeProgressBar.setVisibility(View.VISIBLE);
 			mLandscapeSubmitButton.setEnabled(false);
 		} else {
-			boolean isLandscapeModified = mAixSettings.isPixelDimensionsPreferenceModified(mNumColumns, mNumRows, true);
+			boolean isLandscapeModified = mAfSettings.isPixelDimensionsPreferenceModified(mNumColumns, mNumRows, true);
 			
 			mLandscapeSubmitButton.setEnabled(enableLandscapeControls && isLandscapeModified);
 			mLandscapeProgressBar.setVisibility(View.GONE);
@@ -537,11 +537,11 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		mLandscapeRevertButton.setEnabled(enableLandscapeControls);
 		
 		if (updateEditTextBoxes) {
-			Point portraitDimensions = mAixSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, false);
+			Point portraitDimensions = mAfSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, false);
 			mPortraitWidthEditText.setText(Integer.toString(portraitDimensions.x));
 			mPortraitHeightEditText.setText(Integer.toString(portraitDimensions.y));
 			
-			Point landscapeDimensions = mAixSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, true);
+			Point landscapeDimensions = mAfSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, true);
 			mLandscapeWidthEditText.setText(Integer.toString(landscapeDimensions.x));
 			mLandscapeHeightEditText.setText(Integer.toString(landscapeDimensions.y));
 		}
@@ -551,17 +551,17 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		boolean deviceProfileSynced = mSharedPreferences.getBoolean(
 				getString(R.string.preference_deviceProfileSynced_bool), false);
 		
-		int portraitState = mAixSettings.getPixelDimensionsStatePreference(mNumColumns, mNumRows, false);
+		int portraitState = mAfSettings.getPixelDimensionsStatePreference(mNumColumns, mNumRows, false);
 		
-		if (deviceProfileSynced || portraitState == AixSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED ||
-								   portraitState == AixSettings.DEVICE_PROFILE_STATE_RECOMMENDED)
+		if (deviceProfileSynced || portraitState == AfSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED ||
+								   portraitState == AfSettings.DEVICE_PROFILE_STATE_RECOMMENDED)
 		{
 			mPortraitDimensionsProfileStatus.setVisibility(View.VISIBLE);
 			
-			if (portraitState == AixSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED) {
+			if (portraitState == AfSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED) {
 				mPortraitDimensionsProfileStatus.setText("User-submitted dimensions: May not be valid");
 				mPortraitDimensionsProfileStatus.setBackgroundResource(R.drawable.tip_yellow);
-			} else if (portraitState == AixSettings.DEVICE_PROFILE_STATE_RECOMMENDED) {
+			} else if (portraitState == AfSettings.DEVICE_PROFILE_STATE_RECOMMENDED) {
 				mPortraitDimensionsProfileStatus.setText("Recommended layout");
 				mPortraitDimensionsProfileStatus.setBackgroundResource(R.drawable.tip_green);
 			} else {
@@ -572,17 +572,17 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 			mPortraitDimensionsProfileStatus.setVisibility(View.GONE);
 		}
 		
-		int landscapeState = mAixSettings.getPixelDimensionsStatePreference(mNumColumns, mNumRows, true);
+		int landscapeState = mAfSettings.getPixelDimensionsStatePreference(mNumColumns, mNumRows, true);
 		
-		if (deviceProfileSynced || landscapeState == AixSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED ||
-								   landscapeState == AixSettings.DEVICE_PROFILE_STATE_RECOMMENDED)
+		if (deviceProfileSynced || landscapeState == AfSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED ||
+								   landscapeState == AfSettings.DEVICE_PROFILE_STATE_RECOMMENDED)
 		{
 			mLandscapeDimensionsProfileStatus.setVisibility(View.VISIBLE);
 			
-			if (landscapeState == AixSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED) {
+			if (landscapeState == AfSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED) {
 				mLandscapeDimensionsProfileStatus.setText("User-submitted dimensions: May not be valid");
 				mLandscapeDimensionsProfileStatus.setBackgroundResource(R.drawable.tip_yellow);
-			} else if (landscapeState == AixSettings.DEVICE_PROFILE_STATE_RECOMMENDED){
+			} else if (landscapeState == AfSettings.DEVICE_PROFILE_STATE_RECOMMENDED){
 				mLandscapeDimensionsProfileStatus.setText("Recommended layout");
 				mLandscapeDimensionsProfileStatus.setBackgroundResource(R.drawable.tip_green);
 			} else {
@@ -719,19 +719,19 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 						Editor editor = mSharedPreferences.edit();
 						for (AfDeviceProfileWidgetDimension dimension : deviceProfile.widgetDimensions)
 						{
-							mAixSettings.editPixelDimensionsByKey(
+							mAfSettings.editPixelDimensionsByKey(
 									editor,
-									mAixSettings.buildPixelDimensionsKey(AixSettings.PREFERENCE, dimension.numColumns, dimension.numRows, dimension.isLandscape),
+									mAfSettings.buildPixelDimensionsKey(AfSettings.PREFERENCE, dimension.numColumns, dimension.numRows, dimension.isLandscape),
 									new Point(dimension.width, dimension.height));
 							
 							editor.putInt(
-									mAixSettings.buildPixelDimensionsStateKey(AixSettings.PREFERENCE, dimension.numColumns, dimension.numRows, dimension.isLandscape),
-									dimension.isPromoted ? AixSettings.DEVICE_PROFILE_STATE_RECOMMENDED : AixSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED);
+									mAfSettings.buildPixelDimensionsStateKey(AfSettings.PREFERENCE, dimension.numColumns, dimension.numRows, dimension.isLandscape),
+									dimension.isPromoted ? AfSettings.DEVICE_PROFILE_STATE_RECOMMENDED : AfSettings.DEVICE_PROFILE_STATE_USER_SUBMITTED);
 						}
 						
 						// Save time of successful sync
 						Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-						mAixSettings.editLastProfileSync(editor, AixSettings.PREFERENCE, calendar.getTimeInMillis());
+						mAfSettings.editLastProfileSync(editor, AfSettings.PREFERENCE, calendar.getTimeInMillis());
 						
 						editor.putBoolean(getString(R.string.preference_deviceProfileSynced_bool), true);
 						
@@ -749,7 +749,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 				}
 			} else if (mTaskAction == ACTION_SUBMIT_LANDSCAPE || mTaskAction == ACTION_SUBMIT_PORTRAIT) {
 				// Upload the landscape / portrait data for this device for a given dimension
-				mTaskUser = AixInstallation.id(AfDeviceProfileActivity.this);
+				mTaskUser = AfInstallation.id(AfDeviceProfileActivity.this);
 				mTaskIsLandscape = (mTaskAction == ACTION_SUBMIT_LANDSCAPE);
 				
 				try {
@@ -791,7 +791,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 					}
 
 					// Update settings to reflect successfully submitted settings
-					mAixSettings.storeUploadedPixelDimensions(mTaskNumColumns, mTaskNumRows, mTaskIsLandscape, mTaskDimension);
+					mAfSettings.storeUploadedPixelDimensions(mTaskNumColumns, mTaskNumRows, mTaskIsLandscape, mTaskDimension);
 					
 					result = deviceProfile.status.equals("updated") ? RESULT_UPDATE_SUCCESSFUL : RESULT_SUBMIT_SUCCESSFUL;
 				} catch (Exception e) {
@@ -811,7 +811,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 			
 			Log.d(TAG, "Attempting to upload device profile. (URI=" + uri.toString() + ")");
 			
-			HttpClient httpclient = AixUtils.setupHttpClient(getApplicationContext());
+			HttpClient httpclient = AfUtils.setupHttpClient(getApplicationContext());
 			HttpGet httpGet = new HttpGet(uri);
 			HttpResponse response = httpclient.execute(httpGet);
 			InputStream content = response.getEntity().getContent();
@@ -826,7 +826,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 			
 			Log.d(TAG, "Attempting to download device profile. (URI=" + uri.toString() + ")");
 			
-			HttpClient httpclient = AixUtils.setupHttpClient(getApplicationContext());
+			HttpClient httpclient = AfUtils.setupHttpClient(getApplicationContext());
 			HttpGet httpGet = new HttpGet(uri);
 			HttpResponse response = httpclient.execute(httpGet);
 			InputStream content = response.getEntity().getContent();

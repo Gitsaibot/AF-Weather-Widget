@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import android.content.Context;
 
-public class AixInstallation {
+public class AfInstallation {
 
 	// private static final String TAG = "AixInstallation";
 	private static final String INSTALLATION = ".installation";

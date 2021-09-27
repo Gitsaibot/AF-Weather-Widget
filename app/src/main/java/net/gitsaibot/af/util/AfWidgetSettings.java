@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.gitsaibot.af.AixProvider.AixSettingsColumns;
-import net.gitsaibot.af.AixProvider.AixWidgets;
+import net.gitsaibot.af.AfProvider.AfSettingsColumns;
+import net.gitsaibot.af.AfProvider.AfWidgets;
 import net.gitsaibot.af.R;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
-public class AixWidgetSettings {
+public class AfWidgetSettings {
 
 	private Context mContext;
 	private Map<String, Object> mSettings;
@@ -23,7 +23,7 @@ public class AixWidgetSettings {
 	Set<String> mFloatKeys = new HashSet<String>();
 	Set<String> mIntegerKeys = new HashSet<String>();
 
-	private AixWidgetSettings(Context context) {
+	private AfWidgetSettings(Context context) {
 		mContext = context;
 		
 		mFloatKeys.add(context.getString(R.string.precipitation_scaling_string));
@@ -81,7 +81,7 @@ public class AixWidgetSettings {
 		return validSetting;
 	}
 	
-	public static AixWidgetSettings build(Context context, Uri widgetUri) {
+	public static AfWidgetSettings build(Context context, Uri widgetUri) {
 		Map<String, Object> settings = new HashMap<String, Object>();
 		settings.put(context.getString(R.string.temperature_units_string), 1);
 		settings.put(context.getString(R.string.precipitation_units_string), 1);
@@ -90,30 +90,30 @@ public class AixWidgetSettings {
 		settings.put(context.getString(R.string.day_effect_bool), Boolean.TRUE);
 		settings.put(context.getString(R.string.border_enabled_bool), Boolean.TRUE);
 		
-		AixWidgetSettings aixWidgetSettings = new AixWidgetSettings(context);
-		aixWidgetSettings.mSettings = settings;
+		AfWidgetSettings afWidgetSettings = new AfWidgetSettings(context);
+		afWidgetSettings.mSettings = settings;
 		
 		ContentResolver resolver = context.getContentResolver();
 		Cursor widgetSettingsCursor = resolver.query(
-				Uri.withAppendedPath(widgetUri, AixWidgets.TWIG_SETTINGS),
+				Uri.withAppendedPath(widgetUri, AfWidgets.TWIG_SETTINGS),
 				null, null, null, null);
 		
 		if (widgetSettingsCursor != null)
 		{
 			if (widgetSettingsCursor.moveToFirst()) {
 				do {
-					String key = widgetSettingsCursor.getString(AixSettingsColumns.KEY_COLUMN);
-					String value = widgetSettingsCursor.getString(AixSettingsColumns.VALUE_COLUMN);
-					aixWidgetSettings.addSetting(key, value);
+					String key = widgetSettingsCursor.getString(AfSettingsColumns.KEY_COLUMN);
+					String value = widgetSettingsCursor.getString(AfSettingsColumns.VALUE_COLUMN);
+					afWidgetSettings.addSetting(key, value);
 				} while (widgetSettingsCursor.moveToNext());
 			}
 			widgetSettingsCursor.close();
 		}
 	
-		aixWidgetSettings.setupDefaultIntegerSettings();
-		aixWidgetSettings.setupDefaultFloatSettings();
+		afWidgetSettings.setupDefaultIntegerSettings();
+		afWidgetSettings.setupDefaultFloatSettings();
 		
-		return aixWidgetSettings;
+		return afWidgetSettings;
 	}
 	
 	public Boolean getBooleanSetting(String key) {

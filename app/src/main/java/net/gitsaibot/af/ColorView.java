@@ -1,6 +1,6 @@
 package net.gitsaibot.af;
 
-import static net.gitsaibot.af.AixUtils.clamp;
+import static net.gitsaibot.af.AfUtils.clamp;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;

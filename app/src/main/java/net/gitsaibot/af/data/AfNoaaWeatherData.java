@@ -1,25 +1,25 @@
 package net.gitsaibot.af.data;
 
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_CLOUD;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_DAY_PARTLYCLOUD;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_DAY_POLAR_LIGHTCLOUD;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_DAY_POLAR_LIGHTRAINTHUNDERSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_DAY_POLAR_SLEETSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_DAY_SNOWSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_DAY_SUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_FOG;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_LIGHTRAIN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_LIGHTCLOUD;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_LIGHTRAINSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_LIGHTRAINTHUNDERSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_PARTLYCLOUD;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_SLEETSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_SNOWSUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_NIGHT_SUN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_RAIN;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_RAINTHUNDER;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_SLEET;
-import static net.gitsaibot.af.AixUtils.WEATHER_ICON_SNOW;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_CLOUD;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_DAY_PARTLYCLOUD;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_DAY_POLAR_LIGHTCLOUD;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_DAY_POLAR_LIGHTRAINTHUNDERSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_DAY_POLAR_SLEETSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_DAY_SNOWSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_DAY_SUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_FOG;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_LIGHTRAIN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_LIGHTCLOUD;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_LIGHTRAINSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_LIGHTRAINTHUNDERSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_PARTLYCLOUD;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_SLEETSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_SNOWSUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_NIGHT_SUN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_RAIN;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_RAINTHUNDER;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_SLEET;
+import static net.gitsaibot.af.AfUtils.WEATHER_ICON_SNOW;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,15 +32,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import net.gitsaibot.af.AixProvider.AixIntervalDataForecasts;
-import net.gitsaibot.af.AixProvider.AixPointDataForecasts;
-import net.gitsaibot.af.AixSettings;
-import net.gitsaibot.af.AixUpdate;
-import net.gitsaibot.af.AixUtils;
+import net.gitsaibot.af.AfProvider.AfIntervalDataForecasts;
+import net.gitsaibot.af.AfProvider.AfPointDataForecasts;
+import net.gitsaibot.af.AfSettings;
+import net.gitsaibot.af.AfUpdate;
+import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.IntervalData;
 import net.gitsaibot.af.MultiKey;
 import net.gitsaibot.af.PointData;
-import net.gitsaibot.af.util.AixLocationInfo;
+import net.gitsaibot.af.util.AfLocationInfo;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -55,18 +55,18 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Xml;
 
-public class AixNoaaWeatherData implements AixDataSource {
+public class AfNoaaWeatherData implements AfDataSource {
 	
 	public static final String TAG = "AixNoaaWeatherData";
 	
-	private static class AixNoaaDataSet<T>
+	private static class AfNoaaDataSet<T>
 	{
 		@SuppressWarnings("unused")
 		public String timeLayoutKey, type, units;
 		public List<T> values = new ArrayList<T>();
 	}
 	
-	private static class AixNoaaTimeLayout
+	private static class AfNoaaTimeLayout
 	{
 		public String key;
 		public List<Long> validTimeStartList = new ArrayList<Long>();
@@ -153,15 +153,15 @@ public class AixNoaaWeatherData implements AixDataSource {
 	
 	private Context mContext;
 	//private AixSettings mAixSettings;
-	private AixUpdate mAixUpdate;
+	private AfUpdate mAfUpdate;
 	
 	private SimpleDateFormat mDateFormat;
 	private TimeZone mUtcTimeZone;
 	
-	private AixNoaaWeatherData(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	private AfNoaaWeatherData(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
 		mContext = context;
-		mAixUpdate = aixUpdate;
+		mAfUpdate = afUpdate;
 		//mAixSettings = aixSettings;
 		
 		mUtcTimeZone = TimeZone.getTimeZone("UTC");
@@ -170,17 +170,17 @@ public class AixNoaaWeatherData implements AixDataSource {
 		mDateFormat.setTimeZone(mUtcTimeZone);
 	}
 	
-	public static AixNoaaWeatherData build(Context context, AixUpdate aixUpdate, AixSettings aixSettings)
+	public static AfNoaaWeatherData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
 	{
-		return new AixNoaaWeatherData(context, aixUpdate, aixSettings);
+		return new AfNoaaWeatherData(context, afUpdate, afSettings);
 	}
 
 	private ContentValues[] buildIntervalDataContentValues(
-			AixLocationInfo aixLocationInfo,
+			AfLocationInfo afLocationInfo,
 			long currentUtcTime,
-			Map<String, AixNoaaTimeLayout> timeLayoutMap,
-			AixNoaaDataSet<Float> precipitationData,
-			AixNoaaDataSet<String> weatherIconData)
+			Map<String, AfNoaaTimeLayout> timeLayoutMap,
+			AfNoaaDataSet<Float> precipitationData,
+			AfNoaaDataSet<String> weatherIconData)
 	{
 		Map<MultiKey, IntervalData> intervalDataMap = new HashMap<MultiKey, IntervalData>();
 		
@@ -221,18 +221,18 @@ public class AixNoaaWeatherData implements AixDataSource {
 		
 		for (IntervalData intervalData : intervalDataMap.values())
 		{
-			intervalDataContentValuesList.add(intervalData.buildContentValues(aixLocationInfo.getId()));
+			intervalDataContentValuesList.add(intervalData.buildContentValues(afLocationInfo.getId()));
 		}
 		
 		return intervalDataContentValuesList.toArray(new ContentValues[intervalDataContentValuesList.size()]);
 	}
 	
 	private ContentValues[] buildPointDataContentValues(
-			AixLocationInfo aixLocationInfo,
+			AfLocationInfo afLocationInfo,
 			long currentUtcTime,
-			Map<String, AixNoaaTimeLayout> timeLayoutMap,
-			AixNoaaDataSet<Float> temperatureData,
-			AixNoaaDataSet<Float> humidityData)
+			Map<String, AfNoaaTimeLayout> timeLayoutMap,
+			AfNoaaDataSet<Float> temperatureData,
+			AfNoaaDataSet<Float> humidityData)
 	{
 		Map<Long, PointData> pointDataMap = new HashMap<Long, PointData>();
 		
@@ -263,7 +263,7 @@ public class AixNoaaWeatherData implements AixDataSource {
 		
 		for (PointData pointData : pointDataMap.values())
 		{
-			pointDataContentValuesList.add(pointData.buildContentValues(aixLocationInfo.getId()));
+			pointDataContentValuesList.add(pointData.buildContentValues(afLocationInfo.getId()));
 		}
 		
 		return pointDataContentValuesList.toArray(new ContentValues[pointDataContentValuesList.size()]);
@@ -298,11 +298,11 @@ public class AixNoaaWeatherData implements AixDataSource {
 	
 	private void parseXmlData(
 			InputStream content,
-			Map<String, AixNoaaTimeLayout> timeLayoutMap,
-			AixNoaaDataSet<Float> temperatureData,
-			AixNoaaDataSet<Float> humidityData,
-			AixNoaaDataSet<Float> precipitationData,
-			AixNoaaDataSet<String> weatherIconData
+			Map<String, AfNoaaTimeLayout> timeLayoutMap,
+			AfNoaaDataSet<Float> temperatureData,
+			AfNoaaDataSet<Float> humidityData,
+			AfNoaaDataSet<Float> precipitationData,
+			AfNoaaDataSet<String> weatherIconData
 	)
 			throws XmlPullParserException,
 				   ParseException,
@@ -311,7 +311,7 @@ public class AixNoaaWeatherData implements AixDataSource {
 	{
 		int state = 0;
 		
-		AixNoaaTimeLayout currentTimeLayout = null;
+		AfNoaaTimeLayout currentTimeLayout = null;
 		
 		XmlPullParser parser = Xml.newPullParser();
 		parser.setInput(content, null);
@@ -379,7 +379,7 @@ public class AixNoaaWeatherData implements AixDataSource {
 				{
 					if (tagName.equals("time-layout"))
 					{
-						currentTimeLayout = new AixNoaaTimeLayout();
+						currentTimeLayout = new AfNoaaTimeLayout();
 					}
 					else if (tagName.equals("temperature"))
 					{
@@ -454,17 +454,17 @@ public class AixNoaaWeatherData implements AixDataSource {
 		return pointData;
 	}
 	
-	public void update(AixLocationInfo aixLocationInfo, long currentUtcTime)
+	public void update(AfLocationInfo afLocationInfo, long currentUtcTime)
 			throws AixDataUpdateException
 	{
 		try
 		{
-			mAixUpdate.updateWidgetRemoteViews("Getting NWS weather data...", false);
+			mAfUpdate.updateWidgetRemoteViews("Getting NWS weather data...", false);
 			
-			Log.d(TAG, "update(): Started update operation. (aixLocationInfo=" + aixLocationInfo + ",currentUtcTime=" + currentUtcTime + ")");
+			Log.d(TAG, "update(): Started update operation. (aixLocationInfo=" + afLocationInfo + ",currentUtcTime=" + currentUtcTime + ")");
 			
-			Double latitude = aixLocationInfo.getLatitude();
-			Double longitude = aixLocationInfo.getLongitude();
+			Double latitude = afLocationInfo.getLatitude();
+			Double longitude = afLocationInfo.getLongitude();
 			
 			if (latitude == null || longitude == null)
 			{
@@ -480,8 +480,8 @@ public class AixNoaaWeatherData implements AixDataSource {
 					latitude.doubleValue(),
 					longitude.doubleValue());
 			
-			HttpClient httpClient = AixUtils.setupHttpClient(mContext);
-			HttpGet httpGet = AixUtils.buildGzipHttpGet(url);
+			HttpClient httpClient = AfUtils.setupHttpClient(mContext);
+			HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 
 			if (httpResponse.getStatusLine().getStatusCode() == 429)
@@ -489,29 +489,29 @@ public class AixNoaaWeatherData implements AixDataSource {
 				throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
 			}
 
-			InputStream content = AixUtils.getGzipInputStream(httpResponse);
+			InputStream content = AfUtils.getGzipInputStream(httpResponse);
 			
 			long t2 = System.currentTimeMillis();
 			
-			mAixUpdate.updateWidgetRemoteViews("Parsing NWS weather data...", false);
+			mAfUpdate.updateWidgetRemoteViews("Parsing NWS weather data...", false);
 			
-			Map<String, AixNoaaTimeLayout> timeLayoutMap = new HashMap<String, AixNoaaTimeLayout>();
+			Map<String, AfNoaaTimeLayout> timeLayoutMap = new HashMap<String, AfNoaaTimeLayout>();
 			
-			AixNoaaDataSet<Float> humidityData = new AixNoaaDataSet<Float>();
-			AixNoaaDataSet<Float> temperatureData = new AixNoaaDataSet<Float>();
-			AixNoaaDataSet<String> weatherIconData = new AixNoaaDataSet<String>();
-			AixNoaaDataSet<Float> precipitationData = new AixNoaaDataSet<Float>();
+			AfNoaaDataSet<Float> humidityData = new AfNoaaDataSet<Float>();
+			AfNoaaDataSet<Float> temperatureData = new AfNoaaDataSet<Float>();
+			AfNoaaDataSet<String> weatherIconData = new AfNoaaDataSet<String>();
+			AfNoaaDataSet<Float> precipitationData = new AfNoaaDataSet<Float>();
 			
 			parseXmlData(content, timeLayoutMap, temperatureData, humidityData, precipitationData, weatherIconData);
 			
-			ContentValues[] pointDataContentValuesList = buildPointDataContentValues(aixLocationInfo, currentUtcTime, timeLayoutMap, temperatureData, humidityData);
-			ContentValues[] intervalDataContentValuesList = buildIntervalDataContentValues(aixLocationInfo, currentUtcTime, timeLayoutMap, precipitationData, weatherIconData);
+			ContentValues[] pointDataContentValuesList = buildPointDataContentValues(afLocationInfo, currentUtcTime, timeLayoutMap, temperatureData, humidityData);
+			ContentValues[] intervalDataContentValuesList = buildIntervalDataContentValues(afLocationInfo, currentUtcTime, timeLayoutMap, precipitationData, weatherIconData);
 			
 			long t3 = System.currentTimeMillis();
 			
 			ContentResolver resolver = mContext.getContentResolver();
-			resolver.bulkInsert(AixPointDataForecasts.CONTENT_URI, pointDataContentValuesList);
-			resolver.bulkInsert(AixIntervalDataForecasts.CONTENT_URI, intervalDataContentValuesList);
+			resolver.bulkInsert(AfPointDataForecasts.CONTENT_URI, pointDataContentValuesList);
+			resolver.bulkInsert(AfIntervalDataForecasts.CONTENT_URI, intervalDataContentValuesList);
 			
 			long t4 = System.currentTimeMillis();
 			
@@ -519,17 +519,17 @@ public class AixNoaaWeatherData implements AixDataSource {
 					(t2 - t1), (t3 - t2), (t4 - t3), (t4 - t1)));
 			
 			// Remove duplicates from weather data
-			int numRedundantPointDataEntries = resolver.update(AixPointDataForecasts.CONTENT_URI, null, null, null);
-			int numRedundantIntervalDataEntries = resolver.update(AixIntervalDataForecasts.CONTENT_URI, null, null, null);
+			int numRedundantPointDataEntries = resolver.update(AfPointDataForecasts.CONTENT_URI, null, null, null);
+			int numRedundantIntervalDataEntries = resolver.update(AfIntervalDataForecasts.CONTENT_URI, null, null, null);
 			
 			Log.d(TAG, String.format("update(): %d new PointData entries! %d redundant entries removed.", pointDataContentValuesList.length, numRedundantPointDataEntries));
 			Log.d(TAG, String.format("update(): %d new IntervalData entries! %d redundant entries removed.", intervalDataContentValuesList.length, numRedundantIntervalDataEntries));
 			
 			// Successfully retrieved weather data. Update lastUpdated parameter
-			aixLocationInfo.setLastForecastUpdate(currentUtcTime);
-			aixLocationInfo.setForecastValidTo(currentUtcTime + 18 * DateUtils.HOUR_IN_MILLIS);
-			aixLocationInfo.setNextForecastUpdate(currentUtcTime + 5 * DateUtils.HOUR_IN_MILLIS);
-			aixLocationInfo.commit(mContext);
+			afLocationInfo.setLastForecastUpdate(currentUtcTime);
+			afLocationInfo.setForecastValidTo(currentUtcTime + 18 * DateUtils.HOUR_IN_MILLIS);
+			afLocationInfo.setNextForecastUpdate(currentUtcTime + 5 * DateUtils.HOUR_IN_MILLIS);
+			afLocationInfo.commit(mContext);
 		}
 		catch (Exception e)
 		{

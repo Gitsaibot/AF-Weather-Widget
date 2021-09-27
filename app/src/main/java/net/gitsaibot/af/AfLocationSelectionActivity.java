@@ -12,8 +12,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import net.gitsaibot.af.AixProvider.AixLocations;
-import net.gitsaibot.af.AixProvider.AixLocationsColumns;
+import net.gitsaibot.af.AfProvider.AfLocations;
+import net.gitsaibot.af.AfProvider.AfLocationsColumns;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -56,7 +56,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-public class AixLocationSelectionActivity extends ListActivity implements OnClickListener {
+public class AfLocationSelectionActivity extends ListActivity implements OnClickListener {
 
     private static final List<String> geonamesDetailedNameComponents = Collections.unmodifiableList(
             Arrays.asList("name", "adminName5", "adminName4", "adminName3", "adminName2", "adminName1", "countryName"));
@@ -126,7 +126,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 		mAddLocationButton.setOnClickListener(this);
 		
 		ContentResolver cr = getContentResolver();
-        mCursor = cr.query(AixLocations.CONTENT_URI, null, null, null, null);
+        mCursor = cr.query(AfLocations.CONTENT_URI, null, null, null, null);
         
         startManagingCursor(mCursor);
 
@@ -135,10 +135,10 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
         		R.layout.location_selection_row,
         		mCursor,
         		new String[] {
-        				AixLocationsColumns.TITLE_DETAILED,
-        				AixLocationsColumns.TITLE,
-        				AixLocationsColumns.LATITUDE,
-        				AixLocationsColumns.LONGITUDE
+        				AfLocationsColumns.TITLE_DETAILED,
+        				AfLocationsColumns.TITLE,
+        				AfLocationsColumns.LATITUDE,
+        				AfLocationsColumns.LONGITUDE
         		},
         		new int[] {
         				R.id.location_selection_row_title,
@@ -154,7 +154,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent intent = new Intent();
-		String result = ContentUris.withAppendedId(AixLocations.CONTENT_URI, id).toString();
+		String result = ContentUris.withAppendedId(AfLocations.CONTENT_URI, id).toString();
 		intent.putExtra("location", result);
 		setResult(Activity.RESULT_OK, intent);
 		finish();
@@ -166,7 +166,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 		AdapterContextMenuInfo adapterMenuInfo = (AdapterContextMenuInfo) (menuInfo);
 		mCursor.moveToPosition(adapterMenuInfo.position);
 		if (mCursor.isAfterLast()) return;
-		menu.setHeaderTitle(String.format(getString(R.string.location_list_context_title), mCursor.getString(mCursor.getColumnIndexOrThrow(AixLocationsColumns.TITLE))));
+		menu.setHeaderTitle(String.format(getString(R.string.location_list_context_title), mCursor.getString(mCursor.getColumnIndexOrThrow(AfLocationsColumns.TITLE))));
 		menu.add(0, CONTEXT_MENU_EDIT, 0, "Edit display title");
 		menu.add(0, CONTEXT_MENU_DELETE, 0, getString(R.string.location_list_context_delete));
 	}
@@ -184,7 +184,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 			mCursor.moveToPosition(adapterMenuInfo.position);
 			if (mCursor.isAfterLast()) return false;
 			getContentResolver().delete(
-					ContentUris.withAppendedId(AixLocations.CONTENT_URI, mCursor.getLong(mCursor.getColumnIndexOrThrow(BaseColumns._ID))),
+					ContentUris.withAppendedId(AfLocations.CONTENT_URI, mCursor.getLong(mCursor.getColumnIndexOrThrow(BaseColumns._ID))),
 					null, null);
 			mCursor.requery();
 			return true;
@@ -192,7 +192,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 			mCursor.moveToPosition(adapterMenuInfo.position);
 			if (mCursor.isAfterLast()) return false;
 			mLocationId = mCursor.getLong(mCursor.getColumnIndexOrThrow(BaseColumns._ID));
-			mLocationName = mCursor.getString(mCursor.getColumnIndexOrThrow(AixLocations.TITLE));
+			mLocationName = mCursor.getString(mCursor.getColumnIndexOrThrow(AfLocations.TITLE));
 			showDialog(DIALOG_EDIT);
 			return true;
 		}
@@ -261,7 +261,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 	                		String displayTitle = mEditText.getText().toString();
 							
 	                		if (TextUtils.isEmpty(displayTitle)) {
-	                			Toast.makeText(AixLocationSelectionActivity.this, "Invalid display title", Toast.LENGTH_SHORT).show();
+	                			Toast.makeText(AfLocationSelectionActivity.this, "Invalid display title", Toast.LENGTH_SHORT).show();
 	                		} else {
 								setLocationDisplayTitle(displayTitle);
 	                		}
@@ -286,9 +286,9 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 	@SuppressWarnings("deprecation")
 	private void setLocationDisplayTitle(String displayTitle) {
 		ContentValues values = new ContentValues();
-		values.put(AixLocations.TITLE, displayTitle);
+		values.put(AfLocations.TITLE, displayTitle);
 		getContentResolver().update(
-				ContentUris.withAppendedId(AixLocations.CONTENT_URI, mLocationId),
+				ContentUris.withAppendedId(AfLocations.CONTENT_URI, mLocationId),
 				values, null, null);
 		mCursor.requery();
 	}
@@ -392,11 +392,11 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 								AixAddress a = mAddresses.get(which);
 								ContentResolver resolver = mContext.getContentResolver();
 								ContentValues values = new ContentValues();
-								values.put(AixLocationsColumns.LATITUDE, a.latitude);
-								values.put(AixLocationsColumns.LONGITUDE, a.longitude);
-								values.put(AixLocationsColumns.TITLE, a.title);
-								values.put(AixLocationsColumns.TITLE_DETAILED, a.title_detailed);
-								resolver.insert(AixLocations.CONTENT_URI, values);
+								values.put(AfLocationsColumns.LATITUDE, a.latitude);
+								values.put(AfLocationsColumns.LONGITUDE, a.longitude);
+								values.put(AfLocationsColumns.TITLE, a.title);
+								values.put(AfLocationsColumns.TITLE_DETAILED, a.title_detailed);
+								resolver.insert(AfLocations.CONTENT_URI, values);
 
 								mCursor.requery();
 								getListView().setSelection(getListView().getCount() - 1);
@@ -407,25 +407,25 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 				break;
 			case NO_RESULTS:
 				Toast.makeText(
-						AixLocationSelectionActivity.this,
+						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_no_results),
 						Toast.LENGTH_SHORT).show();
 				break;
 			case OVER_QUERY_LIMIT:
 				Toast.makeText(
-						AixLocationSelectionActivity.this,
+						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_over_query_limit_toast),
 						Toast.LENGTH_LONG).show();
 				break;
 			case REQUEST_DENIED:
 				Toast.makeText(
-						AixLocationSelectionActivity.this,
+						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_request_denied_toast),
 						Toast.LENGTH_SHORT).show();
 				break;
 			case INVALID_REQUEST:
 				Toast.makeText(
-						AixLocationSelectionActivity.this,
+						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_invalid_request_toast),
 						Toast.LENGTH_SHORT).show();
 				break;
@@ -467,7 +467,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 					HttpGet httpGet = new HttpGet(uri);
 					httpGet.addHeader("Accept-Encoding", "gzip");
 
-					HttpClient httpclient = AixUtils.setupHttpClient(mContext);
+					HttpClient httpclient = AfUtils.setupHttpClient(mContext);
 					HttpResponse response = httpclient.execute(httpGet);
 					InputStream content = response.getEntity().getContent();
 					
@@ -476,7 +476,7 @@ public class AixLocationSelectionActivity extends ListActivity implements OnClic
 						content = new GZIPInputStream(content);
 					}
 
-                    JSONObject jObject = new JSONObject(AixUtils.convertStreamToString(content));
+                    JSONObject jObject = new JSONObject(AfUtils.convertStreamToString(content));
 
 					if (jObject.has("status")) {
                         int errorCode = jObject.getJSONObject("status").optInt("value", 0);
