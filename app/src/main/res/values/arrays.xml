@@ -8,7 +8,7 @@
 		<item>Always</item>
 	</string-array>
 	
-	<string name="top_text_visibility_default">@string/top_text_visibility_portrait</string>
+	<string name="top_text_visibility_default">@string/top_text_visibility_always</string>
 	
 	<string name="top_text_visibility_never" translatable="false">1</string>
 	<string name="top_text_visibility_landscape" translatable="false">2</string>
