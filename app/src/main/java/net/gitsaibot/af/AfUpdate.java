@@ -219,7 +219,7 @@ public class AfUpdate {
 	private boolean isLocationInUS(AfLocationInfo locationInfo) {
 		String widgetCountryCode = "global_lcountry_" + locationInfo.getId();
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
-		boolean isUS = settings.getString(widgetCountryCode, "").toLowerCase().equals("us");
+		boolean isUS = settings.getString(widgetCountryCode, "").equalsIgnoreCase("us");
 		return isUS;
 	}
 	

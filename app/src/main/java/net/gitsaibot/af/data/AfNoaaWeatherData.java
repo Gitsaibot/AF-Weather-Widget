@@ -184,7 +184,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 	{
 		Map<MultiKey, IntervalData> intervalDataMap = new HashMap<MultiKey, IntervalData>();
 		
-		boolean isInches = precipitationData.units.toLowerCase().equals("inches");
+		boolean isInches = precipitationData.units.equalsIgnoreCase("inches");
 		List<Float> precipitationValues = precipitationData.values;
 		List<Long> precipitationTimeStartList = timeLayoutMap.get(precipitationData.timeLayoutKey).validTimeStartList;
 		List<Long> precipitationTimeEndList = timeLayoutMap.get(precipitationData.timeLayoutKey).validTimeEndList;
@@ -236,7 +236,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 	{
 		Map<Long, PointData> pointDataMap = new HashMap<Long, PointData>();
 		
-		boolean isFahrenheit = temperatureData.units.toLowerCase().equals("fahrenheit");
+		boolean isFahrenheit = temperatureData.units.equalsIgnoreCase("fahrenheit");
 		List<Float> temperatureValues = temperatureData.values;
 		List<Long> temperatureTimeList = timeLayoutMap.get(temperatureData.timeLayoutKey).validTimeStartList;
 		
