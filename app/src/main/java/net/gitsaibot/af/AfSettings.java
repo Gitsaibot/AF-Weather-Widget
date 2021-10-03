@@ -169,7 +169,7 @@ public class AfSettings {
 			}
 		}
 		
-		return settingList.toArray(new ContentValues[settingList.size()]);
+		return settingList.toArray(new ContentValues[0]);
 	}
 	
 	private String convertValueToString(String key, Object value)

@@ -248,8 +248,8 @@ public class AfMetWeatherData implements AfDataSource {
 			}
 			
 			ContentResolver resolver = mContext.getContentResolver();
-			resolver.bulkInsert(AfPointDataForecasts.CONTENT_URI, pointDataValues.toArray(new ContentValues[pointDataValues.size()]));
-			resolver.bulkInsert(AfIntervalDataForecasts.CONTENT_URI, intervalDataValues.toArray(new ContentValues[intervalDataValues.size()]));
+			resolver.bulkInsert(AfPointDataForecasts.CONTENT_URI, pointDataValues.toArray(new ContentValues[0]));
+			resolver.bulkInsert(AfIntervalDataForecasts.CONTENT_URI, intervalDataValues.toArray(new ContentValues[0]));
 
 			// Remove duplicates from weather data
 			int numRedundantPointDataEntries = resolver.update(AfPointDataForecasts.CONTENT_URI, null, null, null);

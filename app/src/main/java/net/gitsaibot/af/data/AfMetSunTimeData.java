@@ -319,9 +319,9 @@ public class AfMetSunTimeData implements AfDataSource {
 				List<ContentValues> contentValuesList = parseData(
 						content, afLocationInfo.getId(), currentUtcTime, NUM_DAYS_REQUEST);
 
-				if (contentValuesList != null && contentValuesList.size() > 0)
+				if (contentValuesList.size() > 0)
 				{
-					updateDatabase(contentValuesList.toArray(new ContentValues[contentValuesList.size()]));
+					updateDatabase(contentValuesList.toArray(new ContentValues[0]));
 				}
 
 				Log.d(TAG, String.format("update(): %d datasets were added to location %s (%d).",

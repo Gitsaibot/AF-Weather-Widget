@@ -224,7 +224,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			intervalDataContentValuesList.add(intervalData.buildContentValues(afLocationInfo.getId()));
 		}
 		
-		return intervalDataContentValuesList.toArray(new ContentValues[intervalDataContentValuesList.size()]);
+		return intervalDataContentValuesList.toArray(new ContentValues[0]);
 	}
 	
 	private ContentValues[] buildPointDataContentValues(
@@ -266,7 +266,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			pointDataContentValuesList.add(pointData.buildContentValues(afLocationInfo.getId()));
 		}
 		
-		return pointDataContentValuesList.toArray(new ContentValues[pointDataContentValuesList.size()]);
+		return pointDataContentValuesList.toArray(new ContentValues[0]);
 	}
 	
 	private boolean checkFlags(int state, int... flags)
