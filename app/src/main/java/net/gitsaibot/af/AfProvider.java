@@ -25,7 +25,7 @@ import android.util.Log;
 
 public class AfProvider extends ContentProvider {
 
-	private static final String TAG = "AixProvider";
+	private static final String TAG = "AfProvider";
 	private static final boolean LOGD = false;
 	
 	public static final String AUTHORITY = "net.gitsaibot.af";

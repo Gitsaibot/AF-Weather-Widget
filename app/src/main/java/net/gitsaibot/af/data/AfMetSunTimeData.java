@@ -276,7 +276,7 @@ public class AfMetSunTimeData implements AfDataSource {
 	}
 	
 	public void update(AfLocationInfo afLocationInfo, long currentUtcTime)
-			throws AixDataUpdateException
+			throws AfDataUpdateException
 	{
 		try {
 			mAfUpdate.updateWidgetRemoteViews("Getting sun time data...", false);
@@ -286,7 +286,7 @@ public class AfMetSunTimeData implements AfDataSource {
 			
 			if (latitude == null || longitude == null)
 			{
-				throw new AixDataUpdateException("Missing location information. Latitude/Longitude was null");
+				throw new AfDataUpdateException("Missing location information. Latitude/Longitude was null");
 			}
 			
 			setupDateParameters(currentUtcTime);
@@ -311,7 +311,7 @@ public class AfMetSunTimeData implements AfDataSource {
 
 				if (httpResponse.getStatusLine().getStatusCode() == 429)
 				{
-					throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
+					throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
 				}
 
 				InputStream content = AfUtils.getGzipInputStream(httpResponse);
@@ -335,7 +335,7 @@ public class AfMetSunTimeData implements AfDataSource {
 				Log.d(TAG, String.format("update(): " + e.getMessage() + " thrown for location %s (%d).",
 						afLocationInfo.getTitle(), afLocationInfo.getId()));
 			}
-			throw new AixDataUpdateException();
+			throw new AfDataUpdateException();
 		}
 	}
 	

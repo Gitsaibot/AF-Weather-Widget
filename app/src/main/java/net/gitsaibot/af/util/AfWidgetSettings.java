@@ -164,7 +164,7 @@ public class AfWidgetSettings {
 	{
 		Resources r = mContext.getResources();
 		
-		int defaultFloats[][] = {
+		int[][] defaultFloats = {
 				{ R.string.border_thickness_string, R.string.border_thickness_default },
 				{ R.string.border_rounding_string, R.string.border_rounding_default },
 				{ R.string.precipitation_scaling_string,
@@ -186,7 +186,7 @@ public class AfWidgetSettings {
 	{
 		Resources r = mContext.getResources();
 
-		int defaultColors[][] = {
+		int[][] defaultColors = {
 				{ R.string.border_color_int, R.color.border },
 				{ R.string.background_color_int, R.color.background },
 				{ R.string.text_color_int, R.color.text },

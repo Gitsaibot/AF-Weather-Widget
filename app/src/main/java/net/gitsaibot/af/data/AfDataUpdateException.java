@@ -2,7 +2,7 @@ package net.gitsaibot.af.data;
 
 
 @SuppressWarnings("serial")
-public class AixDataUpdateException extends Exception {
+public class AfDataUpdateException extends Exception {
 
 	public enum Reason {
 		UNSPECIFIED,
@@ -13,19 +13,19 @@ public class AixDataUpdateException extends Exception {
 
 	public Reason reason;
 	
-	public AixDataUpdateException()
+	public AfDataUpdateException()
 	{
 		super();
 		this.reason = Reason.UNSPECIFIED;
 	}
 	
-	public AixDataUpdateException(String message)
+	public AfDataUpdateException(String message)
 	{
 		super(message);
 		this.reason = Reason.UNSPECIFIED;
 	}
 
-	public AixDataUpdateException(String message, Reason reason)
+	public AfDataUpdateException(String message, Reason reason)
 	{
 		super(message);
 		this.reason = reason;

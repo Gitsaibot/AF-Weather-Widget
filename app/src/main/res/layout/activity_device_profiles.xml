@@ -9,7 +9,7 @@
 <LinearLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="wrap_content">
     
     <LinearLayout
 		    android:id="@+id/focusLayout"
@@ -105,7 +105,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_gravity="center_vertical"
-				android:paddingLeft="6dip"
+				android:paddingStart="6dip"
 				android:paddingTop="2dip"
 				android:singleLine="false"
 				android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -126,7 +126,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="6dip"
-			android:layout_marginLeft="10dip"
+			android:layout_marginStart="10dip"
 			android:layout_marginBottom="3dip"
 			android:textAppearance="?android:attr/textAppearanceSmall" />
 	
@@ -173,7 +173,7 @@
 			<View   android:background="#ff313431"
 					android:layout_width="1dip"
 					android:layout_height="match_parent"
-					android:layout_marginLeft="10dip"
+					android:layout_marginStart="10dip"
 					android:layout_marginTop="5dip"
 					android:layout_marginBottom="5dip" />
 			
@@ -233,7 +233,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="6dip"
-			android:layout_marginLeft="10dip"
+			android:layout_marginStart="10dip"
 			android:layout_marginBottom="3dip"
 			android:textAppearance="?android:attr/textAppearanceSmall" />
 	
@@ -251,7 +251,7 @@
 					android:text="Width:"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:paddingRight="6dip"
+					android:paddingEnd="6dip"
 					android:textAppearance="?android:attr/textAppearanceSmall" />
 		
 			<EditText android:id="@+id/aix_device_profile_landscape_width"
@@ -280,7 +280,7 @@
 			<View   android:background="#ff313431"
 					android:layout_width="1dip"
 					android:layout_height="match_parent"
-					android:layout_marginLeft="10dip"
+					android:layout_marginStart="10dip"
 					android:layout_marginTop="5dip"
 					android:layout_marginBottom="5dip" />
 			

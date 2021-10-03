@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import net.gitsaibot.af.data.AixDataUpdateException;
+import net.gitsaibot.af.data.AfDataUpdateException;
 import net.gitsaibot.af.data.AfGeoNamesData;
 import net.gitsaibot.af.data.AfMetSunTimeData;
 import net.gitsaibot.af.data.AfMetWeatherData;
@@ -35,7 +35,7 @@ import android.widget.RemoteViews;
 
 public class AfUpdate {
 	
-	private final static String TAG = "AixUpdate";
+	private final static String TAG = "AfUpdate";
 	
 	public static final int WIDGET_STATE_MESSAGE = 1;
 	public static final int WIDGET_STATE_RENDER = 2;
@@ -111,8 +111,8 @@ public class AfUpdate {
 						updateSuccess = true;
 						isWifiConnectionMissing = false;
 					}
-					catch (AixDataUpdateException e) {
-						if (e.reason == AixDataUpdateException.Reason.RATE_LIMITED) {
+					catch (AfDataUpdateException e) {
+						if (e.reason == AfDataUpdateException.Reason.RATE_LIMITED) {
 							isRateLimited = true;
 							numAttemptsRemaining = 0;
 						}
@@ -166,7 +166,7 @@ public class AfUpdate {
 				SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
 				Editor editor = settings.edit();
 				editor.putBoolean("global_needwifi", true);
-				editor.commit();
+				editor.apply();
 
 				Log.d(TAG, "WiFi needed, but not connected!");
 			}
@@ -342,7 +342,7 @@ public class AfUpdate {
 		AfUtils.updateWidgetRemoteViews(mContext, mAfWidgetInfo.getAppWidgetId(), message, overwrite, configurationIntent);
 	}
 	
-	private void updateData(AfLocationInfo afLocationInfo) throws AixDataUpdateException {
+	private void updateData(AfLocationInfo afLocationInfo) throws AfDataUpdateException {
 		Log.d(TAG, "updateData() started uri=" + afLocationInfo.getLocationUri());
 
 		AfUtils.clearOldProviderData(mContext.getContentResolver());

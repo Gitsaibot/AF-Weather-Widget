@@ -101,7 +101,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
         return titleDetailedSb.toString();
     }
 
-	private static final String TAG = "AixLocationSelection";
+	private static final String TAG = "AfLocationSelection";
 	
 	private static final int DIALOG_ADD = 0;
 	private static final int DIALOG_EDIT = 1;

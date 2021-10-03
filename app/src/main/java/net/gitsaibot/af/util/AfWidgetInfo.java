@@ -31,7 +31,7 @@ public class AfWidgetInfo {
 		try {
 			ContentResolver resolver = context.getContentResolver();
 			cursor = resolver.query(widgetUri, null, null, null, null);
-			Log.d("AixWidgetInfo", "cursor" + cursor);
+			Log.d("AfWidgetInfo", "cursor" + cursor);
 			if (cursor != null && cursor.moveToFirst())
 			{
 				int columnIndex = cursor.getColumnIndexOrThrow(AfWidgetsColumns.APPWIDGET_ID);
@@ -62,7 +62,7 @@ public class AfWidgetInfo {
 			}
 			else
 			{
-				throw new Exception("Failed to build AixWidgetInfo");
+				throw new Exception("Failed to build AfWidgetInfo");
 			}
 		}
 		finally
@@ -156,7 +156,7 @@ public class AfWidgetInfo {
 	}
 	
 	public String toString() {
-		return "AixWidgetInfo(" + mAppWidgetId + "," + mSize + "," + mAfViewInfo + ")";
+		return "AfWidgetInfo(" + mAppWidgetId + "," + mSize + "," + mAfViewInfo + ")";
 	}
 	
 }

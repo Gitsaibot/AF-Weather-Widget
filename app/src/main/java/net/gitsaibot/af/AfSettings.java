@@ -369,7 +369,7 @@ public class AfSettings {
 		editClear(editor, settingsMap);
 		editLoadFromProvider(editor);
 		editLoadGlobalSettings(editor, settingsMap);
-		editor.commit();
+		editor.apply();
 	}
 	
 	public void initializePreferencesNewWidget()
@@ -380,7 +380,7 @@ public class AfSettings {
 		editClear(editor, settingsMap);
 		editRestoreBackup(editor, settingsMap);
 		editLoadGlobalSettings(editor, settingsMap);
-		editor.commit();
+		editor.apply();
 	}
 	
 	private void insertKey(Editor editor, String key, String value)
@@ -431,7 +431,7 @@ public class AfSettings {
 				Object tempObject = setting.getValue();
 				Object globalObject = globalSettings.get(globalKey);
 
-				if (tempObject != null && (globalObject == null || !tempObject.equals(globalObject)))
+				if (tempObject != null && (!tempObject.equals(globalObject)))
 				{
 					// An existing global setting has been modified
 					return true;
@@ -480,7 +480,7 @@ public class AfSettings {
 		
 		boolean globalModified = isGlobalSettingsModified(settingsMap, avoidKeys);
 		
-		editor.commit();
+		editor.apply();
 		
 		return globalModified;
 	}
@@ -556,7 +556,7 @@ public class AfSettings {
 			}
 		}
 		
-		editor.commit();
+		editor.apply();
 	}
 	
 	public void setWidgetState(int widgetState)
@@ -786,7 +786,7 @@ public class AfSettings {
 		Editor editor = mSharedPreferences.edit();
 		editor.remove(mContext.getString(R.string.calibrationTarget_int));
 		editor.putBoolean(mContext.getString(R.string.useDeviceSpecificDimensions_bool), true);
-		editor.commit();
+		editor.apply();
 	}
 	
 	public int getCalibrationState() {
@@ -828,7 +828,7 @@ public class AfSettings {
 	public void setCalibrationState(int state) {
 		Editor editor = mSharedPreferences.edit();
 		editor.putInt(mContext.getString(R.string.calibrationState_int), state);
-		editor.commit();
+		editor.apply();
 	}
 	
 	/*
@@ -1031,8 +1031,7 @@ public class AfSettings {
 		Point pixelDimensionPreference = getPixelDimensionsFromKey(buildPixelDimensionsKey(true, numColumns, numRows, isLandscape));
 		Point uploadedPixelDimension = getPixelDimensionsFromKey(buildUploadedPixelDimensionsKey(false, numColumns, numRows, isLandscape));
 		
-		return (pixelDimensionPreference == null) ||
-			   (uploadedPixelDimension == null || !pixelDimensionPreference.equals(uploadedPixelDimension));
+		return (pixelDimensionPreference == null) || (!pixelDimensionPreference.equals(uploadedPixelDimension));
 	}
 	
 	public void revertPixelDimensionsPreference(int numColumns, int numRows, boolean isLandscape) {

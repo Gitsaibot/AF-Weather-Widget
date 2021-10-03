@@ -4,6 +4,6 @@ import net.gitsaibot.af.util.AfLocationInfo;
 
 public interface AfDataSource {
 
-	public void update(AfLocationInfo afLocationInfo, long currentUtcTime) throws AixDataUpdateException;
+	public void update(AfLocationInfo afLocationInfo, long currentUtcTime) throws AfDataUpdateException;
 
 }

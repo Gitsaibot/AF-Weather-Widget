@@ -92,7 +92,7 @@ public class AfMetWeatherData implements AfDataSource {
 	}
 	
 	public void update(AfLocationInfo afLocationInfo, long currentUtcTime)
-			throws AixDataUpdateException
+			throws AfDataUpdateException
 	{
 		try {
 			Log.d(TAG, "update(): Started update operation. (aixLocationInfo=" + afLocationInfo + ",currentUtcTime=" + currentUtcTime + ")");
@@ -104,7 +104,7 @@ public class AfMetWeatherData implements AfDataSource {
 			
 			if (latitude == null || longitude == null)
 			{
-				throw new AixDataUpdateException("Missing location information. Latitude/Longitude was null");
+				throw new AfDataUpdateException("Missing location information. Latitude/Longitude was null");
 			}
 			
 			String url = String.format(
@@ -120,7 +120,7 @@ public class AfMetWeatherData implements AfDataSource {
 
 			if (httpResponse.getStatusLine().getStatusCode() == 429)
 			{
-				throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
+				throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
 			}
 
 			InputStream content = AfUtils.getGzipInputStream(httpResponse);
@@ -270,7 +270,7 @@ public class AfMetWeatherData implements AfDataSource {
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new AixDataUpdateException();
+			throw new AfDataUpdateException();
 		}
 	}
 	

@@ -25,15 +25,15 @@
 				android:text="Display title:"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:paddingLeft="6dip"
-				android:paddingRight="2dip"
+				android:paddingStart="6dip"
+				android:paddingEnd="2dip"
 				android:textAppearance="?android:attr/textAppearanceSmall" />
 		
 		<TextView android:id="@+id/location_selection_row_display_title"
 				android:text="Ohaihai"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:paddingRight="6dip"
+				android:paddingEnd="6dip"
 				android:textAppearance="?android:attr/textAppearanceSmall" />
 	
 	</LinearLayout>
@@ -48,21 +48,21 @@
 				android:text="@string/location_list_row_latitude"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:paddingLeft="6dip"
-				android:paddingRight="2dip" />
+				android:paddingStart="6dip"
+				android:paddingEnd="2dip" />
 	
 		<TextView android:id="@+id/location_selection_row_latitude"
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:paddingRight="5dip" />
+				android:paddingEnd="5dip" />
 	
 		<TextView
 				android:textAppearance="?android:attr/textAppearanceSmall"
 				android:text="@string/location_list_row_longitude"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:paddingRight="2dip" />
+				android:paddingEnd="2dip" />
 		
 		<TextView android:id="@+id/location_selection_row_longitude"
 				android:textAppearance="?android:attr/textAppearanceSmall"

@@ -455,7 +455,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 	}
 	
 	public void update(AfLocationInfo afLocationInfo, long currentUtcTime)
-			throws AixDataUpdateException
+			throws AfDataUpdateException
 	{
 		try
 		{
@@ -468,7 +468,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			
 			if (latitude == null || longitude == null)
 			{
-				throw new AixDataUpdateException("Missing location information. Latitude/Longitude was null");
+				throw new AfDataUpdateException("Missing location information. Latitude/Longitude was null");
 			}
 			
 			long t1 = System.currentTimeMillis();
@@ -486,7 +486,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 
 			if (httpResponse.getStatusLine().getStatusCode() == 429)
 			{
-				throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
+				throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
 			}
 
 			InputStream content = AfUtils.getGzipInputStream(httpResponse);
@@ -535,7 +535,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 		{
 			Log.d(TAG, "update(): Failed to complete update. (" + e.getMessage() + ")");
 			e.printStackTrace();
-			throw new AixDataUpdateException();
+			throw new AfDataUpdateException();
 		}
 	}
 

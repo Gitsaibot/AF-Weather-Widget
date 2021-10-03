@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.zip.GZIPInputStream;
@@ -58,7 +59,7 @@ import android.widget.RemoteViews;
 
 public class AfUtils {
 	
-	private final static String TAG = "AixUtils";
+	private final static String TAG = "AfUtils";
 	
 	public static final int ORIENTATION_NORMAL = 0;
 	public static final int ORIENTATION_PORTRAIT_FIXED = 1;
@@ -356,7 +357,7 @@ public class AfUtils {
 			char[] buffer = new char[1024];
 			try {
 				Reader reader = new BufferedReader(
-						new InputStreamReader(is, "UTF-8"));
+						new InputStreamReader(is, StandardCharsets.UTF_8));
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
 					writer.write(buffer, 0, n);
@@ -720,7 +721,7 @@ public class AfUtils {
 	{
 		Editor editor = sharedPreferences.edit();
 		editWidgetState(editor, appWidgetId, widgetState);
-		editor.commit();
+		editor.apply();
 	}
 	
 	public static Editor editWidgetState(Editor editor, int appWidgetId, int widgetState)

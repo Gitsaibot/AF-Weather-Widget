@@ -64,7 +64,7 @@ import android.util.Log;
 
 public class AfDetailedWidget {
 	
-	private static final String TAG = "AixDetailedWidget";
+	private static final String TAG = "AfDetailedWidget";
 	
 	/* Initial Properties */
 	

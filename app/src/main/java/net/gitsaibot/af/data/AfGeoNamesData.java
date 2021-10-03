@@ -37,7 +37,7 @@ public class AfGeoNamesData implements AfDataSource {
 		return new AfGeoNamesData(context, afUpdate, afSettings);
 	}
 	
-	public void update(AfLocationInfo afLocationInfo, long currentUtcTime) throws AixDataUpdateException
+	public void update(AfLocationInfo afLocationInfo, long currentUtcTime) throws AfDataUpdateException
 	{
 		String timeZone = afLocationInfo.getTimeZone();
 		String countryCode = mAfSettings.getLocationCountryCode(afLocationInfo.getId());
@@ -49,7 +49,7 @@ public class AfGeoNamesData implements AfDataSource {
 		
 		if (latitude == null || longitude == null)
 		{
-			throw new AixDataUpdateException("Missing location information. Latitude/Longitude was null");
+			throw new AfDataUpdateException("Missing location information. Latitude/Longitude was null");
 		}
 		
 		if (timeZone != null) timeZone = timeZone.trim();
@@ -73,7 +73,7 @@ public class AfGeoNamesData implements AfDataSource {
 
 				if (response.getStatusLine().getStatusCode() == 429)
 				{
-					throw new AixDataUpdateException(url, AixDataUpdateException.Reason.RATE_LIMITED);
+					throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
 				}
 
 				InputStream content = response.getEntity().getContent();
@@ -95,7 +95,7 @@ public class AfGeoNamesData implements AfDataSource {
 			catch (Exception e)
 			{
 				Log.d(TAG, "Failed to retrieve timezone data. (" + e.getMessage() + ")");
-				throw new AixDataUpdateException();
+				throw new AfDataUpdateException();
 			}
 		}
 	}

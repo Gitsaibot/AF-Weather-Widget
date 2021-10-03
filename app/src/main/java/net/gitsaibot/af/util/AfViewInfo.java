@@ -55,7 +55,7 @@ public class AfViewInfo {
 			}
 			else
 			{
-				throw new Exception("Failed to build AixViewInfo");
+				throw new Exception("Failed to build AfViewInfo");
 			}
 		}
 		finally
@@ -143,7 +143,7 @@ public class AfViewInfo {
 	
 	@Override
 	public String toString() {
-		return "AixViewInfo(" + mViewUri + "," + mType + "," + mAfLocationInfo + ")";
+		return "AfViewInfo(" + mViewUri + "," + mType + "," + mAfLocationInfo + ")";
 	}
 	
 }

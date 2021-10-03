@@ -44,7 +44,7 @@ public class AfLocationInfo {
 			}
 			else
 			{
-				throw new Exception("Failed to build AixLocationInfo");
+				throw new Exception("Failed to build AfLocationInfo");
 			}
 		}
 		finally
@@ -318,7 +318,7 @@ public class AfLocationInfo {
 
 	@Override
 	public String toString() {
-		return "AixLocationInfo(" + mLocationUri + "," + mTitle + "," + mTitleDetailed + ","
+		return "AfLocationInfo(" + mLocationUri + "," + mTitle + "," + mTitleDetailed + ","
 				+ mTimeZone + "," + mType + "," + mTimeOfLastFix + ","
 				+ mLatitude + "," + mLongitude + ","
 				+ mLastForecastUpdate + ","

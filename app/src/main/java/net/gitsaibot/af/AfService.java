@@ -35,7 +35,7 @@ import android.widget.RemoteViews;
 
 public class AfService extends JobIntentService {
 	
-	private static final String TAG = "AixService";
+	private static final String TAG = "AfService";
 	
 	public final static String APPWIDGET_ID = "appWidgetId";
 
@@ -112,7 +112,7 @@ public class AfService extends JobIntentService {
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 			Editor editor = sharedPreferences.edit();
 			editor.putInt(getString(R.string.provider_string), AfUtils.PROVIDER_AUTO);
-			editor.commit();
+			editor.apply();
 			
 			AfUtils.clearProviderData(getContentResolver());
 			
@@ -123,7 +123,7 @@ public class AfService extends JobIntentService {
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 			Editor editor = sharedPreferences.edit();
 			editor.putBoolean(getString(R.string.useDeviceSpecificDimensions_bool), false);
-			editor.commit();
+			editor.apply();
 			action = ACTION_UPDATE_WIDGET;
 			
 			updateAllWidgets(widgetUri);
@@ -167,7 +167,7 @@ public class AfService extends JobIntentService {
 			} catch (Exception e) {
 				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetUri);
 				AfUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to update widget", true, pendingIntent);
-				Log.d(TAG, "AixUpdate of " + widgetUri + " failed! (" + e.getMessage() + ")");
+				Log.d(TAG, "AfUpdate of " + widgetUri + " failed! (" + e.getMessage() + ")");
 				e.printStackTrace();
 			}
 		}
@@ -284,7 +284,7 @@ public class AfService extends JobIntentService {
 		Uri portraitUri = AfUtils.storeBitmap(this, portraitBitmap, appWidgetId, now, false);
 		Uri landscapeUri = AfUtils.storeBitmap(this, landscapeBitmap, appWidgetId, now, true);
 		
-		RemoteViews updateView = new RemoteViews(getPackageName(), R.layout.aix_calibrate);
+		RemoteViews updateView = new RemoteViews(getPackageName(), R.layout.af_calibrate);
 		
 		setupPendingIntent(updateView, widgetUri, R.id.landscape_decrease, vertical ? ACTION_DECREASE_LANDSCAPE_HEIGHT : ACTION_DECREASE_LANDSCAPE_WIDTH);
 		setupPendingIntent(updateView, widgetUri, R.id.landscape_increase, vertical ? ACTION_INCREASE_LANDSCAPE_HEIGHT : ACTION_INCREASE_LANDSCAPE_WIDTH);
