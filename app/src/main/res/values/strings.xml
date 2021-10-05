@@ -4,8 +4,6 @@
     <string name="app_name">AF Weather Widget</string>
     <string name="app_description">Weather widget showing detailed 24-hour forecasts in a 4x1 format.</string>
     
-    <string name="help">Help</string>
-    
     <string name="widget_name" translatable="false">AF Weather</string>
     <string name="widget_loading">Loading AF...</string>
     

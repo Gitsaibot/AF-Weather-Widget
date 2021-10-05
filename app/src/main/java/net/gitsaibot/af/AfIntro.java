@@ -6,7 +6,6 @@ import net.gitsaibot.af.databinding.IntroBinding;
 
 public class AfIntro extends Activity {
 	
-	public final static String ACTION_SHOW_HELP = "aix.intent.action.SHOW_HELP";
 	private IntroBinding binding;
 
 	@Override

@@ -138,7 +138,7 @@ public class AfSettings {
 		Editor editor = mSharedPreferences.edit();
 		mNumUpdateHours = getIntegerFromStringPreference(editor, mContext.getString(R.string.update_rate_string), 0);
 		mProvider = getIntegerFromStringPreference(editor, mContext.getString(R.string.provider_string), 1);
-		editor.commit();
+		editor.apply();
 		
 		mOrientationMode = mSharedPreferences.getInt(mContext.getString(R.string.orientationMode_int), 0);
 		
