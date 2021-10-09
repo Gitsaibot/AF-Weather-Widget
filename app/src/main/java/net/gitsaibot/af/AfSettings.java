@@ -105,9 +105,7 @@ public class AfSettings {
 			String defaultString = Integer.toString(defaultValue);
 			String valueString = mSharedPreferences.getString(key, defaultString);
 			returnValue = Integer.parseInt(valueString);
-		} catch (ClassCastException e) {
-			editor.remove(key);
-		} catch (NumberFormatException e) {
+		} catch (ClassCastException | NumberFormatException e) {
 			editor.remove(key);
 		}
 		

@@ -15,7 +15,6 @@ import androidx.preference.PreferenceFragmentCompat;
 public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implements
         Preference.OnPreferenceChangeListener {
 
-
     private EditTextPreference mPrecipitationScalingPref;
     private ListPreference mTemperatureUnitPref;
     private Preference mPrecipitationUnitPref;
@@ -56,6 +55,7 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
             return onPrecipitationUnitPreferenceChange(preference, newValue);
 
         } else if (preference == mPrecipitationScalingPref) {
+
             return onFloatPreferenceChange(preference, newValue, 0.000001f, 100.0f,
                     R.string.precipitation_units_invalid_number_toast,
                     R.string.precipitation_units_invalid_range_toast);

@@ -2,24 +2,17 @@
 <resources>
 
 	<string-array name="top_text_visibility_readable">
-		<item>Never</item>
-		<item>Landscape Only</item>
-		<item>Portrait Only</item>
-		<item>Always</item>
+		<item>@string/top_text_visibility_never</item>
+		<item>@string/top_text_visibility_landscape_only</item>
+		<item>@string/top_text_visibility_portrait_only</item>
+		<item>@string/top_text_visibility_always</item>
 	</string-array>
 	
-	<string name="top_text_visibility_default">@string/top_text_visibility_always</string>
-	
-	<string name="top_text_visibility_never" translatable="false">1</string>
-	<string name="top_text_visibility_landscape" translatable="false">2</string>
-	<string name="top_text_visibility_portrait" translatable="false">3</string>
-	<string name="top_text_visibility_always" translatable="false">4</string>
-	
 	<string-array name="top_text_visibility_code">
-		<item>@string/top_text_visibility_never</item>
-		<item>@string/top_text_visibility_landscape</item>
-		<item>@string/top_text_visibility_portrait</item>
-		<item>@string/top_text_visibility_always</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
 	</string-array>
 
 	<string-array name="temperature_units_readable">
@@ -61,8 +54,6 @@
 		<item>Norwegian Meteorological Institute</item>
 		<item>NOAA NWS (US)</item>
 	</string-array>
-	
-	<string name="provider_default">@string/provider_auto</string>
 	
 	<string name="provider_auto" translatable="false">1</string>
 	<string name="provider_met" translatable="false">2</string>

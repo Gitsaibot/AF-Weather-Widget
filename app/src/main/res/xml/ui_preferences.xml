@@ -33,7 +33,7 @@
             app:useSimpleSummaryProvider="true"
             android:entries="@array/top_text_visibility_readable"
             android:entryValues="@array/top_text_visibility_code"
-            android:defaultValue="@string/top_text_visibility_default" />
+            android:defaultValue="4" />
 
         </PreferenceCategory>
 

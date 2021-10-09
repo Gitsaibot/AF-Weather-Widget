@@ -74,7 +74,7 @@
 	<string name="temperature_unit_fahrenheit" translatable="false">\u00B0F</string>
 	<string name="temperature_unit_celsius" translatable="false">\u00B0C</string>
 	<string name="temperature_top" translatable="false">(%1$s%2$s)</string>
-	
+
 	<string name="location_settings">Select location</string>
 	
 	<!-- Location selector -->
@@ -106,11 +106,6 @@
  	<string name="widget_failed_to_draw">Failed to draw widget</string>
 
 	<string name="must_select_location">You must set a location</string>
-	<string name="apply_settings">Apply Settings</string>
-
-	<string name="header_widget_settings">Widget Settings</string>
-	<string name="header_system_settings">System Settings</string>
-	<string name="header_location_settings">Select location</string>
 
 	<string name="title_configure">AF Weather: Configure widget</string>
 	<string name="button_add_widget_label">Add widget</string>
@@ -153,6 +148,10 @@
 	<string name="pattern_color_title">Pattern color</string>
 	<string name="text_color_title">Text color</string>
 	<string name="top_text_visibility_title">Top text visibility</string>
+	<string name="top_text_visibility_never">Never</string>
+	<string name="top_text_visibility_landscape_only">Landscape Only</string>
+	<string name="top_text_visibility_portrait_only">Portrait Only</string>
+	<string name="top_text_visibility_always">Always</string>
 	
 	<string name="ui_settings_category_border">Border settings</string>
 	<string name="border_enabled_title">Widget border</string>

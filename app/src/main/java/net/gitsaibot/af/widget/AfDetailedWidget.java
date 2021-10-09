@@ -1456,7 +1456,7 @@ public class AfDetailedWidget {
 		calendar.add(Calendar.HOUR_OF_DAY, mNumHours);
 		mTimeTo = calendar.getTimeInMillis();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat();
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.US);
 		sdf.setTimeZone(mAfLocationInfo.buildTimeZone());
 		
 		Log.d(TAG, mAfLocationInfo.getTitle() + " (" + mAfLocationInfo.buildTimeZone().getDisplayName() + "): " + sdf.format(new Date(mTimeNow)) +
