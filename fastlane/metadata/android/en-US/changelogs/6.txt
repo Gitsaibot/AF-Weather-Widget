@@ -1,0 +1,2 @@
+- Change the default setting for the visibility of the top text
+- Small bugfixes

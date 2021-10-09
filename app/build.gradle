@@ -11,8 +11,8 @@ android {
         applicationId "net.gitsaibot.af"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 5
-        versionName '1.4'
+        versionCode 6
+        versionName '1.5'
         buildConfigField("String", "USER_AGENT", "\"" + keyProperties['user_agent'] + "\"")
         buildConfigField("String", "API_KEY", "\"" + keyProperties['apiKey'] + "\"")
         buildConfigField("String", "USER_GEONAMES", "\"" + keyProperties['user_geonames'] + "\"")
