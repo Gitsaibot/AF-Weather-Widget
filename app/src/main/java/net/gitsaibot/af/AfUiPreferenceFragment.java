@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -48,16 +49,38 @@ public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements
 
         if (preference == mBorderThicknessPreference) {
 
-            mBorderThicknessPreference.setSummary(newValue + "px");
-            return true;
+            return onFloatPreferenceChange(preference, newValue, 0.0f, 20.0f,
+                    R.string.border_thickness_invalid_number_toast,
+                    R.string.border_thickness_invalid_range_toast);
 
         } else if (preference == mBorderRoundingPreference) {
 
-            mBorderRoundingPreference.setSummary(newValue + "px");
-            return true;
+            return onFloatPreferenceChange(preference, newValue, 0.0f, 20.0f,
+                    R.string.border_rounding_invalid_number_toast,
+                    R.string.border_rounding_invalid_range_toast);
+        }
+        return false;
+    }
+
+    private boolean onFloatPreferenceChange(androidx.preference.Preference preference, Object newValue,
+                                            float rangeMin, float rangeMax, int invalidNumberString, int invalidRangeString)
+    {
+        float f;
+
+        try {
+            f = Float.parseFloat((String)newValue);
+        } catch (NumberFormatException e) {
+            Toast.makeText(getContext(), getString(invalidNumberString), Toast.LENGTH_SHORT).show();
+            return false;
         }
 
-        return false;
+        if ((f >= rangeMin) && (f <= rangeMax)) {
+            preference.setSummary(newValue + "px");
+            return true;
+        } else {
+            Toast.makeText(getContext(), getString(invalidRangeString), Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     @Override
