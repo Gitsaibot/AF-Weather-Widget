@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: AF-Weather-Widget_apk
-          path: /home/runner/work/AF-Weather-Widget/AF-Weather-Widget/build/outputs/apk/debug/**.apk
+          path: /home/runner/work/AF-Weather-Widget/AF-Weather-Widget/app/build/outputs/apk/debug/**.apk
