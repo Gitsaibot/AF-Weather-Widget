@@ -15,7 +15,6 @@ import java.util.TimeZone;
 import net.gitsaibot.af.AfProvider.AfLocations;
 import net.gitsaibot.af.AfProvider.AfSunMoonData;
 import net.gitsaibot.af.AfProvider.AfSunMoonDataColumns;
-import net.gitsaibot.af.AfSettings;
 import net.gitsaibot.af.AfUpdate;
 import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
@@ -37,7 +36,7 @@ import android.util.Xml;
 
 public class AfMetSunTimeData implements AfDataSource {
 
-	public final static String TAG = "AixMetSunTimeData";
+	public final static String TAG = "AfMetSunTimeData";
 
 	private final static int NUM_DAYS_MINIMUM = 5;
 	private final static int NUM_DAYS_REQUEST = 15;
@@ -56,7 +55,6 @@ public class AfMetSunTimeData implements AfDataSource {
 
 	private Context mContext;
 
-	//private AixSettings mAixSettings;
 	private AfUpdate mAfUpdate;
 
 	private SimpleDateFormat mDateFormat;
@@ -67,24 +65,23 @@ public class AfMetSunTimeData implements AfDataSource {
 	private long mStartDate;
 	private long mEndDate;
 	
-	private AfMetSunTimeData(Context context, AfUpdate afUpdate, AfSettings afSettings)
+	private AfMetSunTimeData(Context context, AfUpdate afUpdate)
 	{
 		mContext = context;
 		mAfUpdate = afUpdate;
-		//mAixSettings = aixSettings;
 		
 		mUtcTimeZone = TimeZone.getTimeZone("UTC");
 		
-		mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		mDateFormat.setTimeZone(mUtcTimeZone);
 		
-		mTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		mTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
 		mTimeFormat.setTimeZone(mUtcTimeZone);
 	}
 	
-	public static AfMetSunTimeData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
+	public static AfMetSunTimeData build(Context context, AfUpdate afUpdate)
 	{
-		return new AfMetSunTimeData(context, afUpdate, afSettings);
+		return new AfMetSunTimeData(context, afUpdate);
 	}
 	
 	private int getNumExistingDataSets(long locationId)

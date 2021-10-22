@@ -347,14 +347,14 @@ public class AfUpdate {
 
 		AfUtils.clearOldProviderData(mContext.getContentResolver());
 		AfGeoNamesData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
-		AfMetSunTimeData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
+		AfMetSunTimeData.build(mContext, this).update(afLocationInfo, mCurrentUtcTime);
 
 		int provider = mAfSettings.getCachedProvider();
 
 		if ((provider == AfUtils.PROVIDER_AUTO && isLocationInUS(afLocationInfo)) || provider == AfUtils.PROVIDER_NWS) {
-			AfNoaaWeatherData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
+			AfNoaaWeatherData.build(mContext, this).update(afLocationInfo, mCurrentUtcTime);
 		} else {
-			AfMetWeatherData.build(mContext, this, mAfSettings).update(afLocationInfo, mCurrentUtcTime);
+			AfMetWeatherData.build(mContext, this).update(afLocationInfo, mCurrentUtcTime);
 		}
 	}
 	

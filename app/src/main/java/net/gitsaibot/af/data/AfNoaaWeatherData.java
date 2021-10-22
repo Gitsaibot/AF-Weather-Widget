@@ -34,7 +34,6 @@ import java.util.TimeZone;
 
 import net.gitsaibot.af.AfProvider.AfIntervalDataForecasts;
 import net.gitsaibot.af.AfProvider.AfPointDataForecasts;
-import net.gitsaibot.af.AfSettings;
 import net.gitsaibot.af.AfUpdate;
 import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.IntervalData;
@@ -57,7 +56,7 @@ import android.util.Xml;
 
 public class AfNoaaWeatherData implements AfDataSource {
 	
-	public static final String TAG = "AixNoaaWeatherData";
+	public static final String TAG = "AfNoaaWeatherData";
 	
 	private static class AfNoaaDataSet<T>
 	{
@@ -152,27 +151,25 @@ public class AfNoaaWeatherData implements AfDataSource {
 	}};
 	
 	private Context mContext;
-	//private AixSettings mAixSettings;
 	private AfUpdate mAfUpdate;
 	
 	private SimpleDateFormat mDateFormat;
 	private TimeZone mUtcTimeZone;
 	
-	private AfNoaaWeatherData(Context context, AfUpdate afUpdate, AfSettings afSettings)
+	private AfNoaaWeatherData(Context context, AfUpdate afUpdate)
 	{
 		mContext = context;
 		mAfUpdate = afUpdate;
-		//mAixSettings = aixSettings;
 		
 		mUtcTimeZone = TimeZone.getTimeZone("UTC");
 		
-		mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
 		mDateFormat.setTimeZone(mUtcTimeZone);
 	}
 	
-	public static AfNoaaWeatherData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
+	public static AfNoaaWeatherData build(Context context, AfUpdate afUpdate)
 	{
-		return new AfNoaaWeatherData(context, afUpdate, afSettings);
+		return new AfNoaaWeatherData(context, afUpdate);
 	}
 
 	private ContentValues[] buildIntervalDataContentValues(

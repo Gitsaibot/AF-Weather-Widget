@@ -26,7 +26,7 @@ import android.util.Log;
 
 public class AfSettings {
 	
-	private static final String TAG = "AixSettings";
+	private static final String TAG = "AfSettings";
 	
 	public final static int DEVICE_PROFILE_STATE_NONE = 0;
     public final static int DEVICE_PROFILE_STATE_USER_SUBMITTED = 1;

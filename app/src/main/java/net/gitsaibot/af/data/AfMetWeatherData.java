@@ -11,7 +11,6 @@ import net.gitsaibot.af.AfProvider.AfIntervalDataForecastColumns;
 import net.gitsaibot.af.AfProvider.AfIntervalDataForecasts;
 import net.gitsaibot.af.AfProvider.AfPointDataForecastColumns;
 import net.gitsaibot.af.AfProvider.AfPointDataForecasts;
-import net.gitsaibot.af.AfSettings;
 import net.gitsaibot.af.AfUpdate;
 import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
@@ -30,22 +29,20 @@ import android.util.Xml;
 
 public class AfMetWeatherData implements AfDataSource {
 
-	public static final String TAG = "AixMetWeatherData";
+	public static final String TAG = "AfMetWeatherData";
 	
 	private Context mContext;
-	//private AixSettings mAixSettings;
 	private AfUpdate mAfUpdate;
 	
-	private AfMetWeatherData(Context context, AfUpdate afUpdate, AfSettings afSettings)
+	private AfMetWeatherData(Context context, AfUpdate afUpdate)
 	{
 		mContext = context;
 		mAfUpdate = afUpdate;
-		//mAixSettings = aixSettings;
 	}
 	
-	public static AfMetWeatherData build(Context context, AfUpdate afUpdate, AfSettings afSettings)
+	public static AfMetWeatherData build(Context context, AfUpdate afUpdate)
 	{
-		return new AfMetWeatherData(context, afUpdate, afSettings);
+		return new AfMetWeatherData(context, afUpdate);
 	}
 	
 	private static int mapWeatherIconToOldApi(int id)

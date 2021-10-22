@@ -19,7 +19,7 @@ import android.util.Log;
 
 public class AfGeoNamesData implements AfDataSource {
 
-	public final static String TAG = "AixGeoNamesData";
+	public final static String TAG = "AfGeoNamesData";
 	
 	private Context mContext;
 	private AfSettings mAfSettings;
