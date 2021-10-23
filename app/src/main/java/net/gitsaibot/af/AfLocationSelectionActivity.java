@@ -122,7 +122,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		mContext = this;
 		setContentView(R.layout.location_selection_list);
 		
-		mAddLocationButton = (Button) findViewById(R.id.add_location_button);
+		mAddLocationButton = findViewById(R.id.add_location_button);
 		mAddLocationButton.setOnClickListener(this);
 		
 		ContentResolver cr = getContentResolver();
@@ -216,7 +216,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		Dialog dialog = null;
 		
 		View content = getLayoutInflater().inflate(R.layout.dialog_edittext, null);
-		mEditText = (EditText) content.findViewById(R.id.edittext);
+		mEditText = content.findViewById(R.id.edittext);
 		mEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
 		
 		switch (id) {
@@ -297,7 +297,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
-		final EditText editText = (EditText) dialog.findViewById(R.id.edittext);
+		final EditText editText = dialog.findViewById(R.id.edittext);
 		
 		switch (id) {
 		case DIALOG_ADD:

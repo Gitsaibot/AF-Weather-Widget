@@ -527,7 +527,7 @@ public class AfSettings {
 			editor = mSharedPreferences.edit();
 		}
 		
-		Map<String, ?> settingMap = (Map<String, ?>)mSharedPreferences.getAll();
+		Map<String, ?> settingMap = mSharedPreferences.getAll();
 		for (Entry<String, ?> setting : settingMap.entrySet()) {
 			String key = setting.getKey();
 			if (key.startsWith("global_widget")) {
@@ -546,7 +546,7 @@ public class AfSettings {
 	{
 		Editor editor = sharedPreferences.edit();
 		
-		Map<String, ?> settingMap = (Map<String, ?>)sharedPreferences.getAll();
+		Map<String, ?> settingMap = sharedPreferences.getAll();
 		for (Entry<String, ?> setting : settingMap.entrySet()) {
 			String key = setting.getKey();
 			if (key.startsWith("global_widget")) {

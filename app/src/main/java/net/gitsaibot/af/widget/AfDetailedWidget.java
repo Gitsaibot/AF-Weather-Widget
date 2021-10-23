@@ -544,7 +544,7 @@ public class AfDetailedWidget {
 			double degreesPerCell = degreesPerCellOptions[degreesPerCellIndex];
 			
 			mGraphRect = calculateGraphRect(textLabelWidth, mLabelTextSize, drawTopText, mBackgroundRect);
-			mNumHorizontalCells = calculateNumberOfHorizontalCells(mNumHours, minimumCellWidth, (double)mGraphRect.width());
+			mNumHorizontalCells = calculateNumberOfHorizontalCells(mNumHours, minimumCellWidth, mGraphRect.width());
 			mCellSizeX = (double)mGraphRect.width() / (double)mNumHorizontalCells;
 			
 			mNumVerticalCells = calculateNumberOfVerticalCells(mGraphRect.height(), reservedSpaceAboveGraph, reservedSpaceBelowGraph, minimumCellHeight, mTemperatureValueMax, mTemperatureValueMin, degreesPerCell);

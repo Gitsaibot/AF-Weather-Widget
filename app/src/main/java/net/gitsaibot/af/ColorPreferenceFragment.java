@@ -91,25 +91,25 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
         if (showHexDialog) {
             int color = Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV);
 
-            mEditText = (EditText)view.findViewById(R.id.edittext);
+            mEditText = view.findViewById(R.id.edittext);
             mEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
             mEditText.setText(String.format("#%08X", color));
         } else {
-            mAlphaSlider = (ColorView)view.findViewById(R.id.alphaSlider);
+            mAlphaSlider = view.findViewById(R.id.alphaSlider);
             mAlphaSlider.setOnValueChangeListener(this);
-            mHueSlider = (ColorView)view.findViewById(R.id.hueSlider);
+            mHueSlider = view.findViewById(R.id.hueSlider);
             mHueSlider.setOnValueChangeListener(this);
 
-            mSvMap = (ColorView)view.findViewById(R.id.svMap);
+            mSvMap = view.findViewById(R.id.svMap);
             mSvMap.setOnValueChangeListener(this);
 
-            mAlphaTextView = (TextView)view.findViewById(R.id.alphaText);
-            mHueTextView = (TextView)view.findViewById(R.id.hueText);
-            mSaturationTextView = (TextView)view.findViewById(R.id.saturationText);
-            mValueTextView = (TextView)view.findViewById(R.id.valueText);
+            mAlphaTextView = view.findViewById(R.id.alphaText);
+            mHueTextView = view.findViewById(R.id.hueText);
+            mSaturationTextView = view.findViewById(R.id.saturationText);
+            mValueTextView = view.findViewById(R.id.valueText);
 
-            mColorOld = (ColorView)view.findViewById(R.id.colorOld);
-            mColorNew = (ColorView)view.findViewById(R.id.colorNew);
+            mColorOld = view.findViewById(R.id.colorOld);
+            mColorNew = view.findViewById(R.id.colorNew);
 
             setupDialogValues();
             updateLabels();

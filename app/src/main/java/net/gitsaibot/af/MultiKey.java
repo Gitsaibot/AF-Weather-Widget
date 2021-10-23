@@ -160,7 +160,7 @@ public class MultiKey implements Serializable {
             throw new IllegalArgumentException("The array of keys must not be null");
         }
         if (makeClone) {
-            this.keys = (Object[]) keys.clone();
+            this.keys = keys.clone();
         } else {
             this.keys = keys;
         }
@@ -184,7 +184,7 @@ public class MultiKey implements Serializable {
      * @return the individual keys
      */
     public Object[] getKeys() {
-        return (Object[]) keys.clone();
+        return keys.clone();
     }
     
     /**
