@@ -1,0 +1,2 @@
+- Supports android 12 now
+- Small bugfixes
