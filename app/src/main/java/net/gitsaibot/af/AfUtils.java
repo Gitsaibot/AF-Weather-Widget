@@ -665,13 +665,22 @@ public class AfUtils {
 	public static PendingIntent buildDisableSpecificDimensionsIntent(Context context, Uri widgetUri)
 	{
 		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS, widgetUri, context, AfServiceReceiver.class);
-		return PendingIntent.getBroadcast(context, 0, intent, 0);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+		} else {
+			return PendingIntent.getBroadcast(context, 0, intent, 0);
+		}
 	}
 	
 	public static PendingIntent buildWidgetProviderAutoIntent(Context context, Uri widgetUri)
 	{
 		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_PROVIDER_AUTO, widgetUri, context, AfServiceReceiver.class);
-		return PendingIntent.getBroadcast(context, 0, intent, 0);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+		} else {
+			return PendingIntent.getBroadcast(context, 0, intent, 0);
+		}
+
 	}
 	
 	public static void clearProviderData(ContentResolver contentResolver)

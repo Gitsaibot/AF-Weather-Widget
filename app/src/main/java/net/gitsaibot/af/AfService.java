@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import androidx.core.app.JobIntentService;
 import android.util.Log;
@@ -74,7 +75,6 @@ public class AfService extends JobIntentService {
 		put(ACTION_INCREASE_PORTRAIT_WIDTH,   new Pair<String, Integer>(PORTRAIT_WIDTH,   +1));
 	}};
 	
-	@SuppressWarnings("serial")
 	Map<String, String> mCalibrationAcceptActionsMap = new HashMap<String, String>() {{
 		put(ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION, PORTRAIT_WIDTH);
 		put(ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION, PORTRAIT_HEIGHT);
@@ -305,7 +305,11 @@ public class AfService extends JobIntentService {
 	
 	private void setupPendingIntent(RemoteViews remoteViews, Uri widgetUri, int resource, String action) {
 		Intent intent = new Intent(action, widgetUri, this, AfServiceReceiver.class);
-		remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, 0));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE));
+		} else {
+			remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, 0));
+		}
 	}
 
 }
