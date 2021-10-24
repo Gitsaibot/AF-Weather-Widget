@@ -1,5 +1,7 @@
 package net.gitsaibot.af;
 
+import static java.util.Locale.US;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,6 +53,7 @@ import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -603,7 +606,7 @@ public class AfUtils {
 			}
 		}
 		
-		return Uri.parse(String.format(
+		return Uri.parse(String.format(US,
 				"content://net.gitsaibot.af/aixrender/%d/%d/%s",
 				appWidgetId, time, orientation));
 	}
@@ -652,7 +655,11 @@ public class AfUtils {
 		Intent editWidgetIntent = new Intent(Intent.ACTION_EDIT, widgetUri, context, AfPreferenceActivity.class);
 		editWidgetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		editWidgetIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		return PendingIntent.getActivity(context, 0, editWidgetIntent, 0);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return PendingIntent.getActivity(context, 0, editWidgetIntent, PendingIntent.FLAG_IMMUTABLE);
+		} else {
+			return PendingIntent.getActivity(context, 0, editWidgetIntent, 0);
+		}
 	}
 	
 	public static PendingIntent buildDisableSpecificDimensionsIntent(Context context, Uri widgetUri)
