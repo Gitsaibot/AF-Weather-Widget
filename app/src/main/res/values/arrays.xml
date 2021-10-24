@@ -8,7 +8,7 @@
 		<item>@string/top_text_visibility_always</item>
 	</string-array>
 	
-	<string-array name="top_text_visibility_code">
+	<string-array name="top_text_visibility_code" translatable="false">
 		<item>1</item>
 		<item>2</item>
 		<item>3</item>
@@ -20,7 +20,7 @@
 		<item>@string/temperature_units_fahrenheit</item>
 	</string-array>
 	
-	<string-array name="temperature_units_code">
+	<string-array name="temperature_units_code" translatable="false">
 		<item>1</item>
 		<item>2</item>
 	</string-array>
@@ -30,7 +30,7 @@
 		<item>Inches</item>
 	</string-array>
 	
-	<string-array name="precipitation_units_code">
+	<string-array name="precipitation_units_code" translatable="false">
 		<item>1</item>
 		<item>2</item>
 	</string-array>
@@ -42,7 +42,7 @@
 		<item>12 hours</item>
 	</string-array>
 	
-	<string-array name="preference_update_rates_code">
+	<string-array name="preference_update_rates_code" translatable="false">
 		<item>0</item>
 		<item>3</item>
 		<item>6</item>
@@ -55,11 +55,7 @@
 		<item>NOAA NWS (US)</item>
 	</string-array>
 	
-	<string name="provider_auto" translatable="false">1</string>
-	<string name="provider_met" translatable="false">2</string>
-	<string name="provider_nws" translatable="false">3</string>
-	
-	<string-array name="provider_code">
+	<string-array name="provider_code" translatable="false">
 		<item>1</item>
 		<item>2</item>
 		<item>3</item>

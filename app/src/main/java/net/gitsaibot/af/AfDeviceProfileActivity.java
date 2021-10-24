@@ -310,30 +310,24 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 	private void updateUIState(boolean updateEditTextBoxes)
 	{
 		boolean activateSpecificDimensions = mActivateSpecificDimensionsCheckBox.isChecked();
-		
-		boolean enablePortraitControls = activateSpecificDimensions;
-		boolean enableLandscapeControls = activateSpecificDimensions;
 
-		enablePortraitControls &= activateSpecificDimensions;
-		enableLandscapeControls &= activateSpecificDimensions;
-
-		mPortraitDimensionsLabel.setEnabled(enablePortraitControls);
-		mPortraitWidthLabel.setEnabled(enablePortraitControls);
-		mPortraitHeightLabel.setEnabled(enablePortraitControls);
+		mPortraitDimensionsLabel.setEnabled(activateSpecificDimensions);
+		mPortraitWidthLabel.setEnabled(activateSpecificDimensions);
+		mPortraitHeightLabel.setEnabled(activateSpecificDimensions);
 		
-		mPortraitWidthEditText.setEnabled(enablePortraitControls);
-		mPortraitHeightEditText.setEnabled(enablePortraitControls);
-		mPortraitCalibrateButton.setEnabled(enablePortraitControls);
-		mPortraitRevertButton.setEnabled(enablePortraitControls);
+		mPortraitWidthEditText.setEnabled(activateSpecificDimensions);
+		mPortraitHeightEditText.setEnabled(activateSpecificDimensions);
+		mPortraitCalibrateButton.setEnabled(activateSpecificDimensions);
+		mPortraitRevertButton.setEnabled(activateSpecificDimensions);
 		
-		mLandscapeDimensionsLabel.setEnabled(enableLandscapeControls);
-		mLandscapeWidthLabel.setEnabled(enableLandscapeControls);
-		mLandscapeHeightLabel.setEnabled(enableLandscapeControls);
+		mLandscapeDimensionsLabel.setEnabled(activateSpecificDimensions);
+		mLandscapeWidthLabel.setEnabled(activateSpecificDimensions);
+		mLandscapeHeightLabel.setEnabled(activateSpecificDimensions);
 		
-		mLandscapeWidthEditText.setEnabled(enableLandscapeControls);
-		mLandscapeHeightEditText.setEnabled(enableLandscapeControls);
-		mLandscapeCalibrateButton.setEnabled(enableLandscapeControls);
-		mLandscapeRevertButton.setEnabled(enableLandscapeControls);
+		mLandscapeWidthEditText.setEnabled(activateSpecificDimensions);
+		mLandscapeHeightEditText.setEnabled(activateSpecificDimensions);
+		mLandscapeCalibrateButton.setEnabled(activateSpecificDimensions);
+		mLandscapeRevertButton.setEnabled(activateSpecificDimensions);
 		
 		if (updateEditTextBoxes) {
 			Point portraitDimensions = mAfSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, false);

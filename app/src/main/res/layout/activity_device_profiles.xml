@@ -96,7 +96,7 @@
 					android:text="Width:"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:paddingRight="6dip"
+					android:paddingEnd="6dip"
 					android:textAppearance="?android:attr/textAppearanceSmall" />
 		
 			<EditText android:id="@+id/af_device_profile_portrait_width"

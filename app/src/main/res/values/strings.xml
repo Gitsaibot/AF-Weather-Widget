@@ -21,14 +21,11 @@
 	<string name="noaa">NOAA NWS data</string>
 
 	<!-- IntroText -->
-	<string name="intro_text">After installing AF, you must manually add the widget to your homescreen:  \t\t When setting up a widget for the first time, the only thing which needs to be chosen is the location to view. \t\tLater on, you can explore the various configuration options by tapping the widget. \t\tUnits of measurement can be changed, the user interface can be customized, and settings such as data update rate can be chosen.   \t\t The most recently saved settings will be used automatically when setting up a new widget. \t</string>
+	<string name="intro_text">After installing AF, you must manually add the widget to your homescreen: When setting up a widget for the first time, the only thing which needs to be chosen is the location to view. The most recently saved settings will be used automatically when setting up a new widget. </string>
 
 	<!-- Temperature graph -->
 	<string name="temperature_graph_text">The temperature graph shows the temperature for the coming 24 hours, starting at the next full hour from the current time. NB:
 		For areas where data is only available in 3-hour intervals, the time axis will be aligned to match the available data.\n
-
-		\nThe temperature is drawn in a red color for temperatures which are above freezing temperature (0°C or 32°F),
-		and in a blue color for temperatures below the freezing temperature.
 	</string>
 
 	<!-- Precipitation -->

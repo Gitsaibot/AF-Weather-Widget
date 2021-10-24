@@ -13,6 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DialogPreference;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
+import java.util.Locale;
+
 public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat implements ColorView.OnValueChangeListener {
 
     private int mValue;
@@ -142,10 +144,10 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
     }
 
     private void updateLabels() {
-        mAlphaTextView.setText(String.format("A: %.0f%%", mAlpha * 100.0f));
-        mHueTextView.setText(String.format("H: %.0f\u00b0", mHSV[0]));
-        mSaturationTextView.setText(String.format("S: %.0f%%", mHSV[1] * 100.0f));
-        mValueTextView.setText(String.format("V: %.0f%%", mHSV[2] * 100.0f));
+        mAlphaTextView.setText(String.format(Locale.getDefault(),"A: %.0f%%", mAlpha * 100.0f));
+        mHueTextView.setText(String.format(Locale.getDefault(),"H: %.0f\u00b0", mHSV[0]));
+        mSaturationTextView.setText(String.format(Locale.getDefault(),"S: %.0f%%", mHSV[1] * 100.0f));
+        mValueTextView.setText(String.format(Locale.getDefault(),"V: %.0f%%", mHSV[2] * 100.0f));
     }
 
     @Override

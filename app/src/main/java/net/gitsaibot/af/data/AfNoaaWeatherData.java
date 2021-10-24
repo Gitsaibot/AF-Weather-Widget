@@ -474,8 +474,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 					Locale.US,
 					"https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
 							+ "?lat=%.3f&lon=%.3f&product=time-series&temp=temp&rh=rh&icons=icons&qpf=qpf",
-					latitude.doubleValue(),
-					longitude.doubleValue());
+					latitude, longitude);
 			
 			HttpClient httpClient = AfUtils.setupHttpClient(mContext);
 			HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
