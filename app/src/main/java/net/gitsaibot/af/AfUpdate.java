@@ -219,8 +219,7 @@ public class AfUpdate {
 	private boolean isLocationInUS(AfLocationInfo locationInfo) {
 		String widgetCountryCode = "global_lcountry_" + locationInfo.getId();
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mContext);
-		boolean isUS = settings.getString(widgetCountryCode, "").equalsIgnoreCase("us");
-		return isUS;
+		return settings.getString(widgetCountryCode, "").equalsIgnoreCase("us");
 	}
 	
 	private void scheduleUpdate(long updateTime) {
@@ -234,8 +233,12 @@ public class AfUpdate {
 		updateTime = Math.min(updateTime, calendar.getTimeInMillis());
 
 		Intent updateIntent = new Intent(AfService.ACTION_UPDATE_WIDGET, mWidgetUri, mContext, AfServiceReceiver.class);
-		PendingIntent pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, 0);
-		
+		PendingIntent pendingUpdateIntent;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+			pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, PendingIntent.FLAG_IMMUTABLE);
+		} else {
+			pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, 0);
+		}
 		boolean awakeOnly = mAfSettings.getCachedAwakeOnly();
 		
 		AlarmManager alarmManager = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
