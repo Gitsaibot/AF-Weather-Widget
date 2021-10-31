@@ -171,11 +171,11 @@ public class AfWidgetSettings {
 						useInches() ? R.string.precipitation_scaling_inches_default
 									: R.string.precipitation_scaling_mm_default } };
 
-		for (int i = 0; i < defaultFloats.length; i++) {
-			String key = r.getString(defaultFloats[i][0]);
+		for (int[] defaultFloat : defaultFloats) {
+			String key = r.getString(defaultFloat[0]);
 
 			if (key != null && !mSettings.containsKey(key)) {
-				String valueString = r.getString(defaultFloats[i][1]);
+				String valueString = r.getString(defaultFloat[1]);
 				float value = Float.parseFloat(valueString);
 				mSettings.put(key, value);
 			}
@@ -199,12 +199,11 @@ public class AfWidgetSettings {
 				{ R.string.min_rain_color_int, R.color.minimum_rain },
 				{ R.string.above_freezing_color_int, R.color.above_freezing },
 				{ R.string.below_freezing_color_int, R.color.below_freezing } };
-		
-		for (int i = 0; i < defaultColors.length; i++) {
-			String key = r.getString(defaultColors[i][0]);
-			if (key != null && !mSettings.containsKey(key))
-			{
-				int value = r.getColor(defaultColors[i][1]);
+
+		for (int[] defaultColor : defaultColors) {
+			String key = r.getString(defaultColor[0]);
+			if (key != null && !mSettings.containsKey(key)) {
+				int value = r.getColor(defaultColor[1]);
 				mSettings.put(key, value);
 			}
 		}

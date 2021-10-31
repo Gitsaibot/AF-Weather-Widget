@@ -273,7 +273,7 @@ public class AfDetailedWidget {
 		
 		for (int dataIndex = 0; dataIndex < mIntervalData.size(); dataIndex++) {
 			IntervalData d = mIntervalData.get(dataIndex);
-			if (d.timeFrom == d.timeTo) continue;
+			if (d.timeFrom.equals(d.timeTo)) continue;
 			
 			int startCell = (int)Math.floor((float)mNumHorizontalCells *
 					(float)(d.timeFrom - mTimeFrom) / (float)(mTimeTo - mTimeFrom));

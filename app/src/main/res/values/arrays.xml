@@ -26,8 +26,8 @@
 	</string-array>
 	
 	<string-array name="precipitation_units_readable">
-		<item>Millimeters</item>
-		<item>Inches</item>
+		<item>@string/precipitation_units_mm</item>
+		<item>@string/precipitation_units_inches</item>
 	</string-array>
 	
 	<string-array name="precipitation_units_code" translatable="false">

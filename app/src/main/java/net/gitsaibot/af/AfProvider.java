@@ -863,7 +863,7 @@ public class AfProvider extends ContentProvider {
 	{
 		if (sUriMatcher.match(uri) != AIXRENDER)
 		{
-			throw new FileNotFoundException("Uri does not follow AixRender format. (uri=" + uri + ")");
+			throw new FileNotFoundException("Uri does not follow AfRender format. (uri=" + uri + ")");
 		}
 		
 		List<String> pathSegments = uri.getPathSegments();
@@ -875,8 +875,8 @@ public class AfProvider extends ContentProvider {
 		String appWidgetIdString = pathSegments.get(1);
 		String updateTimeString = pathSegments.get(2);
 		
-		int appWidgetId = -1;
-		long updateTime = -1;
+		int appWidgetId;
+		long updateTime;
 		
 		try
 		{

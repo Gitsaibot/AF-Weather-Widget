@@ -188,14 +188,14 @@ public class AfUpdate {
 				} else if (isWifiConnectionMissing) {
 					updateWidgetRemoteViews("WiFi is required and missing", true);
 				} else {
-					updateWidgetRemoteViews("Failed to get weather data", true);
+					updateWidgetRemoteViews(mContext.getString(R.string.widget_no_weather_data), true);
 				}
 			} else {
 				if (mAfSettings.getCachedUseSpecificDimensions()) {
 					PendingIntent pendingIntent = AfUtils.buildDisableSpecificDimensionsIntent(mContext, mWidgetUri);
 					AfUtils.updateWidgetRemoteViews(mContext, mAfWidgetInfo.getAppWidgetId(), "Draw failed!\nTap widget to revert to minimal dimensions", true, pendingIntent);
 				} else {
-					updateWidgetRemoteViews("Failed to draw widget", true);
+					updateWidgetRemoteViews(mContext.getString(R.string.widget_failed_to_draw), true);
 				}
 			}
 		}

@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
 
-    <string name="app_name">AF Weather Widget</string>
     <string name="app_description">Weather widget showing detailed 24-hour forecasts in a 4x1 format.</string>
     
     <string name="widget_name" translatable="false">AF Weather</string>
     <string name="widget_loading">Loading AF...</string>
-    
-    <string name="widget_name_small_tiny" translatable="false">AF Weather (2x1)</string>
-    <string name="widget_name_small_small" translatable="false">AF Weather (2x2)</string>
-    <string name="widget_name_large_tiny" translatable="false">AF Weather (4x1)</string>
-    <string name="widget_name_large_small" translatable="false">AF Weather (4x2)</string>
 
     <string name="device_profile_guide_link" translatable="false">&lt;a href=\"https://github.com/Gitsaibot/AF-Weather-Widget/wiki/Device-Profiles/\"&gt;Device Profile Guide&lt;/a&gt;</string>
 
@@ -71,8 +65,6 @@
 	<string name="temperature_unit_fahrenheit" translatable="false">\u00B0F</string>
 	<string name="temperature_unit_celsius" translatable="false">\u00B0C</string>
 	<string name="temperature_top" translatable="false">(%1$s%2$s)</string>
-
-	<string name="location_settings">Select location</string>
 	
 	<!-- Location selector -->
 	<string name="location_settings_title">Select Location</string>
@@ -98,7 +90,6 @@
 	<string name="location_search_request_denied_toast">Error: Search request denied</string>
 	<string name="location_search_invalid_request_toast">Error: Invalid search request</string>
 
- 	<string name="widget_load_error_please_recreate">Error: Please recreate widget</string>
  	<string name="widget_no_weather_data">No weather data. Retrying in %d minutes</string>
  	<string name="widget_failed_to_draw">Failed to draw widget</string>
 
@@ -112,7 +103,6 @@
 	
 	<string name="dialog_search_location">Search for location</string>
 
-	<string name="dialog_color_title">Select color</string>
 	<string name="dialog_color_alpha">Alpha:</string>
 	<string name="dialog_color_code">HTML color code:</string>
 
@@ -184,8 +174,6 @@
 	<string name="system_settings_title">Update Settings</string>
 	<string name="system_settings_summary">These settings are applied to all widgets</string>
 	
-	<string name="system_settings_category">System Settings</string>
-	
 	<string name="provider_title">Data source</string>
 	
 	<string name="awake_only_title">Only when awake</string>
@@ -238,8 +226,7 @@
 	<string name="preference_awake_only_bool">global_temp_awake_only_bool</string>
 	<string name="preference_wifi_only_bool">global_temp_wifi_only_bool</string>
 	<string name="preference_update_rate_string">global_temp_update_rate_string</string>
-	
-	<string name="calibration_mode_bool">global_calibration_mode</string>
+
 	<!-- END PREFERENCE STRINGS, DO NOT EDIT -->
 	
 	<string name="useDeviceSpecificDimensions_bool">global_dp_useDeviceSpecificDimensions_bool</string>
@@ -286,6 +273,5 @@
 	<string name="calibrationDecrementSymbol" translatable="false">\u2212</string>
 
 	<string name="bufferImageFileName" translatable="false">af_%1$d_%2$d_%3$s.png</string>
-	<string name="unit_settings_category">Unit settings</string>
 
 </resources>

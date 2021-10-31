@@ -36,6 +36,8 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String scalePref = pref.getString(getString(R.string.precipitation_scaling_string), "1");
         mPrecipitationScalingPref.setSummary(scalePref);
+        String scalePrefTitle = pref.getString(getString(R.string.precipitation_units_string), "1");
+        mPrecipitationScalingPref.setTitle((scalePrefTitle.equals("1") ? getString(R.string.precipitation_scaling_title_mm) : getString(R.string.precipitation_scaling_title_inches)));
     }
 
     @Override
@@ -52,11 +54,11 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
 
         } else if (preference == mPrecipitationUnitPref) {
 
-            return onPrecipitationUnitPreferenceChange(preference, newValue);
+            return onPrecipitationUnitPreferenceChange(newValue);
 
         } else if (preference == mPrecipitationScalingPref) {
 
-            return onFloatPreferenceChange(preference, newValue, 0.000001f, 100.0f,
+            return onFloatPreferenceChange(newValue, 0.000001f, 100.0f,
                     R.string.precipitation_units_invalid_number_toast,
                     R.string.precipitation_units_invalid_range_toast);
 
@@ -65,8 +67,7 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
         return false;
     }
 
-    private boolean onPrecipitationUnitPreferenceChange(
-            Preference preference, Object newValue)
+    private boolean onPrecipitationUnitPreferenceChange(Object newValue)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -80,15 +81,15 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
                             ? getString(R.string.precipitation_scaling_mm_default)
                             : getString(R.string.precipitation_scaling_inches_default);
 
-            mPrecipitationScalingPref.setSummary(
-                    defaultScalingValue + " " + (newUnit.equals("1") ? "mm" : "in"));
+            mPrecipitationScalingPref.setTitle((newUnit.equals("1") ? getString(R.string.precipitation_scaling_title_mm) : getString(R.string.precipitation_scaling_title_inches)));
+            mPrecipitationScalingPref.setSummary(defaultScalingValue);
             mPrecipitationScalingPref.setText(defaultScalingValue);
         }
 
         return true;
     }
 
-    private boolean onFloatPreferenceChange(Preference preference, Object newValue,
+    private boolean onFloatPreferenceChange(Object newValue,
                                             float rangeMin, float rangeMax, int invalidNumberString, int invalidRangeString)
     {
         float f;
@@ -108,5 +109,4 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
             return false;
         }
     }
-
 }
