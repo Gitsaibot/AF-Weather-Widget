@@ -67,13 +67,13 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
         mUnitPref = findPreference("unit_preference");
         mUiPref = findPreference("ui_preference");
         mUpdatePref = findPreference("update_preference");
+        mDeviceProfilePref = findPreference("device_profile_preference");
         mButton = findPreference("Button");
 
         mBorderThicknessPref = findPreference(getString(R.string.border_thickness_string));
         mBorderRoundingPref = findPreference(getString(R.string.border_rounding_string));
         mPrecipitationScalingPref = findPreference(getString(R.string.precipitation_scaling_string));
 
-        mDeviceProfilePref = findPreference(getString(R.string.device_profiles_key));
         mLocationPref = findPreference(getString(R.string.location_settings_key));
         mPrecipitationUnitPref = findPreference(getString(R.string.precipitation_units_string));
         mProviderPref = findPreference(getString(R.string.preference_provider_string));

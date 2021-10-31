@@ -29,7 +29,7 @@
         android:fragment="net.gitsaibot.af.AfUpdatePreferenceFragment"/>
 
     <Preference
-        android:key="@string/device_profiles_key"
+        android:key="device_profile_preference"
         android:title="@string/device_profiles_title"
         android:icon="@drawable/ic_outline_fit_screen"
         android:layout="@layout/preference_title"

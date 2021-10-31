@@ -190,8 +190,8 @@
 	<!-- BEGIN DEVICE PROFILES -->
 	<string name="device_profiles_title">Device Profiles</string>
 	<string name="device_profiles_summary">Set device specific widget dimensions</string>
-	<string name="device_profiles_key">device_profiles</string>
-	
+	<string name="device_profiles_calibrate_button">Calibrate</string>
+
 	<!-- BEGIN PREFERENCE STRINGS, DO NOT EDIT -->
 	<string name="temperature_units_string">temperature_units_string</string>
     <string name="precipitation_units_string">precipitation_units_string</string>

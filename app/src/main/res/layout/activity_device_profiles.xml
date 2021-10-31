@@ -122,12 +122,13 @@
 					android:text="150"
 					android:inputType="number" />
 			
-			<View   android:background="#ff313431"
-					android:layout_width="1dip"
+			<View   android:id="@+id/divider_portrait"
+					android:background="#80706F6F"
+					android:layout_width="1dp"
 					android:layout_height="match_parent"
 					android:layout_marginStart="10dip"
-					android:layout_marginTop="5dip"
-					android:layout_marginBottom="5dip" />
+					android:layout_marginTop="2dip"
+					android:layout_marginBottom="2dip" />
 			
 			<ImageButton
 					android:id="@+id/adp_revert_portrait_button"
@@ -151,7 +152,7 @@
 				android:layout_height="wrap_content"
 				android:paddingLeft="18dip"
 				android:paddingRight="18dip"
-				android:text="Calibrate" />
+				android:text="@string/device_profiles_calibrate_button" />
 	
 	</LinearLayout>
 	
@@ -203,12 +204,13 @@
 					android:text="150"
 					android:inputType="number" />
 					
-			<View   android:background="#ff313431"
-					android:layout_width="1dip"
+			<View   android:id="@+id/divider_landscape"
+					android:background="#80706F6F"
+					android:layout_width="1dp"
 					android:layout_height="match_parent"
 					android:layout_marginStart="10dip"
-					android:layout_marginTop="5dip"
-					android:layout_marginBottom="5dip" />
+					android:layout_marginTop="2dip"
+					android:layout_marginBottom="2dip" />
 			
 			<ImageButton
 					android:id="@+id/adp_revert_landscape_button"
@@ -232,7 +234,7 @@
 				android:layout_height="wrap_content"
 				android:paddingLeft="18dip"
 				android:paddingRight="18dip"
-				android:text="Calibrate" />
+				android:text="@string/device_profiles_calibrate_button" />
 	
 	</LinearLayout>
 </LinearLayout>

@@ -7,12 +7,6 @@
 		<item name="preferenceFragmentCompatStyle">@style/AppSettings.Fragment.Material</item>
 	</style>
 
-	<style name="AppSettings.Category.Material" parent="Preference.Category.Material">
-		<item name="allowDividerAbove">false</item>
-		<item name="allowDividerBelow">false</item>
-		<item name="iconSpaceReserved">false</item>
-	</style>
-
 	<style name="AppSettings.Fragment.Material" parent="PreferenceFragment.Material">
 		<item name="allowDividerAfterLastItem">false</item>
 	</style>
