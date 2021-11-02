@@ -3,7 +3,7 @@
 ![af_weather_warm](https://user-images.githubusercontent.com/15521729/111474175-107efa80-872c-11eb-9dd9-11a55146fd31.png)
 
 
-#### Source code for the Android app.
+#### Free, no ads and open source!
 
 [<img src="fastlane/metadata/en_fdroid.png" height="60" alt="Get it on F-Droid">](https://f-droid.org/en/packages/net.gitsaibot.af/)
 
