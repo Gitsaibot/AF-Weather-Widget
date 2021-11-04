@@ -71,7 +71,6 @@
                     android:key="@string/border_rounding_string"
                     android:title="@string/border_rounding_title"
                     android:layout="@layout/preference_title"
-                    android:summary="@string/border_rounding_summary"
                     android:persistent="true"
                     android:defaultValue="@string/border_rounding_default"
                     android:inputType="numberDecimal"

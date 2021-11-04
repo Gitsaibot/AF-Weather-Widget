@@ -151,7 +151,6 @@
 	<string name="border_rounding_title">Widget edge rounding</string>
 	<string name="border_rounding_invalid_number_toast">Widget edge rounding must be a number.</string>
 	<string name="border_rounding_invalid_range_toast">Widget edge rounding must be zero or greater, and less than 20.</string>
-	<string name="border_rounding_summary">Adjust the rounding radius of the widget border</string>
 	
 	<string name="ui_settings_category_day_effect">Daylight effect</string>
 	<string name="day_effect_title">Day/night effect</string>
