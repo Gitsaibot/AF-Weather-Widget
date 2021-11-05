@@ -192,81 +192,81 @@
 	<string name="device_profiles_calibrate_button">Calibrate</string>
 
 	<!-- BEGIN PREFERENCE STRINGS, DO NOT EDIT -->
-	<string name="temperature_units_string">temperature_units_string</string>
-    <string name="precipitation_units_string">precipitation_units_string</string>
-    <string name="precipitation_scaling_string">rain_scale_string</string>
+	<string name="temperature_units_string" translatable="false">temperature_units_string</string>
+    <string name="precipitation_units_string" translatable="false">precipitation_units_string</string>
+    <string name="precipitation_scaling_string" translatable="false">rain_scale_string</string>
     
-    <string name="top_text_visibility_string">top_text_visibility_string</string>
+    <string name="top_text_visibility_string" translatable="false">top_text_visibility_string</string>
     
-    <string name="border_enabled_bool">border_enabled_bool</string>
-    <string name="border_color_int">border_color_int</string>
-    <string name="border_thickness_string">border_thickness_string</string>
-    <string name="border_rounding_string">border_rounding_string</string>
+    <string name="border_enabled_bool" translatable="false">border_enabled_bool</string>
+    <string name="border_color_int" translatable="false">border_color_int</string>
+    <string name="border_thickness_string" translatable="false">border_thickness_string</string>
+    <string name="border_rounding_string" translatable="false">border_rounding_string</string>
     
-	<string name="background_color_int">background_color_int</string>
-	<string name="text_color_int">text_color_int</string>
-	<string name="pattern_color_int">pattern_color_int</string>
-	<string name="day_effect_bool">day_effect_bool</string>
-	<string name="day_color_int">day_color_int</string>
-	<string name="night_color_int">night_color_int</string>
-	<string name="grid_color_int">grid_color_int</string>
-	<string name="grid_outline_color_int">grid_outline_color_int</string>
-	<string name="max_rain_color_int">max_rain_color_int</string>
-	<string name="min_rain_color_int">min_rain_color_int</string>
-	<string name="above_freezing_color_int">above_freezing_color_int</string>
-	<string name="below_freezing_color_int">below_freezing_color_int</string>
+	<string name="background_color_int" translatable="false">background_color_int</string>
+	<string name="text_color_int" translatable="false">text_color_int</string>
+	<string name="pattern_color_int" translatable="false">pattern_color_int</string>
+	<string name="day_effect_bool" translatable="false">day_effect_bool</string>
+	<string name="day_color_int" translatable="false">day_color_int</string>
+	<string name="night_color_int" translatable="false">night_color_int</string>
+	<string name="grid_color_int" translatable="false">grid_color_int</string>
+	<string name="grid_outline_color_int" translatable="false">grid_outline_color_int</string>
+	<string name="max_rain_color_int" translatable="false">max_rain_color_int</string>
+	<string name="min_rain_color_int" translatable="false">min_rain_color_int</string>
+	<string name="above_freezing_color_int" translatable="false">above_freezing_color_int</string>
+	<string name="below_freezing_color_int" translatable="false">below_freezing_color_int</string>
 	
-	<string name="provider_string">global_provider_string</string>
-	<string name="awake_only_bool">global_awake_only_bool</string>
-	<string name="wifi_only_bool">global_wifi_only_bool</string>
-	<string name="update_rate_string">global_update_rate_string</string>
+	<string name="provider_string" translatable="false">global_provider_string</string>
+	<string name="awake_only_bool" translatable="false">global_awake_only_bool</string>
+	<string name="wifi_only_bool" translatable="false">global_wifi_only_bool</string>
+	<string name="update_rate_string" translatable="false">global_update_rate_string</string>
 	
-	<string name="preference_provider_string">global_temp_provider_string</string>
-	<string name="preference_awake_only_bool">global_temp_awake_only_bool</string>
-	<string name="preference_wifi_only_bool">global_temp_wifi_only_bool</string>
-	<string name="preference_update_rate_string">global_temp_update_rate_string</string>
+	<string name="preference_provider_string" translatable="false">global_temp_provider_string</string>
+	<string name="preference_awake_only_bool" translatable="false">global_temp_awake_only_bool</string>
+	<string name="preference_wifi_only_bool" translatable="false">global_temp_wifi_only_bool</string>
+	<string name="preference_update_rate_string" translatable="false">global_temp_update_rate_string</string>
 
 	<!-- END PREFERENCE STRINGS, DO NOT EDIT -->
 	
-	<string name="useDeviceSpecificDimensions_bool">global_dp_useDeviceSpecificDimensions_bool</string>
-	<string name="preference_useDeviceSpecificDimensions_bool">global_temp_dp_useDeviceSpecificDimensions_bool</string>
+	<string name="useDeviceSpecificDimensions_bool" translatable="false">global_dp_useDeviceSpecificDimensions_bool</string>
+	<string name="preference_useDeviceSpecificDimensions_bool" translatable="false">global_temp_dp_useDeviceSpecificDimensions_bool</string>
 	
-	<string name="orientationMode_int">global_dp_orientationMode_int</string>
-	<string name="preference_orientationMode_int">global_temp_dp_orientationMode_int</string>
+	<string name="orientationMode_int" translatable="false">global_dp_orientationMode_int</string>
+	<string name="preference_orientationMode_int" translatable="false">global_temp_dp_orientationMode_int</string>
 	
-	<string name="lastProfileSync_long">global_dp_lastProfileSync_long</string>
-	<string name="preference_lastProfileSync_long">global_temp_dp_lastProfileSync_long</string>
+	<string name="lastProfileSync_long" translatable="false">global_dp_lastProfileSync_long</string>
+	<string name="preference_lastProfileSync_long" translatable="false">global_temp_dp_lastProfileSync_long</string>
 	
-	<string name="deviceProfileSynced_bool">global_dp_deviceProfileSynced_bool</string>
-	<string name="preference_deviceProfileSynced_bool">global_temp_dp_deviceProfileSynced_bool</string>
+	<string name="deviceProfileSynced_bool" translatable="false">global_dp_deviceProfileSynced_bool</string>
+	<string name="preference_deviceProfileSynced_bool" translatable="false">global_temp_dp_deviceProfileSynced_bool</string>
 	
-	<string name="deviceProfileState_int">global_dp_%1$d_%2$d_%3$s_state_int</string>
-	<string name="preference_deviceProfileState_int">global_temp_dp_%1$d_%2$d_%3$s_state_int</string>
+	<string name="deviceProfileState_int" translatable="false">global_dp_%1$d_%2$d_%3$s_state_int</string>
+	<string name="preference_deviceProfileState_int" translatable="false">global_temp_dp_%1$d_%2$d_%3$s_state_int</string>
 	
-	<string name="deviceProfileStored_string">global_dp_stored_%1$d_%2$d_%3$s_string</string>
-	<string name="preference_deviceProfileStored_string">global_temp_dp_stored_%1$d_%2$d_%3$s_string</string>
+	<string name="deviceProfileStored_string" translatable="false">global_dp_stored_%1$d_%2$d_%3$s_string</string>
+	<string name="preference_deviceProfileStored_string" translatable="false">global_temp_dp_stored_%1$d_%2$d_%3$s_string</string>
 	
-	<string name="deviceProfile_string">global_dp_%1$d_%2$d_%3$s_string</string>
-	<string name="preference_deviceProfile_string">global_temp_dp_%1$d_%2$d_%3$s_string</string>
+	<string name="deviceProfile_string" translatable="false">global_dp_%1$d_%2$d_%3$s_string</string>
+	<string name="preference_deviceProfile_string" translatable="false">global_temp_dp_%1$d_%2$d_%3$s_string</string>
 
-	<string name="calibrationTarget_int">global_dp_calibrationTarget_int</string>
-	<string name="preference_calibrationTarget_int">global_temp_dp_calibrationTarget_int</string>
+	<string name="calibrationTarget_int" translatable="false">global_dp_calibrationTarget_int</string>
+	<string name="preference_calibrationTarget_int" translatable="false">global_temp_dp_calibrationTarget_int</string>
 	
-	<string name="calibrationState_int">global_dp_calibrationState_int</string>
-	<string name="preference_calibrationState_int">global_temp_dp_calibrationState_int</string>
+	<string name="calibrationState_int" translatable="false">global_dp_calibrationState_int</string>
+	<string name="preference_calibrationState_int" translatable="false">global_temp_dp_calibrationState_int</string>
 	
-	<string name="calibrationPortraitDimension_string">global_dp_calibrationPortraitDimension_string</string>
-	<string name="preference_calibrationPortraitDimension_string">global_temp_dp_calibrationPortraitDimension_string</string>
+	<string name="calibrationPortraitDimension_string" translatable="false">global_dp_calibrationPortraitDimension_string</string>
+	<string name="preference_calibrationPortraitDimension_string" translatable="false">global_temp_dp_calibrationPortraitDimension_string</string>
 	
-	<string name="calibrationLandscapeDimension_string">global_dp_calibrationLandscapeDimension_string</string>
-	<string name="preference_calibrationLandscapeDimension_string">global_temp_dp_calibrationLandscapeDimension_string</string>
+	<string name="calibrationLandscapeDimension_string" translatable="false">global_dp_calibrationLandscapeDimension_string</string>
+	<string name="preference_calibrationLandscapeDimension_string" translatable="false">global_temp_dp_calibrationLandscapeDimension_string</string>
 
-	<string name="contentDescriptionPortraitCalibrationImage">AF Weather Widget Calibration (Portrait)</string>
-	<string name="contentDescriptionLandscapeCalibrationImage">AF Weather Widget Calibration (Landscape)</string>
+	<string name="contentDescriptionPortraitCalibrationImage" translatable="false">AF Weather Widget Calibration (Portrait)</string>
+	<string name="contentDescriptionLandscapeCalibrationImage" translatable="false">AF Weather Widget Calibration (Landscape)</string>
 	
-	<string name="contentDescriptionImage">AF Weather Widget</string>
-	<string name="contentDescriptionPortraitImage">AF Weather Widget (Portrait)</string>
-	<string name="contentDescriptionLandscapeImage">AF Weather Widget (Landscape)</string>
+	<string name="contentDescriptionImage" translatable="false">AF Weather Widget</string>
+	<string name="contentDescriptionPortraitImage" translatable="false">AF Weather Widget (Portrait)</string>
+	<string name="contentDescriptionLandscapeImage" translatable="false">AF Weather Widget (Landscape)</string>
 	
 	<string name="calibrationIncrementSymbol" translatable="false">\u002B</string>
 	<string name="calibrationDecrementSymbol" translatable="false">\u2212</string>
