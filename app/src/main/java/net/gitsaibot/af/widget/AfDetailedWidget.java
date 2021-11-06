@@ -1213,7 +1213,7 @@ public class AfDetailedWidget {
 	}
 	
 	private void setupIntervalData() {
-		ArrayList<IntervalData> intervalData = new ArrayList<IntervalData>();
+		ArrayList<IntervalData> intervalData = new ArrayList<>();
 
 		boolean useInches = mWidgetSettings.useInches();
 
@@ -1330,7 +1330,7 @@ public class AfDetailedWidget {
 		calendar.add(Calendar.DAY_OF_YEAR, +1);
 		long dateTo = calendar.getTimeInMillis();
 		
-		ArrayList<SunMoonData> sunMoonData = new ArrayList<SunMoonData>();
+		ArrayList<SunMoonData> sunMoonData = new ArrayList<>();
 
 		final Uri uri = mAfLocationInfo.getLocationUri().buildUpon()
 				.appendPath(AfLocations.TWIG_SUNMOONDATA)
@@ -1518,7 +1518,7 @@ public class AfDetailedWidget {
 		mTimeTo = calendar.getTimeInMillis();
 		
 		// Get temperature values
-		ArrayList<PointData> pointData = new ArrayList<PointData>();
+		ArrayList<PointData> pointData = new ArrayList<>();
 
 		boolean isFahrenheit = mWidgetSettings.useFahrenheit();
 		

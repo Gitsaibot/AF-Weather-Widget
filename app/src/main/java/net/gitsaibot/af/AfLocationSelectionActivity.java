@@ -63,7 +63,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 
     private static final Map<Integer, String> geonamesWebserviceExceptions;
     static {
-        Map<Integer, String> gwe = new HashMap<Integer, String>();
+        Map<Integer, String> gwe = new HashMap<>();
         gwe.put(10, "Authorization exception");
         gwe.put(11, "Record does not exist");
         gwe.put(12, "Other error");
@@ -331,7 +331,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		private final static int SEARCH_ERROR = 100;
 
 		private int mAttempts = 0;
-		private List<AixAddress> mAddresses;
+		private List<AfAddress> mAddresses;
 		
 		@Override
 		protected void onPreExecute() {
@@ -389,7 +389,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// Add selected location to provider
-								AixAddress a = mAddresses.get(which);
+								AfAddress a = mAddresses.get(which);
 								ContentResolver resolver = mContext.getContentResolver();
 								ContentValues values = new ContentValues();
 								values.put(AfLocationsColumns.LATITUDE, a.latitude);
@@ -483,7 +483,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
                         return SEARCH_ERROR + errorCode;
                     }
 
-					mAddresses = new ArrayList<AixAddress>();
+					mAddresses = new ArrayList<AfAddress>();
 
 					JSONArray results = jObject.getJSONArray("geonames");
 					int numResults = Math.min(results.length(), MAX_RESULTS);
@@ -496,7 +496,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 						try {
 							JSONObject result = results.getJSONObject(i);
 							
-							AixAddress address = new AixAddress();
+							AfAddress address = new AfAddress();
 							address.title = result.getString("name");
 							address.title_detailed = buildTitleDetailed(result);
 							address.latitude = result.getString("lat");
@@ -510,9 +510,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 					} else {
 						return NO_RESULTS;
 					}
-				} catch (HttpHostConnectException e) {
-					return NO_CONNECTION;
-				} catch (UnknownHostException e) {
+				} catch (HttpHostConnectException | UnknownHostException e) {
 					return NO_CONNECTION;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -544,10 +542,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		}
 	}
 	
-	private static class AixAddress {
-		
+	private static class AfAddress {
 		public String title, title_detailed, latitude, longitude;
-		
 	}
-	
 }

@@ -128,8 +128,8 @@ public class AfMetWeatherData implements AfDataSource {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
 			dateFormat.setTimeZone(utcTimeZone);
 			
-			ArrayList<ContentValues> pointDataValues = new ArrayList<ContentValues>();
-			ArrayList<ContentValues> intervalDataValues = new ArrayList<ContentValues>();
+			ArrayList<ContentValues> pointDataValues = new ArrayList<>();
+			ArrayList<ContentValues> intervalDataValues = new ArrayList<>();
 			ArrayList<ContentValues> currentList = null;
 			
 			long nextUpdate = -1;

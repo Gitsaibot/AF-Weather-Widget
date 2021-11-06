@@ -114,7 +114,7 @@ public class AfMetSunTimeData implements AfDataSource {
 			InputStream content, long locationId, long currentUtcTime, int maxDays)
 			throws ParseException, XmlPullParserException, IOException
 	{
-		List<ContentValues> contentValuesList = new ArrayList<ContentValues>();
+		List<ContentValues> contentValuesList = new ArrayList<>();
 		ContentValues contentValues = null;
 
 		float solarnoonElevationValue = 0.0f;

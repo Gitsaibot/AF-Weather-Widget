@@ -20,8 +20,8 @@ public class AfWidgetSettings {
 	private Context mContext;
 	private Map<String, Object> mSettings;
 
-	Set<String> mFloatKeys = new HashSet<String>();
-	Set<String> mIntegerKeys = new HashSet<String>();
+	Set<String> mFloatKeys = new HashSet<>();
+	Set<String> mIntegerKeys = new HashSet<>();
 
 	private AfWidgetSettings(Context context) {
 		mContext = context;
@@ -82,7 +82,7 @@ public class AfWidgetSettings {
 	}
 	
 	public static AfWidgetSettings build(Context context, Uri widgetUri) {
-		Map<String, Object> settings = new HashMap<String, Object>();
+		Map<String, Object> settings = new HashMap<>();
 		settings.put(context.getString(R.string.temperature_units_string), 1);
 		settings.put(context.getString(R.string.precipitation_units_string), 1);
 		settings.put(context.getString(R.string.top_text_visibility_string), 4);

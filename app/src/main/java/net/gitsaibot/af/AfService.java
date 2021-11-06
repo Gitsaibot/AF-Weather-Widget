@@ -65,14 +65,14 @@ public class AfService extends JobIntentService {
 	
 	@SuppressWarnings("serial")
 	Map<String, Pair<String, Integer>> mCalibrationAdjustmentsMap = new HashMap<String, Pair<String, Integer>>() {{
-		put(ACTION_DECREASE_LANDSCAPE_HEIGHT, new Pair<String, Integer>(LANDSCAPE_HEIGHT, -1));
-		put(ACTION_INCREASE_LANDSCAPE_HEIGHT, new Pair<String, Integer>(LANDSCAPE_HEIGHT, +1));
-		put(ACTION_DECREASE_LANDSCAPE_WIDTH,  new Pair<String, Integer>(LANDSCAPE_WIDTH,  -1));
-		put(ACTION_INCREASE_LANDSCAPE_WIDTH,  new Pair<String, Integer>(LANDSCAPE_WIDTH,  +1));
-		put(ACTION_DECREASE_PORTRAIT_HEIGHT,  new Pair<String, Integer>(PORTRAIT_HEIGHT,  -1));
-		put(ACTION_INCREASE_PORTRAIT_HEIGHT,  new Pair<String, Integer>(PORTRAIT_HEIGHT,  +1));
-		put(ACTION_DECREASE_PORTRAIT_WIDTH,   new Pair<String, Integer>(PORTRAIT_WIDTH,   -1));
-		put(ACTION_INCREASE_PORTRAIT_WIDTH,   new Pair<String, Integer>(PORTRAIT_WIDTH,   +1));
+		put(ACTION_DECREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, -1));
+		put(ACTION_INCREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, +1));
+		put(ACTION_DECREASE_LANDSCAPE_WIDTH, new Pair<>(LANDSCAPE_WIDTH, -1));
+		put(ACTION_INCREASE_LANDSCAPE_WIDTH, new Pair<>(LANDSCAPE_WIDTH, +1));
+		put(ACTION_DECREASE_PORTRAIT_HEIGHT, new Pair<>(PORTRAIT_HEIGHT, -1));
+		put(ACTION_INCREASE_PORTRAIT_HEIGHT, new Pair<>(PORTRAIT_HEIGHT, +1));
+		put(ACTION_DECREASE_PORTRAIT_WIDTH, new Pair<>(PORTRAIT_WIDTH, -1));
+		put(ACTION_INCREASE_PORTRAIT_WIDTH, new Pair<>(PORTRAIT_WIDTH, +1));
 	}};
 	
 	Map<String, String> mCalibrationAcceptActionsMap = new HashMap<String, String>() {{
@@ -124,8 +124,7 @@ public class AfService extends JobIntentService {
 			Editor editor = sharedPreferences.edit();
 			editor.putBoolean(getString(R.string.useDeviceSpecificDimensions_bool), false);
 			editor.apply();
-			action = ACTION_UPDATE_WIDGET;
-			
+
 			updateAllWidgets(widgetUri);
 		}
 		else if (action.equals(ACTION_DELETE_WIDGET))

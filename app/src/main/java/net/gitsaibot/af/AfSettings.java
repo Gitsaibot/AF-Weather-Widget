@@ -148,7 +148,7 @@ public class AfSettings {
 	/* BEGIN SETTINGS BACKUP/RESTORE */
 	
 	public ContentValues[] buildContentValues(Map<String, ?> settingsMap) {
-		ArrayList<ContentValues> settingList = new ArrayList<ContentValues>();
+		ArrayList<ContentValues> settingList = new ArrayList<>();
 
 		for (Entry<String, ?> setting : settingsMap.entrySet()) {
 			String key = setting.getKey();
@@ -402,7 +402,7 @@ public class AfSettings {
 	
 	private boolean isGlobalSettingsModified(Map<String, ?> settingsMap, Set<String> avoidKeys)
 	{
-		Map<String, Object> globalSettings = new HashMap<String, Object>();
+		Map<String, Object> globalSettings = new HashMap<>();
 		for (Entry<String, ?> setting : settingsMap.entrySet())
 		{
 			String key = setting.getKey();
@@ -460,7 +460,7 @@ public class AfSettings {
 			int numRows = mAfWidgetInfo.getNumRows();
 
 			// When calibrating, avoid storing the settings which are being modified
-			avoidKeys = new HashSet<String>();
+			avoidKeys = new HashSet<>();
 			avoidKeys.add(mContext.getString(R.string.preference_useDeviceSpecificDimensions_bool));
 			avoidKeys.add(mContext.getString(R.string.preference_calibrationState_int));
 			avoidKeys.add(mContext.getString(R.string.preference_calibrationTarget_int));

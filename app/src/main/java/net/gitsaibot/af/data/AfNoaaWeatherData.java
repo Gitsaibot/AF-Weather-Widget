@@ -62,14 +62,14 @@ public class AfNoaaWeatherData implements AfDataSource {
 	{
 		@SuppressWarnings("unused")
 		public String timeLayoutKey, type, units;
-		public List<T> values = new ArrayList<T>();
+		public List<T> values = new ArrayList<>();
 	}
 	
 	private static class AfNoaaTimeLayout
 	{
 		public String key;
-		public List<Long> validTimeStartList = new ArrayList<Long>();
-		public List<Long> validTimeEndList = new ArrayList<Long>();
+		public List<Long> validTimeStartList = new ArrayList<>();
+		public List<Long> validTimeEndList = new ArrayList<>();
 	}
 	
 	@SuppressWarnings("serial")
@@ -179,7 +179,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			AfNoaaDataSet<Float> precipitationData,
 			AfNoaaDataSet<String> weatherIconData)
 	{
-		Map<MultiKey, IntervalData> intervalDataMap = new HashMap<MultiKey, IntervalData>();
+		Map<MultiKey, IntervalData> intervalDataMap = new HashMap<>();
 		
 		boolean isInches = precipitationData.units.equalsIgnoreCase("inches");
 		List<Float> precipitationValues = precipitationData.values;
@@ -214,7 +214,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			}
 		}
 		
-		List<ContentValues> intervalDataContentValuesList = new ArrayList<ContentValues>();
+		List<ContentValues> intervalDataContentValuesList = new ArrayList<>();
 		
 		for (IntervalData intervalData : intervalDataMap.values())
 		{
@@ -231,7 +231,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			AfNoaaDataSet<Float> temperatureData,
 			AfNoaaDataSet<Float> humidityData)
 	{
-		Map<Long, PointData> pointDataMap = new HashMap<Long, PointData>();
+		Map<Long, PointData> pointDataMap = new HashMap<>();
 		
 		boolean isFahrenheit = temperatureData.units.equalsIgnoreCase("fahrenheit");
 		List<Float> temperatureValues = temperatureData.values;
@@ -256,7 +256,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 			setupPointData(pointDataMap, humidityTimeList.get(i), currentUtcTime).humidity = humidityValues.get(i);
 		}
 		
-		List<ContentValues> pointDataContentValuesList = new ArrayList<ContentValues>();
+		List<ContentValues> pointDataContentValuesList = new ArrayList<>();
 		
 		for (PointData pointData : pointDataMap.values())
 		{
@@ -491,12 +491,12 @@ public class AfNoaaWeatherData implements AfDataSource {
 			
 			mAfUpdate.updateWidgetRemoteViews("Parsing NWS weather data...", false);
 			
-			Map<String, AfNoaaTimeLayout> timeLayoutMap = new HashMap<String, AfNoaaTimeLayout>();
+			Map<String, AfNoaaTimeLayout> timeLayoutMap = new HashMap<>();
 			
-			AfNoaaDataSet<Float> humidityData = new AfNoaaDataSet<Float>();
-			AfNoaaDataSet<Float> temperatureData = new AfNoaaDataSet<Float>();
-			AfNoaaDataSet<String> weatherIconData = new AfNoaaDataSet<String>();
-			AfNoaaDataSet<Float> precipitationData = new AfNoaaDataSet<Float>();
+			AfNoaaDataSet<Float> humidityData = new AfNoaaDataSet<>();
+			AfNoaaDataSet<Float> temperatureData = new AfNoaaDataSet<>();
+			AfNoaaDataSet<String> weatherIconData = new AfNoaaDataSet<>();
+			AfNoaaDataSet<Float> precipitationData = new AfNoaaDataSet<>();
 			
 			parseXmlData(content, timeLayoutMap, temperatureData, humidityData, precipitationData, weatherIconData);
 			
