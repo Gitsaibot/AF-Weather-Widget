@@ -26,7 +26,7 @@
 			android:layout_margin="6dip">
 	
 		<TextView
-				android:text="Model: "
+				android:text="@string/device_profiles_model"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -49,7 +49,7 @@
 			android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	<TextView
-			android:text="Orientation mode:"
+			android:text="@string/device_profiles_orientation_mode"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="6dip"
@@ -69,7 +69,7 @@
 			/>
 	
 	<CheckBox android:id="@+id/checkbox_activate_specific_dimensions"
-    		android:text="Activate device specific dimensions"
+    		android:text="@string/device_profiles_activate_specific_dimensions"
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:layout_marginLeft="6dip"

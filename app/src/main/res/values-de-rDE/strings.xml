@@ -94,4 +94,7 @@
     <string name="top_text_visibility_portrait_only">Nur Hochformat</string>
     <string name="top_text_visibility_always">Immer</string>
     <string name="device_profiles_calibrate_button">Kalibrieren</string>
+    <string name="device_profiles_activate_specific_dimensions">Aktiviere gerätespezifische Abmessungen</string>
+    <string name="device_profiles_model">"Modell: "</string>
+    <string name="device_profiles_orientation_mode">Ausrichtungsmodus:</string>
 </resources>

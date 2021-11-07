@@ -189,6 +189,9 @@
 	<!-- BEGIN DEVICE PROFILES -->
 	<string name="device_profiles_title">Device Profiles</string>
 	<string name="device_profiles_summary">Set device specific widget dimensions</string>
+	<string name="device_profiles_model">Model: </string>
+	<string name="device_profiles_orientation_mode">Orientation mode:</string>
+	<string name="device_profiles_activate_specific_dimensions">Activate device specific dimensions</string>
 	<string name="device_profiles_calibrate_button">Calibrate</string>
 
 	<!-- BEGIN PREFERENCE STRINGS, DO NOT EDIT -->
