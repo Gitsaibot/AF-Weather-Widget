@@ -132,13 +132,13 @@ public class AfUpdate {
 				drawSuccess = true;
 			}
 			catch (AfWidgetDrawException e) {
-				Log.d(TAG, "process(): Failed to draw widget. AixWidgetDrawException=" + e.getMessage());
+				Log.d(TAG, "process(): Failed to draw widget. AfWidgetDrawException=" + e.getMessage());
 				e.printStackTrace();
 				break;
 			}
 			catch (AfWidgetDataException e)
 			{
-				Log.d(TAG, "process(): Failed to draw widget. AixWidgetDataException=" + e.getMessage());
+				Log.d(TAG, "process(): Failed to draw widget. AfWidgetDataException=" + e.getMessage());
 				e.printStackTrace();
 
 				if (updateSuccess)

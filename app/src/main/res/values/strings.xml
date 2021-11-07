@@ -90,7 +90,7 @@
 	<string name="location_search_request_denied_toast">Error: Search request denied</string>
 	<string name="location_search_invalid_request_toast">Error: Invalid search request</string>
 
- 	<string name="widget_no_weather_data">No weather data. Retrying in %d minutes</string>
+ 	<string name="widget_no_weather_data">No weather data found.</string>
  	<string name="widget_failed_to_draw">Failed to draw widget</string>
 
 	<string name="must_select_location">You must set a location</string>

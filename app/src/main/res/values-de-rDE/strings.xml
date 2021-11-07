@@ -51,7 +51,6 @@
     <string name="location_search_error_toast">Bei der Suche ist ein Fehler aufgetreten.</string>
     <string name="location_search_request_denied_toast">Fehler: Suchanfrage verweigert</string>
     <string name="location_search_invalid_request_toast">Fehler: Ungültige Suchanfrage</string>
-    <string name="widget_no_weather_data">Keine Wetterdaten. Erneuter Versuch in %d Minuten</string>
     <string name="title_configure">AF Wetter: Widget konfigurieren</string>
     <string name="dialog_search_location">Suche nach Standort</string>
     <string name="noaa">NOAA NWS Daten</string>
@@ -97,4 +96,5 @@
     <string name="device_profiles_activate_specific_dimensions">Aktiviere gerätespezifische Abmessungen</string>
     <string name="device_profiles_model">"Modell: "</string>
     <string name="device_profiles_orientation_mode">Ausrichtungsmodus:</string>
+    <string name="widget_no_weather_data">Keine Wetterdaten gefunden.</string>
 </resources>
