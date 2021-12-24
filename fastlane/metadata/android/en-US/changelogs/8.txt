@@ -1,0 +1,3 @@
+- Database update! Attention all customized settings will be reset. Sorry for the inconvenience. In case of problems please reinstall.
+- Rework app icon
+- Small bugfixes
