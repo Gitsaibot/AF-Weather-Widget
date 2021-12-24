@@ -275,7 +275,7 @@ public class AfProvider extends ContentProvider {
 	
 	public interface AfSettingsColumns {
 		public static final String ROW_ID = "rowId";
-		public static final String KEY = "key";
+		public static final String KEY = "rowKey";
 		public static final String VALUE = "value";
 		
 		public static final int SETTING_ID_COLUMN = 0;
@@ -343,7 +343,7 @@ public class AfProvider extends ContentProvider {
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		private static final String DATABASE_NAME = "aix_database.db";
-		private static final int DATABASE_VERSION = 8;
+		private static final int DATABASE_VERSION = 9;
 		// 0.1.6 = version 8
 		// 0.1.5 = version 7
 		// 0.1.4 = version 6
@@ -363,16 +363,10 @@ public class AfProvider extends ContentProvider {
 			createForecastTable(db);
 			
 			ContentValues values = new ContentValues();
-			values.put(AfLocationsColumns.TITLE, "Brussels");
-			values.put(AfLocationsColumns.TITLE_DETAILED, "Brussels, Belgium");
-			values.put(AfLocationsColumns.LATITUDE, 50.85f);
-			values.put(AfLocationsColumns.LONGITUDE, 4.35f);
-			db.insert(TABLE_AIXLOCATIONS, null, values);
-			values.clear();
-			values.put(AfLocationsColumns.TITLE, "Luxembourg");
-			values.put(AfLocationsColumns.TITLE_DETAILED, "Luxembourg, Europe");
-			values.put(AfLocationsColumns.LATITUDE, 49.6f);
-			values.put(AfLocationsColumns.LONGITUDE, 6.116667f);
+			values.put(AfLocationsColumns.TITLE, "Berlin");
+			values.put(AfLocationsColumns.TITLE_DETAILED, "Berlin, Germany");
+			values.put(AfLocationsColumns.LATITUDE, 52.5244f);
+			values.put(AfLocationsColumns.LONGITUDE, 13.4105f);
 			db.insert(TABLE_AIXLOCATIONS, null, values);
 			values.clear();
 			values.put(AfLocationsColumns.TITLE, "Oslo");
@@ -467,6 +461,11 @@ public class AfProvider extends ContentProvider {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXVIEWS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXLOCATIONS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXFORECASTS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXWIDGETSETTINGS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXVIEWSETTINGS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXPOINTDATAFORECASTS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXINTERVALDATAFORECASTS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXSUNMOONDATA);
 
             onCreate(db);
 
