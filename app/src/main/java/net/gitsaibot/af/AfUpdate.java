@@ -233,12 +233,8 @@ public class AfUpdate {
 		updateTime = Math.min(updateTime, calendar.getTimeInMillis());
 
 		Intent updateIntent = new Intent(AfService.ACTION_UPDATE_WIDGET, mWidgetUri, mContext, AfServiceReceiver.class);
-		PendingIntent pendingUpdateIntent;
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-			pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, PendingIntent.FLAG_IMMUTABLE);
-		} else {
-			pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, 0);
-		}
+		PendingIntent pendingUpdateIntent = PendingIntent.getBroadcast(mContext, 0, updateIntent, AfUtils.PI_FLAG_IMMUTABLE);
+
 		boolean awakeOnly = mAfSettings.getCachedAwakeOnly();
 		
 		AlarmManager alarmManager = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);

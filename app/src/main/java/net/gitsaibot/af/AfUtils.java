@@ -76,6 +76,8 @@ public class AfUtils {
 	public final static int PROVIDER_NMET = 2;
 	public final static int PROVIDER_NWS = 3;
 
+	public static final int PI_FLAG_IMMUTABLE = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+
 	public static final int[] WEATHER_ICONS_DAY = {
 		R.drawable.weather_icon_clearsky_day,
 		R.drawable.weather_icon_fair_day,
@@ -655,32 +657,19 @@ public class AfUtils {
 		Intent editWidgetIntent = new Intent(Intent.ACTION_EDIT, widgetUri, context, AfPreferenceActivity.class);
 		editWidgetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		editWidgetIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			return PendingIntent.getActivity(context, 0, editWidgetIntent, PendingIntent.FLAG_IMMUTABLE);
-		} else {
-			return PendingIntent.getActivity(context, 0, editWidgetIntent, 0);
-		}
+		return PendingIntent.getActivity(context, 0, editWidgetIntent, PI_FLAG_IMMUTABLE);
 	}
 	
 	public static PendingIntent buildDisableSpecificDimensionsIntent(Context context, Uri widgetUri)
 	{
 		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS, widgetUri, context, AfServiceReceiver.class);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-		} else {
-			return PendingIntent.getBroadcast(context, 0, intent, 0);
-		}
+		return PendingIntent.getBroadcast(context, 0, intent, PI_FLAG_IMMUTABLE);
 	}
 	
 	public static PendingIntent buildWidgetProviderAutoIntent(Context context, Uri widgetUri)
 	{
 		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_PROVIDER_AUTO, widgetUri, context, AfServiceReceiver.class);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-		} else {
-			return PendingIntent.getBroadcast(context, 0, intent, 0);
-		}
-
+		return PendingIntent.getBroadcast(context, 0, intent, PI_FLAG_IMMUTABLE);
 	}
 	
 	public static void clearProviderData(ContentResolver contentResolver)

@@ -28,7 +28,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import androidx.core.app.JobIntentService;
 import android.util.Log;
@@ -304,11 +303,7 @@ public class AfService extends JobIntentService {
 	
 	private void setupPendingIntent(RemoteViews remoteViews, Uri widgetUri, int resource, String action) {
 		Intent intent = new Intent(action, widgetUri, this, AfServiceReceiver.class);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE));
-		} else {
-			remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, 0));
-		}
+		remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, AfUtils.PI_FLAG_IMMUTABLE));
 	}
 
 }
