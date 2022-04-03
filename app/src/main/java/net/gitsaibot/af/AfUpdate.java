@@ -208,12 +208,8 @@ public class AfUpdate {
 	private boolean isWiFiAvailable() {
 		ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo wifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		
-		if (wifiInfo != null && wifiInfo.isConnected()) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return wifiInfo != null && wifiInfo.isConnected();
 	}
 
 	private boolean isLocationInUS(AfLocationInfo locationInfo) {

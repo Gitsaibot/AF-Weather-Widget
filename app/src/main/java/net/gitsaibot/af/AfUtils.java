@@ -306,11 +306,7 @@ public class AfUtils {
 				prime = false;
 				break;
 			}
-		if ((n % 2 != 0 && prime && n > 2) || n == 2) {
-			return true;
-		} else {
-			return false;
-		}
+		return (n % 2 != 0 && prime && n > 2) || n == 2;
 	}
 	
 	public static HttpGet buildGzipHttpGet(String url)
@@ -498,7 +494,10 @@ public class AfUtils {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 			userAgent.append("/");
 			userAgent.append(pInfo.versionName);
-		} catch (NameNotFoundException e) { }
+		} catch (NameNotFoundException e) {
+			Log.d(TAG, "UserAgent: Name not found.");
+			e.printStackTrace();
+		}
 		
 		userAgent.append("https://github.com/Gitsaibot/AF-Weather-Widget;" + BuildConfig.USER_AGENT);
 
@@ -510,29 +509,16 @@ public class AfUtils {
 		long viewRowId = -1;
 		
 		ContentResolver resolver = context.getContentResolver();
-		
-		Cursor widgetCursor = null;
-		try
-		{
-			widgetCursor = resolver.query(widgetUri, null, null, null, null);
-			
-			if (widgetCursor != null)
-			{
-				if (widgetCursor.moveToFirst())
-				{
+
+		try (Cursor widgetCursor = resolver.query(widgetUri, null, null, null, null)) {
+
+			if (widgetCursor != null) {
+				if (widgetCursor.moveToFirst()) {
 					int viewColumnIndex = widgetCursor.getColumnIndex(AfWidgetsColumns.VIEWS);
-					if (viewColumnIndex != -1)
-					{
+					if (viewColumnIndex != -1) {
 						viewRowId = widgetCursor.getLong(viewColumnIndex);
 					}
 				}
-			}
-		}
-		finally
-		{
-			if (widgetCursor != null)
-			{
-				widgetCursor.close();
 			}
 		}
 		

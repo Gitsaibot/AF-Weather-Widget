@@ -61,12 +61,7 @@ public class ColorPreference extends DialogPreference implements android.view.Vi
 	/* mRevertView onClick() */
 	@Override
 	public void onClick(View v) {
-		v.post(new Runnable() {
-			@Override
-			public void run() {
-				setValue(mDefaultValue);
-			}
-		});
+		v.post(() -> setValue(mDefaultValue));
 	}
 
 	public int getValue() {

@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import net.gitsaibot.af.AfProvider.AfLocations;
@@ -61,6 +62,8 @@ import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import androidx.core.content.res.ResourcesCompat;
 
 public class AfDetailedWidget {
 	
@@ -786,7 +789,7 @@ public class AfDetailedWidget {
 
 	private void drawInfoText(Canvas canvas, Float pressure, Float humidity, Float temperature)
 	{
-		float topTextSidePadding = 1.0f * mDP;
+		float topTextSidePadding = mDP;
 		
 		String locationName = mAfLocationInfo.getTitle();
 		
@@ -1079,9 +1082,8 @@ public class AfDetailedWidget {
 						weatherIcons = WEATHER_ICONS_DAY;
 					}
 				}
-				
-				Bitmap weatherIcon = ((BitmapDrawable)mContext.getResources().
-						getDrawable(weatherIcons[dataPoint.weatherIcon - 1])).getBitmap();
+				Bitmap weatherIcon = ((BitmapDrawable) Objects.requireNonNull(ResourcesCompat.getDrawable(
+						mContext.getResources(), weatherIcons[dataPoint.weatherIcon - 1], null))).getBitmap();
 				canvas.drawBitmap(weatherIcon, null, dest, null);
 				
 				loMarker = iconTimePos + hoursPerIcon * DateUtils.HOUR_IN_MILLIS;
@@ -1254,7 +1256,7 @@ public class AfDetailedWidget {
 		mLabelPaint.setTextSize(mLabelTextSize);
 		mAboveFreezingTemperaturePaint.setStrokeWidth(2.0f * mDP);
 		mBelowFreezingTemperaturePaint.setStrokeWidth(2.0f * mDP);
-		mMaxRainPaint.setStrokeWidth(1.0f * mDP);
+		mMaxRainPaint.setStrokeWidth(mDP);
 	}
 	
 	private void setupPaints() {

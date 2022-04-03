@@ -36,8 +36,6 @@ import android.widget.RemoteViews;
 public class AfService extends JobIntentService {
 	
 	private static final String TAG = "AfService";
-	
-	public final static String APPWIDGET_ID = "appWidgetId";
 
 	public static final int JOB_ID = 1;
 
@@ -62,7 +60,6 @@ public class AfService extends JobIntentService {
 	public final static String ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION";
 	public final static String ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION";
 	
-	@SuppressWarnings("serial")
 	Map<String, Pair<String, Integer>> mCalibrationAdjustmentsMap = new HashMap<String, Pair<String, Integer>>() {{
 		put(ACTION_DECREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, -1));
 		put(ACTION_INCREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, +1));

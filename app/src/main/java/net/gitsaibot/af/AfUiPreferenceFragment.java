@@ -62,7 +62,7 @@ public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements
         return false;
     }
 
-    private boolean onFloatPreferenceChange(androidx.preference.Preference preference, Object newValue,
+    private boolean onFloatPreferenceChange(Preference preference, Object newValue,
                                             float rangeMin, float rangeMax, int invalidNumberString, int invalidRangeString)
     {
         float f;
