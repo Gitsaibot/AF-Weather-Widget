@@ -116,10 +116,10 @@ public class AfUpdate {
 							isRateLimited = true;
 							numAttemptsRemaining = 0;
 						}
-						Log.d(TAG, String.format("update() failed: %s", e.toString()));
+						Log.d(TAG, String.format("update() failed: %s", e));
 					}
 					catch (Exception e) {
-						Log.d(TAG, String.format("update() failed: %s", e.toString()));
+						Log.d(TAG, String.format("update() failed: %s", e));
 					}
 				} else {
 					isWifiConnectionMissing = true;
