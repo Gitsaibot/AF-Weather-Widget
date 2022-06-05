@@ -31,41 +31,41 @@ public class AfProvider extends ContentProvider {
 	public static final String AUTHORITY = "net.gitsaibot.af";
 	
 	public interface AfWidgetsColumns {
-		public static final String APPWIDGET_ID = BaseColumns._ID;
+		String APPWIDGET_ID = BaseColumns._ID;
 		
 		/* The size of the widge in the format COLUMNS_ROWS
 		 * where TINY=1, SMALL=2, MEDIUM=3, LARGE=4 */
-		public static final String SIZE = "size";
-		public static final int SIZE_INVALID = 0;
+		String SIZE = "size";
+		int SIZE_INVALID = 0;
 		
-		public static final int SIZE_TINY_TINY = 1;
-		public static final int SIZE_TINY_SMALL = 2;
-		public static final int SIZE_TINY_MEDIUM = 3;
-		public static final int SIZE_TINY_LARGE = 4;
+		int SIZE_TINY_TINY = 1;
+		int SIZE_TINY_SMALL = 2;
+		int SIZE_TINY_MEDIUM = 3;
+		int SIZE_TINY_LARGE = 4;
 		
-		public static final int SIZE_SMALL_TINY = 5;
-		public static final int SIZE_SMALL_SMALL = 6;
-		public static final int SIZE_SMALL_MEDIUM = 7;
-		public static final int SIZE_SMALL_LARGE = 8;
+		int SIZE_SMALL_TINY = 5;
+		int SIZE_SMALL_SMALL = 6;
+		int SIZE_SMALL_MEDIUM = 7;
+		int SIZE_SMALL_LARGE = 8;
 		
-		public static final int SIZE_MEDIUM_TINY = 9;
-		public static final int SIZE_MEDIUM_SMALL = 10;
-		public static final int SIZE_MEDIUM_MEDIUM = 11;
-		public static final int SIZE_MEDIUM_LARGE = 12;
+		int SIZE_MEDIUM_TINY = 9;
+		int SIZE_MEDIUM_SMALL = 10;
+		int SIZE_MEDIUM_MEDIUM = 11;
+		int SIZE_MEDIUM_LARGE = 12;
 		
-		public static final int SIZE_LARGE_TINY = 13;
-		public static final int SIZE_LARGE_SMALL = 14;
-		public static final int SIZE_LARGE_MEDIUM = 15;
-		public static final int SIZE_LARGE_LARGE = 16;
+		int SIZE_LARGE_TINY = 13;
+		int SIZE_LARGE_SMALL = 14;
+		int SIZE_LARGE_MEDIUM = 15;
+		int SIZE_LARGE_LARGE = 16;
 		
 		/* A colon-separated array in string format of the view IDs linked to the widget */
-		public static final String VIEWS = "views";
+		String VIEWS = "views";
 		
-		public static final int APPWIDGET_ID_COLUMN = 0;
-		public static final int SIZE_COLUMN = 1;
-		public static final int VIEWS_COLUMN = 2;
+		int APPWIDGET_ID_COLUMN = 0;
+		int SIZE_COLUMN = 1;
+		int VIEWS_COLUMN = 2;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				APPWIDGET_ID, SIZE, VIEWS };
 	}
 	
@@ -78,19 +78,19 @@ public class AfProvider extends ContentProvider {
 	}
 	
 	public interface AfViewsColumns {
-		public static final String VIEW_ID = BaseColumns._ID;
+		String VIEW_ID = BaseColumns._ID;
 		/* The location row ID in the AixLocations table for the view location */
-		public static final String LOCATION = "location";
+		String LOCATION = "location";
 		
 		/* The type of a specific view, e.g. detailed or long-term */
-		public static final String TYPE = "type";
-		public static final int TYPE_DETAILED = 1;
+		String TYPE = "type";
+		int TYPE_DETAILED = 1;
 		
-		public static final int VIEW_ID_COLUMN = 0;
-		public static final int LOCATION_COLUMN = 1;
-		public static final int TYPE_COLUMN = 2;
+		int VIEW_ID_COLUMN = 0;
+		int LOCATION_COLUMN = 1;
+		int TYPE_COLUMN = 2;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				VIEW_ID, LOCATION, TYPE };
 	}
 	
@@ -104,43 +104,43 @@ public class AfProvider extends ContentProvider {
 	}
 	
 	public interface AfLocationsColumns {
-		public static final String TITLE = "title";
-		public static final String TITLE_DETAILED = "title_detailed";
-		public static final String TIME_ZONE = "timeZone";
+		String TITLE = "title";
+		String TITLE_DETAILED = "title_detailed";
+		String TIME_ZONE = "timeZone";
 		
 		/* The type of the location; whether it is set statically or updated dynamically */
-		public static final String TYPE = "type";
-		public static final int LOCATION_STATIC = 1;
+		String TYPE = "type";
+		int LOCATION_STATIC = 1;
 		
 		/* The time when the current location fix was set */
-		public static final String TIME_OF_LAST_FIX = "time_of_last_fix";
+		String TIME_OF_LAST_FIX = "time_of_last_fix";
 		
-		public static final String LATITUDE = "latitude";
+		String LATITUDE = "latitude";
 		
-		public static final String LONGITUDE = "longitude";
+		String LONGITUDE = "longitude";
 		
 		/* The time when the forecasts for the location was last updated */
-		public static final String LAST_FORECAST_UPDATE = "last_forecast_update";
+		String LAST_FORECAST_UPDATE = "last_forecast_update";
 		
 		/* The time when the forecasts for the location is no longer valid */
-		public static final String FORECAST_VALID_TO = "forecast_valid_to";
+		String FORECAST_VALID_TO = "forecast_valid_to";
 		
 		/* The time when the forecasts for the location should be updated next */
-		public static final String NEXT_FORECAST_UPDATE = "next_forecast_update";
+		String NEXT_FORECAST_UPDATE = "next_forecast_update";
 		
-		public static final int LOCATION_ID_COLUMN = 0;
-		public static final int TITLE_COLUMN = 1;
-		public static final int TITLE_DETAILED_COLUMN = 2;
-		public static final int TIME_ZONE_COLUMN = 3;
-		public static final int TYPE_COLUMN = 4;
-		public static final int TIME_OF_LAST_FIX_COLUMN = 5;
-		public static final int LATITUDE_COLUMN = 6;
-		public static final int LONGITUDE_COLUMN = 7;
-		public static final int LAST_FORECAST_UPDATE_COLUMN = 8;
-		public static final int FORECAST_VALID_TO_COLUMN = 9;
-		public static final int NEXT_FORECAST_UPDATE_COLUMN = 10;
+		int LOCATION_ID_COLUMN = 0;
+		int TITLE_COLUMN = 1;
+		int TITLE_DETAILED_COLUMN = 2;
+		int TIME_ZONE_COLUMN = 3;
+		int TYPE_COLUMN = 4;
+		int TIME_OF_LAST_FIX_COLUMN = 5;
+		int LATITUDE_COLUMN = 6;
+		int LONGITUDE_COLUMN = 7;
+		int LAST_FORECAST_UPDATE_COLUMN = 8;
+		int FORECAST_VALID_TO_COLUMN = 9;
+		int NEXT_FORECAST_UPDATE_COLUMN = 10;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				BaseColumns._ID,
 				TITLE,
 				TITLE_DETAILED,
@@ -165,21 +165,21 @@ public class AfProvider extends ContentProvider {
 	}
 	
 	public interface AfPointDataForecastColumns {
-		public static final String LOCATION = "location";
-		public static final String TIME_ADDED = "timeAdded";
-		public static final String TIME = "time";
-		public static final String TEMPERATURE = "temperature";
-		public static final String HUMIDITY = "humidity";
-		public static final String PRESSURE = "pressure";
+		String LOCATION = "location";
+		String TIME_ADDED = "timeAdded";
+		String TIME = "time";
+		String TEMPERATURE = "temperature";
+		String HUMIDITY = "humidity";
+		String PRESSURE = "pressure";
 		
-		public static final int LOCATION_COLUMN = 1;
-		public static final int TIME_ADDED_COLUMN = 2;
-		public static final int TIME_COLUMN = 3;
-		public static final int TEMPERATURE_COLUMN = 4;
-		public static final int HUMIDITY_COLUMN = 5;
-		public static final int PRESSURE_COLUMN = 6;
+		int LOCATION_COLUMN = 1;
+		int TIME_ADDED_COLUMN = 2;
+		int TIME_COLUMN = 3;
+		int TEMPERATURE_COLUMN = 4;
+		int HUMIDITY_COLUMN = 5;
+		int PRESSURE_COLUMN = 6;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				BaseColumns._ID, LOCATION, TIME_ADDED, TIME, TEMPERATURE, HUMIDITY, PRESSURE };
 	}
 	
@@ -191,25 +191,25 @@ public class AfProvider extends ContentProvider {
 	}
 	
 	public interface AfIntervalDataForecastColumns {
-		public static final String LOCATION = "location";
-		public static final String TIME_ADDED = "timeAdded";
-		public static final String TIME_FROM = "timeFrom";
-		public static final String TIME_TO = "timeTo";
-		public static final String RAIN_VALUE = "rainValue";
-		public static final String RAIN_MINVAL = "rainLowVal";
-		public static final String RAIN_MAXVAL = "rainMaxVal";
-		public static final String WEATHER_ICON = "weatherIcon";
+		String LOCATION = "location";
+		String TIME_ADDED = "timeAdded";
+		String TIME_FROM = "timeFrom";
+		String TIME_TO = "timeTo";
+		String RAIN_VALUE = "rainValue";
+		String RAIN_MINVAL = "rainLowVal";
+		String RAIN_MAXVAL = "rainMaxVal";
+		String WEATHER_ICON = "weatherIcon";
 		
-		public static final int LOCATION_COLUMN = 1;
-		public static final int TIME_ADDED_COLUMN = 2;
-		public static final int TIME_FROM_COLUMN = 3;
-		public static final int TIME_TO_COLUMN = 4;
-		public static final int RAIN_VALUE_COLUMN = 5;
-		public static final int RAIN_MINVAL_COLUMN = 6;
-		public static final int RAIN_MAXVAL_COLUMN = 7;
-		public static final int WEATHER_ICON_COLUMN = 8;
+		int LOCATION_COLUMN = 1;
+		int TIME_ADDED_COLUMN = 2;
+		int TIME_FROM_COLUMN = 3;
+		int TIME_TO_COLUMN = 4;
+		int RAIN_VALUE_COLUMN = 5;
+		int RAIN_MINVAL_COLUMN = 6;
+		int RAIN_MAXVAL_COLUMN = 7;
+		int WEATHER_ICON_COLUMN = 8;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				BaseColumns._ID, LOCATION, TIME_ADDED, TIME_FROM, TIME_TO, RAIN_VALUE, RAIN_MINVAL, RAIN_MAXVAL, WEATHER_ICON };
 	}
 	
@@ -221,36 +221,36 @@ public class AfProvider extends ContentProvider {
 	}
 	
 	public interface AfSunMoonDataColumns {
-		public static final String LOCATION = "location";
-		public static final String TIME_ADDED = "timeAdded";
-		public static final String DATE = "date";
-		public static final String SUN_RISE = "sunRise";
-		public static final String SUN_SET = "sunSet";
-		public static final String MOON_RISE = "moonRise";
-		public static final String MOON_SET = "moonSet";
-		public static final String MOON_PHASE = "moonPhase";
+		String LOCATION = "location";
+		String TIME_ADDED = "timeAdded";
+		String DATE = "date";
+		String SUN_RISE = "sunRise";
+		String SUN_SET = "sunSet";
+		String MOON_RISE = "moonRise";
+		String MOON_SET = "moonSet";
+		String MOON_PHASE = "moonPhase";
 		
-		public static final int NO_MOON_PHASE_DATA = -1;
-		public static final int NEW_MOON = 1;
-		public static final int WAXING_CRESCENT = 2;
-		public static final int FIRST_QUARTER = 3;
-		public static final int WAXING_GIBBOUS = 4;
-		public static final int FULL_MOON = 5;
-		public static final int WANING_GIBBOUS = 6;
-		public static final int LAST_QUARTER = 7;
-		public static final int WANING_CRESCENT = 8;
-		public static final int DARK_MOON = 9;
+		int NO_MOON_PHASE_DATA = -1;
+		int NEW_MOON = 1;
+		int WAXING_CRESCENT = 2;
+		int FIRST_QUARTER = 3;
+		int WAXING_GIBBOUS = 4;
+		int FULL_MOON = 5;
+		int WANING_GIBBOUS = 6;
+		int LAST_QUARTER = 7;
+		int WANING_CRESCENT = 8;
+		int DARK_MOON = 9;
 		
-		public static final int LOCATION_COLUMN = 1;
-		public static final int TIME_ADDED_COLUMN = 2;
-		public static final int DATE_COLUMN = 3;
-		public static final int SUN_RISE_COLUMN = 4;
-		public static final int SUN_SET_COLUMN = 5;
-		public static final int MOON_RISE_COLUMN = 6;
-		public static final int MOON_SET_COLUMN = 7;
-		public static final int MOON_PHASE_COLUMN = 8;
+		int LOCATION_COLUMN = 1;
+		int TIME_ADDED_COLUMN = 2;
+		int DATE_COLUMN = 3;
+		int SUN_RISE_COLUMN = 4;
+		int SUN_SET_COLUMN = 5;
+		int MOON_RISE_COLUMN = 6;
+		int MOON_SET_COLUMN = 7;
+		int MOON_PHASE_COLUMN = 8;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				BaseColumns._ID,
 				LOCATION,
 				TIME_ADDED,
@@ -274,16 +274,16 @@ public class AfProvider extends ContentProvider {
 	}
 	
 	public interface AfSettingsColumns {
-		public static final String ROW_ID = "rowId";
-		public static final String KEY = "rowKey";
-		public static final String VALUE = "value";
+		String ROW_ID = "rowId";
+		String KEY = "rowKey";
+		String VALUE = "value";
 		
-		public static final int SETTING_ID_COLUMN = 0;
-		public static final int ROW_ID_COLUMN = 1;
-		public static final int KEY_COLUMN = 2;
-		public static final int VALUE_COLUMN = 3;
+		int SETTING_ID_COLUMN = 0;
+		int ROW_ID_COLUMN = 1;
+		int KEY_COLUMN = 2;
+		int VALUE_COLUMN = 3;
 
-		public static final String[] ALL_COLUMNS = new String[] {
+		String[] ALL_COLUMNS = new String[] {
 				BaseColumns._ID, ROW_ID, KEY, VALUE };
 	}
 	
