@@ -76,6 +76,7 @@
 	<string name="location_list_row_longitude">Longitude:</string>
 	
 	<string name="location_list_context_title">Location: %s</string>
+	<string name="location_list_context_edit">Edit display title</string>
  	<string name="location_list_context_delete">Delete</string>
  	
  	<string name="invalid_search_input_toast">Invalid search input, please try a different search!</string>

@@ -97,4 +97,5 @@
     <string name="device_profiles_model">"Modell: "</string>
     <string name="device_profiles_orientation_mode">Ausrichtungsmodus:</string>
     <string name="widget_no_weather_data">Keine Wetterdaten gefunden.</string>
+    <string name="location_list_context_edit">Anzeigetitel ändern</string>
 </resources>

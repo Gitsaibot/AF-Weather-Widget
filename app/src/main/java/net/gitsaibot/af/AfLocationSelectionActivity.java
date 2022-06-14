@@ -27,13 +27,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,9 +59,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-public class AfLocationSelectionActivity extends ListActivity implements OnClickListener {
-
-    private static final List<String> geonamesDetailedNameComponents = Collections.unmodifiableList(
+public class AfLocationSelectionActivity extends ListActivity implements OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+	private static final int LOADER_ID = 1;
+	private LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
+	// The adapter that binds our data to the ListView
+	private SimpleCursorAdapter mAdapter;
+	private static final List<String> geonamesDetailedNameComponents = Collections.unmodifiableList(
             Arrays.asList("name", "adminName5", "adminName4", "adminName3", "adminName2", "adminName1", "countryName"));
 
     private static final Map<Integer, String> geonamesWebserviceExceptions;
@@ -114,41 +120,69 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 	private Cursor mCursor = null;
 	private boolean mResetSearch = false;
 	private EditText mEditText = null;
-	
-	@SuppressWarnings("deprecation") // startManagingCursor() and SimpleCursorAdapter constructor is deprecated
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mCallbacks = this;
 		mContext = this;
 		setContentView(R.layout.location_selection_list);
 		
 		mAddLocationButton = findViewById(R.id.add_location_button);
 		mAddLocationButton.setOnClickListener(this);
-		
-		ContentResolver cr = getContentResolver();
-        mCursor = cr.query(AfLocations.CONTENT_URI, null, null, null, null);
-        
-        startManagingCursor(mCursor);
 
-        setListAdapter(new SimpleCursorAdapter(
-        		mContext,
-        		R.layout.location_selection_row,
-        		mCursor,
-        		new String[] {
-        				AfLocationsColumns.TITLE_DETAILED,
-        				AfLocationsColumns.TITLE,
-        				AfLocationsColumns.LATITUDE,
-        				AfLocationsColumns.LONGITUDE
-        		},
-        		new int[] {
-        				R.id.location_selection_row_title,
-        				R.id.location_selection_row_display_title,
-        				R.id.location_selection_row_latitude,
-        				R.id.location_selection_row_longitude
-        		}));
-        
+		LoaderManager lm = getLoaderManager();
+		lm.initLoader(LOADER_ID, null, mCallbacks);
+
+		mAdapter = new SimpleCursorAdapter(
+				mContext,
+				R.layout.location_selection_row,
+				null,
+				new String[] {
+						AfLocationsColumns.TITLE_DETAILED,
+						AfLocationsColumns.TITLE,
+						AfLocationsColumns.LATITUDE,
+						AfLocationsColumns.LONGITUDE
+				},
+				new int[] {
+						R.id.location_selection_row_title,
+						R.id.location_selection_row_display_title,
+						R.id.location_selection_row_latitude,
+						R.id.location_selection_row_longitude
+				},0);
+        setListAdapter(mAdapter);
         registerForContextMenu(getListView());
     }
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		// Create a new CursorLoader with the following query parameters.
+		return new CursorLoader(AfLocationSelectionActivity.this, AfLocations.CONTENT_URI,
+				null, null, null, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		// A switch-case is useful when dealing with multiple Loaders/IDs
+		switch (loader.getId()) {
+			case LOADER_ID:
+				// The asynchronous load is complete and the data
+				// is now available for use. Only now can we associate
+				// the queried Cursor with the SimpleCursorAdapter.
+				mAdapter.swapCursor(cursor);
+				mCursor = mAdapter.getCursor();
+				break;
+		}
+		// The listview now displays the queried data.
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		// For whatever reason, the Loader's data is now unavailable.
+		// Remove any references to the old data by replacing it with
+		// a null Cursor.
+		mAdapter.swapCursor(null);
+	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -167,15 +201,13 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		mCursor.moveToPosition(adapterMenuInfo.position);
 		if (mCursor.isAfterLast()) return;
 		menu.setHeaderTitle(String.format(getString(R.string.location_list_context_title), mCursor.getString(mCursor.getColumnIndexOrThrow(AfLocationsColumns.TITLE))));
-		menu.add(0, CONTEXT_MENU_EDIT, 0, "Edit display title");
+		menu.add(0, CONTEXT_MENU_EDIT, 0, getString(R.string.location_list_context_edit));
 		menu.add(0, CONTEXT_MENU_DELETE, 0, getString(R.string.location_list_context_delete));
 	}
 
 	private String mLocationName;
 	private long mLocationId;
 	
-	// Cursor.requery() and showDialog() are deprecated
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo adapterMenuInfo = (AdapterContextMenuInfo) (item.getMenuInfo());
@@ -186,7 +218,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 			getContentResolver().delete(
 					ContentUris.withAppendedId(AfLocations.CONTENT_URI, mCursor.getLong(mCursor.getColumnIndexOrThrow(BaseColumns._ID))),
 					null, null);
-			mCursor.requery();
+			getLoaderManager().restartLoader(LOADER_ID,null,mCallbacks);
 			return true;
 		case CONTEXT_MENU_EDIT:
 			mCursor.moveToPosition(adapterMenuInfo.position);
@@ -281,20 +313,16 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 
         return dialog;
 	}
-	
-	// Cursor.requery() is deprecated
-	@SuppressWarnings("deprecation")
+
 	private void setLocationDisplayTitle(String displayTitle) {
 		ContentValues values = new ContentValues();
 		values.put(AfLocations.TITLE, displayTitle);
 		getContentResolver().update(
 				ContentUris.withAppendedId(AfLocations.CONTENT_URI, mLocationId),
 				values, null, null);
-		mCursor.requery();
+		getLoaderManager().restartLoader(LOADER_ID,null,mCallbacks);
 	}
-	
-	// Activity.onPrepareDialog() is deprecated
-	@SuppressWarnings("deprecation")
+
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		final EditText editText = dialog.findViewById(R.id.edittext);
@@ -384,8 +412,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 				AlertDialog alertDialog = new AlertDialog.Builder(mContext)
 						.setTitle(R.string.location_search_results_select_dialog_title)
 						.setItems(listItems, new DialogInterface.OnClickListener() {
-							// Cursor.requery() is deprecated
-							@SuppressWarnings("deprecation")
+
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// Add selected location to provider
@@ -398,7 +425,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 								values.put(AfLocationsColumns.TITLE_DETAILED, a.title_detailed);
 								resolver.insert(AfLocations.CONTENT_URI, values);
 
-								mCursor.requery();
+								getLoaderManager().restartLoader(LOADER_ID,null,mCallbacks);
 								getListView().setSelection(getListView().getCount() - 1);
 							}
 						})
@@ -532,9 +559,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		}
 		
 	}
-	
-	// Activity.showDialog() is deprecated
-	@SuppressWarnings("deprecation")
+
 	@Override
 	public void onClick(View v) {
 		if (v == mAddLocationButton) {
