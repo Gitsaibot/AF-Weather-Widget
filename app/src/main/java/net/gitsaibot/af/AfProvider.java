@@ -1277,7 +1277,7 @@ public class AfProvider extends ContentProvider {
 			}
 			break;
 		default:
-			throw new UnsupportedOperationException("AixProvider.bulkInsert() Unsupported URI: " + uri); 
+			throw new UnsupportedOperationException("AfProvider.bulkInsert() Unsupported URI: " + uri);
 		}
 
 		return numInserted;
