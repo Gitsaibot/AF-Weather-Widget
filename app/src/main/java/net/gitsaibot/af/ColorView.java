@@ -385,7 +385,7 @@ public class ColorView extends View {
 			invalidate();
 		} else if (mMode == MODE_ALPHA) {
 			mShader = buildShader(
-					mMode == MODE_ALPHA ? buildAlphaColorArray(mColor) : HUE_COLORS);
+					buildAlphaColorArray(mColor));
 			mColorAreaPaint.setShader(mShader);
 			invalidate();
 		}
