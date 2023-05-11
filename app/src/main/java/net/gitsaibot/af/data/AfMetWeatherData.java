@@ -149,9 +149,7 @@ public class AfMetWeatherData implements AfDataSource {
 				case XmlPullParser.END_TAG:
 					if (parser.getName().equals("time") && contentValues != null)
 					{
-						if (currentList != null && contentValues != null) {
-							currentList.add(contentValues);
-						}
+						currentList.add(contentValues);
 					}
 					break;
 				case XmlPullParser.START_TAG:

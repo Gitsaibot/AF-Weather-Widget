@@ -77,7 +77,6 @@ public class AfDetailedWidget {
 	private final Context mContext;
 	
 	private final AfLocationInfo mAfLocationInfo;
-	private final AfWidgetInfo mAfWidgetInfo;
 	private final AfWidgetSettings mWidgetSettings;
 	
 	/* Common Properties */
@@ -142,7 +141,6 @@ public class AfDetailedWidget {
 		mNumHours = 24;
 		mNumWeatherDataBufferHours = 6;
 		
-		mAfWidgetInfo = widgetInfo;
 		mAfLocationInfo = locationInfo;
 		
 		mWidgetSettings = widgetInfo.getWidgetSettings();
@@ -1453,7 +1451,6 @@ public class AfDetailedWidget {
 		
 		// Update timeFrom and timeTo to correct values given the epoch
 		calendar.setTimeInMillis(epoch);
-		//calendar.setTimeInMillis(timeTemp);
 		mTimeFrom = calendar.getTimeInMillis();
 		calendar.add(Calendar.HOUR_OF_DAY, mNumHours);
 		mTimeTo = calendar.getTimeInMillis();
