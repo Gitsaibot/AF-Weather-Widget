@@ -25,6 +25,7 @@ import net.gitsaibot.af.AfProvider.AfSunMoonData;
 import net.gitsaibot.af.AfProvider.AfViews;
 import net.gitsaibot.af.AfProvider.AfWidgets;
 import net.gitsaibot.af.AfProvider.AfWidgetsColumns;
+import net.gitsaibot.af.BuildConfig;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -595,7 +596,7 @@ public class AfUtils {
 		}
 		
 		return Uri.parse(String.format(US,
-				"content://net.gitsaibot.af/aixrender/%d/%d/%s",
+				"content://" + BuildConfig.APPLICATION_ID + "/aixrender/%d/%d/%s",
 				appWidgetId, time, orientation));
 	}
 	
