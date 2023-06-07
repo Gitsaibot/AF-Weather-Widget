@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map.Entry;
 
+import net.gitsaibot.af.BuildConfig;
+
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -28,7 +30,7 @@ public class AfProvider extends ContentProvider {
 	private static final String TAG = "AfProvider";
 	private static final boolean LOGD = false;
 	
-	public static final String AUTHORITY = "net.gitsaibot.af";
+	public static final String AUTHORITY = BuildConfig.APPLICATION_ID;
 	
 	public interface AfWidgetsColumns {
 		String APPWIDGET_ID = BaseColumns._ID;
@@ -337,7 +339,7 @@ public class AfProvider extends ContentProvider {
 	private static final String TABLE_AIXINTERVALDATAFORECASTS = "aixintervaldataforecasts";
 	private static final String TABLE_AIXSUNMOONDATA = "aixsunmoondata";
 	
-	public static final String AIX_RENDER_FORMATTER = "content://net.gitsaibot.af/aixrender/%d/%d/%s";
+	public static final String AIX_RENDER_FORMATTER = "content://" + AUTHORITY + "/aixrender/%d/%d/%s";
 	
 	private DatabaseHelper mOpenHelper;
 	

@@ -52,7 +52,7 @@
 		
 		</activity>
         
-        <provider android:name="net.gitsaibot.af.AfProvider" android:authorities="net.gitsaibot.af" android:exported="true" />
+        <provider android:name="net.gitsaibot.af.AfProvider" android:authorities="${applicationId}" android:exported="true" />
         
         <service android:name="net.gitsaibot.af.AfService" android:permission="android.permission.BIND_JOB_SERVICE" />
     	
