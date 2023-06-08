@@ -37,7 +37,9 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
         String scalePref = pref.getString(getString(R.string.precipitation_scaling_string), "1");
         mPrecipitationScalingPref.setSummary(scalePref);
         String scalePrefTitle = pref.getString(getString(R.string.precipitation_units_string), "1");
-        mPrecipitationScalingPref.setTitle((scalePrefTitle.equals("1") ? getString(R.string.precipitation_scaling_title_mm) : getString(R.string.precipitation_scaling_title_inches)));
+        String scalingTitle = (scalePrefTitle.equals("1") ? getString(R.string.precipitation_scaling_title_mm) : getString(R.string.precipitation_scaling_title_inches));
+        mPrecipitationScalingPref.setTitle(scalingTitle);
+        mPrecipitationScalingPref.setDialogTitle(scalingTitle);
     }
 
     @Override
@@ -81,7 +83,9 @@ public class AfUnitPreferenceFragment extends PreferenceFragmentCompat implement
                             ? getString(R.string.precipitation_scaling_mm_default)
                             : getString(R.string.precipitation_scaling_inches_default);
 
-            mPrecipitationScalingPref.setTitle((newUnit.equals("1") ? getString(R.string.precipitation_scaling_title_mm) : getString(R.string.precipitation_scaling_title_inches)));
+            String scalingTitle = (newUnit.equals("1") ? getString(R.string.precipitation_scaling_title_mm) : getString(R.string.precipitation_scaling_title_inches));
+            mPrecipitationScalingPref.setTitle(scalingTitle);
+            mPrecipitationScalingPref.setDialogTitle(scalingTitle);
             mPrecipitationScalingPref.setSummary(defaultScalingValue);
             mPrecipitationScalingPref.setText(defaultScalingValue);
         }
