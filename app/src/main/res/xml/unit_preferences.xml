@@ -27,6 +27,7 @@
         <EditTextPreference
             android:key="@string/precipitation_scaling_string"
             android:title="@string/precipitation_scaling_title_mm"
+            android:dialogTitle="@string/precipitation_scaling_title_mm"
             android:layout="@layout/preference_title"
             android:persistent="true"
             android:defaultValue="@string/precipitation_scaling_mm_default"
