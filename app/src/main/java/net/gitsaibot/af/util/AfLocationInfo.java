@@ -1,6 +1,8 @@
 package net.gitsaibot.af.util;
 
 import java.util.TimeZone;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import net.gitsaibot.af.AfProvider.AfLocations;
 import net.gitsaibot.af.AfProvider.AfLocationsColumns;
@@ -264,6 +266,11 @@ public class AfLocationInfo {
 		return mTimeZone;
 	}
 	
+	public String getOffset() {
+		ZoneId zone = ZoneId.of(mTimeZone);
+		return OffsetDateTime.now(zone).getOffset().toString();
+	}
+
 	public String getTitle() {
 		return mTitle;
 	}

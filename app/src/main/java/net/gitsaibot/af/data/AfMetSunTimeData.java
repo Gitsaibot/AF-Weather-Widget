@@ -75,8 +75,7 @@ public class AfMetSunTimeData implements AfDataSource {
 		mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		mDateFormat.setTimeZone(mUtcTimeZone);
 		
-		mTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-		mTimeFormat.setTimeZone(mUtcTimeZone);
+		mTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US);
 	}
 	
 	public static AfMetSunTimeData build(Context context, AfUpdate afUpdate)
@@ -177,7 +176,7 @@ public class AfMetSunTimeData implements AfDataSource {
 
 					if (time != null)
 					{
-						long timeValue = mTimeFormat.parse(time.substring(0, 19)).getTime();
+						long timeValue = mTimeFormat.parse(time).getTime();
 
 						if (parser.getName().equalsIgnoreCase("sunrise"))
 						{
@@ -280,6 +279,7 @@ public class AfMetSunTimeData implements AfDataSource {
 			
 			Double latitude = afLocationInfo.getLatitude();
 			Double longitude = afLocationInfo.getLongitude();
+			String offset = afLocationInfo.getOffset();
 			
 			if (latitude == null || longitude == null)
 			{
@@ -297,10 +297,10 @@ public class AfMetSunTimeData implements AfDataSource {
 			{
 				String url = String.format(
 						Locale.US,
-						"https://" + BuildConfig.API_KEY + "/weatherapi/sunrise/2.0/?lat=%.1f&lon=%.1f&date=%s&offset=+00:00&days=%d",
+						"https://" + BuildConfig.API_KEY + "/weatherapi/sunrise/2.0/?lat=%.1f&lon=%.1f&date=%s&offset=%s&days=%d",
 						latitude, longitude,
 						mDateFormat.format(mStartDate),
-						NUM_DAYS_REQUEST);
+						offset, NUM_DAYS_REQUEST);
 
 				HttpClient httpClient = AfUtils.setupHttpClient(mContext);
 				HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
