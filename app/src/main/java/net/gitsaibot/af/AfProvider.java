@@ -1423,7 +1423,7 @@ public class AfProvider extends ContentProvider {
 				
 				Long weatherIcon = value.getAsLong(AfIntervalDataForecasts.WEATHER_ICON);
 				if (weatherIcon != null) {
-					insert.bindDouble(8, weatherIcon);
+					insert.bindLong(8, weatherIcon);
 				} else {
 					insert.bindNull(8);
 				}
