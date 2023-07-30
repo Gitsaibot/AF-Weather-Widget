@@ -32,7 +32,7 @@ jobs:
     - name: Build Release APK
       run: ./gradlew assembleRelease
     - name: Releasing using Hub
-      uses: Gitsaibot/action-release-releaseapk@master
+      uses: Gitsaibot/AF-Weather-Widget@master
       env:
        GITHUB_TOKEN: ${{ secrets.TOKEN }}
        APP_FOLDER: app
