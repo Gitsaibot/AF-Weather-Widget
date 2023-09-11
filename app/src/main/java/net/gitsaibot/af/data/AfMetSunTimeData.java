@@ -23,7 +23,6 @@ import net.gitsaibot.af.util.AfLocationInfo;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -33,7 +32,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
-import android.util.Xml;
 
 public class AfMetSunTimeData implements AfDataSource {
 
@@ -143,12 +141,12 @@ public class AfMetSunTimeData implements AfDataSource {
 			throws AfDataUpdateException, IOException, JSONException
 	{
 		try{
-			float solarnoonElevationValue = 0.0f;
+			float solarnoonElevationValue;
 
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(AfSunMoonDataColumns.LOCATION, locationId);
 			contentValues.put(AfSunMoonDataColumns.TIME_ADDED, currentUtcTime);
-Log.d(TAG, String.format("\t%s", date));
+			Log.d(TAG, String.format("\t%s", date));
 			contentValues.put(AfSunMoonDataColumns.DATE, date.getTime());
 
 			solarnoonElevationValue = Float.parseFloat(sun.getJSONObject("solarnoon").getString("disc_centre_elevation"));
