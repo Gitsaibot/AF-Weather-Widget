@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "net.gitsaibot.af"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 13
         versionName '2.2'
