@@ -1,6 +1,5 @@
 package net.gitsaibot.af.data;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONObject;
-import org.json.JSONException;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -40,7 +38,6 @@ public class AfMetSunTimeData implements AfDataSource {
 	private final static int NUM_DAYS_MINIMUM = 5;
 	private final static int NUM_DAYS_REQUEST = 8;
 
-	@SuppressWarnings("serial")
 	private Map<String, Integer> moonPhaseMap = new HashMap<String, Integer>() {{
 		put("new moon", AfSunMoonData.NEW_MOON);
 		put("waxing crescent", AfSunMoonData.WAXING_CRESCENT);
@@ -96,7 +93,7 @@ public class AfMetSunTimeData implements AfDataSource {
 					.appendQueryParameter("end", Long.toString(mEndDate)).build();
 
 			cursor = contentResolver.query(uri, null, null, null, null);
-			
+
 			return cursor.getCount();
 		}
 		finally
@@ -138,9 +135,8 @@ public class AfMetSunTimeData implements AfDataSource {
 
 	private ContentValues parseData(Date date, JSONObject sun, JSONObject moon,
 			long locationId, long currentUtcTime)
-			throws AfDataUpdateException, IOException, JSONException
-	{
-		try{
+			throws AfDataUpdateException {
+		try {
 			float solarnoonElevationValue;
 
 			ContentValues contentValues = new ContentValues();
