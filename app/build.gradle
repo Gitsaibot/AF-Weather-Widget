@@ -7,17 +7,18 @@ keyProperties.load(new FileInputStream(project.rootProject.file("key.properties"
 
 android {
     namespace 'net.gitsaibot.af'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "net.gitsaibot.af"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 13
         versionName '2.2'
         buildConfigField("String", "USER_AGENT", "\"" + keyProperties['user_agent'] + "\"")
         buildConfigField("String", "API_KEY", "\"" + keyProperties['apiKey'] + "\"")
         buildConfigField("String", "USER_GEONAMES", "\"" + keyProperties['user_geonames'] + "\"")
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -44,6 +45,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 }
 
@@ -54,4 +56,5 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }
