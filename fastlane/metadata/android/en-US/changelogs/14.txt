@@ -1,0 +1,3 @@
+- Support android 14
+- Support android 7 using coreLibraryDesugaringEnabled
+- Drop Support for android 6
