@@ -164,14 +164,12 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		// A switch-case is useful when dealing with multiple Loaders/IDs
-		switch (loader.getId()) {
-			case LOADER_ID:
-				// The asynchronous load is complete and the data
-				// is now available for use. Only now can we associate
-				// the queried Cursor with the SimpleCursorAdapter.
-				mAdapter.swapCursor(cursor);
-				mCursor = mAdapter.getCursor();
-				break;
+		if (loader.getId() == LOADER_ID) {
+			// The asynchronous load is complete and the data
+			// is now available for use. Only now can we associate
+			// the queried Cursor with the SimpleCursorAdapter.
+			mAdapter.swapCursor(cursor);
+			mCursor = mAdapter.getCursor();
 		}
 		// The listview now displays the queried data.
 	}

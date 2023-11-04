@@ -77,7 +77,7 @@ public class AfUtils {
 	public final static int PROVIDER_NMET = 2;
 	public final static int PROVIDER_NWS = 3;
 
-	public static final int PI_FLAG_IMMUTABLE = Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0;
+	public static final int PI_FLAG_IMMUTABLE = PendingIntent.FLAG_IMMUTABLE;
 
 	public static final int[] WEATHER_ICONS_DAY = {
 		R.drawable.weather_icon_clearsky_day,
@@ -357,15 +357,13 @@ public class AfUtils {
 		if (is != null) {
 			Writer writer = new StringWriter();
 			char[] buffer = new char[1024];
-			try {
+			try (is) {
 				Reader reader = new BufferedReader(
 						new InputStreamReader(is, StandardCharsets.UTF_8));
 				int n;
 				while ((n = reader.read(buffer)) != -1) {
 					writer.write(buffer, 0, n);
 				}
-			} finally {
-				is.close();
 			}
 			return writer.toString();
 		} else {
@@ -669,15 +667,6 @@ public class AfUtils {
 		values.put(AfLocationsColumns.FORECAST_VALID_TO, 0);
 		values.put(AfLocationsColumns.NEXT_FORECAST_UPDATE, 0);
 		contentResolver.update(AfLocations.CONTENT_URI, values, null, null);
-	}
-	
-	public static boolean isWifiConnected(Context context)
-	{
-		ConnectivityManager connectionManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (connectionManager == null) return false;
-		NetworkInfo wifiInfo = connectionManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		if (wifiInfo == null) return false;
-		return wifiInfo.isConnected();
 	}
 	
 	public static void clearOldProviderData(ContentResolver contentResolver)

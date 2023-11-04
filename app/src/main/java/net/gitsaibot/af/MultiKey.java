@@ -253,7 +253,7 @@ public class MultiKey implements Serializable {
      * @return a debugging string
      */
     public String toString() {
-        return "MultiKey" + Arrays.asList(keys).toString();
+        return "MultiKey" + Arrays.asList(keys);
     }
 
 }
