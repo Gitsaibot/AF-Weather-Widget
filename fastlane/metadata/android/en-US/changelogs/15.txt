@@ -1,0 +1,1 @@
+- Fixed a bug that prevented the retrieval of weather data in the UTC 0 time zone.
