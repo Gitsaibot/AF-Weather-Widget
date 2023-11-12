@@ -268,7 +268,13 @@ public class AfLocationInfo {
 	
 	public String getOffset() {
 		ZoneId zone = ZoneId.of(mTimeZone);
-		return OffsetDateTime.now(zone).getOffset().toString();
+		String offset = OffsetDateTime.now(zone).getOffset().toString();
+
+		if (offset.equals("Z")) {
+			offset = "+00:00";
+		}
+
+		return offset;
 	}
 
 	public String getTitle() {
