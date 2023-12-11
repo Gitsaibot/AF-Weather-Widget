@@ -174,7 +174,7 @@ public class AfWidgetSettings {
 		for (int[] defaultFloat : defaultFloats) {
 			String key = r.getString(defaultFloat[0]);
 
-			if (key != null && !mSettings.containsKey(key)) {
+			if (!mSettings.containsKey(key)) {
 				String valueString = r.getString(defaultFloat[1]);
 				float value = Float.parseFloat(valueString);
 				mSettings.put(key, value);
@@ -202,7 +202,7 @@ public class AfWidgetSettings {
 
 		for (int[] defaultColor : defaultColors) {
 			String key = r.getString(defaultColor[0]);
-			if (key != null && !mSettings.containsKey(key)) {
+			if (!mSettings.containsKey(key)) {
 				int value = r.getColor(defaultColor[1]);
 				mSettings.put(key, value);
 			}
