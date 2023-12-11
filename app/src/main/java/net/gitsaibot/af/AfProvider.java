@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.gitsaibot.af.BuildConfig;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -486,179 +484,158 @@ public class AfProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		
 		int count = 0;
-		
+
 		switch (sUriMatcher.match(uri)) {
-		case AIXWIDGETS: {
-			count = db.delete(TABLE_AIXWIDGETS, null, null);
-			break;
-		}
-		case AIXWIDGETS_ID: {
-			count = db.delete(
-			        TABLE_AIXWIDGETS,
-			        BaseColumns._ID + "=?",
-			        new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-        case AIXWIDGETS_ID_SETTINGS: {
-            count = db.delete(
-                    TABLE_AIXWIDGETSETTINGS,
-                    AfSettingsColumns.ROW_ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-            break;
-        }
-        case AIXWIDGETSETTINGS: {
-			count = db.delete(TABLE_AIXWIDGETSETTINGS, null, null);
-			break;
-		}
-		case AIXWIDGETSETTINGS_ID: {
-			count = db.delete(
-			        TABLE_AIXWIDGETSETTINGS,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXVIEWS: {
-			count = db.delete(TABLE_AIXVIEWS, null, null);
-			break;
-		}
-		case AIXVIEWS_ID: {
-			count = db.delete(
-			        TABLE_AIXVIEWS,
-			        BaseColumns._ID + "=?",
-			        new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXVIEWS_ID_SETTINGS: {
-		    count = db.delete(
-                    TABLE_AIXVIEWSETTINGS,
-                    AfSettingsColumns.ROW_ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		    break;
-		}
-		case AIXVIEWSETTINGS: {
-			count = db.delete(TABLE_AIXVIEWSETTINGS, null, null);
-			break;
-		}
-		case AIXVIEWSETTINGS_ID: {
-			count = db.delete(
-			        TABLE_AIXVIEWSETTINGS,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXLOCATIONS: {
-			count = db.delete(TABLE_AIXLOCATIONS, null, null);
-			break;
-		}
-		case AIXLOCATIONS_ID: {
-			count = db.delete(
-			        TABLE_AIXLOCATIONS,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXLOCATIONS_POINTDATAFORECASTS: {
-			count = db.delete(
-			        TABLE_AIXPOINTDATAFORECASTS,
-                    AfPointDataForecastColumns.LOCATION + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXLOCATIONS_INTERVALDATAFORECASTS: {
-			count = db.delete(
-			        TABLE_AIXINTERVALDATAFORECASTS,
-                    AfIntervalDataForecastColumns.LOCATION + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXLOCATIONS_SUNMOONDATA: {
-			count = db.delete(
-			        TABLE_AIXSUNMOONDATA,
-                    AfSunMoonDataColumns.LOCATION + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXPOINTDATAFORECASTS: {
-			final String before = uri.getQueryParameter("before");
-            final String after = uri.getQueryParameter("after");
+			case AIXWIDGETS -> {
+				count = db.delete(TABLE_AIXWIDGETS, null, null);
+			}
+			case AIXWIDGETS_ID -> {
+				count = db.delete(
+						TABLE_AIXWIDGETS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXWIDGETS_ID_SETTINGS -> {
+				count = db.delete(
+						TABLE_AIXWIDGETSETTINGS,
+						AfSettingsColumns.ROW_ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXWIDGETSETTINGS -> {
+				count = db.delete(TABLE_AIXWIDGETSETTINGS, null, null);
+			}
+			case AIXWIDGETSETTINGS_ID -> {
+				count = db.delete(
+						TABLE_AIXWIDGETSETTINGS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXVIEWS -> {
+				count = db.delete(TABLE_AIXVIEWS, null, null);
+			}
+			case AIXVIEWS_ID -> {
+				count = db.delete(
+						TABLE_AIXVIEWS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXVIEWS_ID_SETTINGS -> {
+				count = db.delete(
+						TABLE_AIXVIEWSETTINGS,
+						AfSettingsColumns.ROW_ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXVIEWSETTINGS -> {
+				count = db.delete(TABLE_AIXVIEWSETTINGS, null, null);
+			}
+			case AIXVIEWSETTINGS_ID -> {
+				count = db.delete(
+						TABLE_AIXVIEWSETTINGS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXLOCATIONS -> {
+				count = db.delete(TABLE_AIXLOCATIONS, null, null);
+			}
+			case AIXLOCATIONS_ID -> {
+				count = db.delete(
+						TABLE_AIXLOCATIONS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXLOCATIONS_POINTDATAFORECASTS -> {
+				count = db.delete(
+						TABLE_AIXPOINTDATAFORECASTS,
+						AfPointDataForecastColumns.LOCATION + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXLOCATIONS_INTERVALDATAFORECASTS -> {
+				count = db.delete(
+						TABLE_AIXINTERVALDATAFORECASTS,
+						AfIntervalDataForecastColumns.LOCATION + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXLOCATIONS_SUNMOONDATA -> {
+				count = db.delete(
+						TABLE_AIXSUNMOONDATA,
+						AfSunMoonDataColumns.LOCATION + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXPOINTDATAFORECASTS -> {
+				final String before = uri.getQueryParameter("before");
+				final String after = uri.getQueryParameter("after");
 
-			if (before != null) {
-                count += db.delete(
-                        TABLE_AIXPOINTDATAFORECASTS,
-                        AfPointDataForecasts.TIME + "<?",
-                        new String[] { before });
-            } else if (after != null) {
-			    count += db.delete(
-			            TABLE_AIXPOINTDATAFORECASTS,
-                        AfPointDataForecasts.TIME + ">=?",
-                        new String[] { after });
-            } else {
-                count = db.delete(TABLE_AIXPOINTDATAFORECASTS, null, null);
-            }
+				if (before != null) {
+					count += db.delete(
+							TABLE_AIXPOINTDATAFORECASTS,
+							AfPointDataForecasts.TIME + "<?",
+							new String[]{before});
+				} else if (after != null) {
+					count += db.delete(
+							TABLE_AIXPOINTDATAFORECASTS,
+							AfPointDataForecasts.TIME + ">=?",
+							new String[]{after});
+				} else {
+					count = db.delete(TABLE_AIXPOINTDATAFORECASTS, null, null);
+				}
 
-			break;
-		}
-		case AIXPOINTDATAFORECASTS_ID: {
-			count = db.delete(
-			        TABLE_AIXPOINTDATAFORECASTS,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXINTERVALDATAFORECASTS: {
-            final String before = uri.getQueryParameter("before");
-            final String after = uri.getQueryParameter("after");
+			}
+			case AIXPOINTDATAFORECASTS_ID -> {
+				count = db.delete(
+						TABLE_AIXPOINTDATAFORECASTS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXINTERVALDATAFORECASTS -> {
+				final String before = uri.getQueryParameter("before");
+				final String after = uri.getQueryParameter("after");
 
-            if (before != null) {
-                count += db.delete(
-                        TABLE_AIXINTERVALDATAFORECASTS,
-                        AfIntervalDataForecasts.TIME_TO + "<?",
-                        new String[] { before });
-            } else if (after != null) {
-                count += db.delete(
-                        TABLE_AIXINTERVALDATAFORECASTS,
-                        AfIntervalDataForecasts.TIME_FROM + ">=?",
-                        new String[] { after });
-            } else {
-                count = db.delete(TABLE_AIXINTERVALDATAFORECASTS, null, null);
-            }
+				if (before != null) {
+					count += db.delete(
+							TABLE_AIXINTERVALDATAFORECASTS,
+							AfIntervalDataForecasts.TIME_TO + "<?",
+							new String[]{before});
+				} else if (after != null) {
+					count += db.delete(
+							TABLE_AIXINTERVALDATAFORECASTS,
+							AfIntervalDataForecasts.TIME_FROM + ">=?",
+							new String[]{after});
+				} else {
+					count = db.delete(TABLE_AIXINTERVALDATAFORECASTS, null, null);
+				}
 
-			break;
-		}
-		case AIXINTERVALDATAFORECASTS_ID: {
-			count = db.delete(
-			        TABLE_AIXINTERVALDATAFORECASTS,
-			        BaseColumns._ID + "=?",
-			        new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
-		case AIXSUNMOONDATA: {
-            final String before = uri.getQueryParameter("before");
-            final String after = uri.getQueryParameter("after");
+			}
+			case AIXINTERVALDATAFORECASTS_ID -> {
+				count = db.delete(
+						TABLE_AIXINTERVALDATAFORECASTS,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXSUNMOONDATA -> {
+				final String before = uri.getQueryParameter("before");
+				final String after = uri.getQueryParameter("after");
 
-            if (before != null) {
-                count += db.delete(
-                        TABLE_AIXSUNMOONDATA,
-                        AfSunMoonData.DATE + "<?",
-                        new String[] { before });
-            } else if (after != null) {
-                count += db.delete(
-                        TABLE_AIXSUNMOONDATA,
-                        AfSunMoonData.DATE + ">=?",
-                        new String[] { after });
-            } else {
-                count = db.delete(TABLE_AIXSUNMOONDATA, null, null);
-            }
+				if (before != null) {
+					count += db.delete(
+							TABLE_AIXSUNMOONDATA,
+							AfSunMoonData.DATE + "<?",
+							new String[]{before});
+				} else if (after != null) {
+					count += db.delete(
+							TABLE_AIXSUNMOONDATA,
+							AfSunMoonData.DATE + ">=?",
+							new String[]{after});
+				} else {
+					count = db.delete(TABLE_AIXSUNMOONDATA, null, null);
+				}
 
-			break;
-		}
-		case AIXSUNMOONDATA_ID: {
-			count = db.delete(
-			        TABLE_AIXSUNMOONDATA,
-			        BaseColumns._ID + "=?",
-			        new String[] { uri.getPathSegments().get(1) });
-			break;
-		}
+			}
+			case AIXSUNMOONDATA_ID -> {
+				count = db.delete(
+						TABLE_AIXSUNMOONDATA,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
 		}
 		
 		return count;
@@ -667,52 +644,75 @@ public class AfProvider extends ContentProvider {
 	@Override
 	public String getType(Uri uri) {
 		switch (sUriMatcher.match(uri)) {
-		case AIXWIDGETS:
-			return AfWidgets.CONTENT_TYPE;
-		case AIXWIDGETS_ID:
-			return AfWidgets.CONTENT_ITEM_TYPE;
-		case AIXWIDGETS_ID_SETTINGS:
-			return AfWidgetSettingsDatabase.CONTENT_TYPE;
-		case AIXWIDGETSETTINGS:
-			return AfWidgetSettingsDatabase.CONTENT_TYPE;
-		case AIXWIDGETSETTINGS_ID:
-			return AfWidgetSettingsDatabase.CONTENT_ITEM_TYPE;
-		case AIXVIEWS:
-			return AfViews.CONTENT_TYPE;
-		case AIXVIEWS_ID:
-			return AfViews.CONTENT_ITEM_TYPE;
-		case AIXVIEWS_ID_SETTINGS:
-			return AfViewSettings.CONTENT_TYPE;
-		case AIXVIEWS_LOCATION:
-			return AfLocations.CONTENT_ITEM_TYPE;
-		case AIXVIEWSETTINGS:
-			return AfViewSettings.CONTENT_TYPE;
-		case AIXVIEWSETTINGS_ID:
-			return AfViewSettings.CONTENT_ITEM_TYPE;
-		case AIXLOCATIONS:
-			return AfLocations.CONTENT_TYPE;
-		case AIXLOCATIONS_ID:
-			return AfLocations.CONTENT_ITEM_TYPE;
-		case AIXLOCATIONS_POINTDATAFORECASTS:
-			return AfPointDataForecasts.CONTENT_ITEM_TYPE;
-		case AIXLOCATIONS_INTERVALDATAFORECASTS:
-			return AfIntervalDataForecasts.CONTENT_ITEM_TYPE;
-		case AIXLOCATIONS_SUNMOONDATA:
-			return AfSunMoonData.CONTENT_ITEM_TYPE;
-		case AIXPOINTDATAFORECASTS:
-			return AfPointDataForecasts.CONTENT_TYPE;
-		case AIXPOINTDATAFORECASTS_ID:
-			return AfPointDataForecasts.CONTENT_ITEM_TYPE;
-		case AIXINTERVALDATAFORECASTS:
-			return AfIntervalDataForecasts.CONTENT_TYPE;
-		case AIXINTERVALDATAFORECASTS_ID:
-			return AfIntervalDataForecasts.CONTENT_ITEM_TYPE;
-		case AIXSUNMOONDATA:
-			return AfSunMoonData.CONTENT_TYPE;
-		case AIXSUNMOONDATA_ID:
-			return AfSunMoonData.CONTENT_ITEM_TYPE;
-		case AIXRENDER:
-			return " ";
+			case AIXWIDGETS -> {
+				return AfWidgets.CONTENT_TYPE;
+			}
+			case AIXWIDGETS_ID -> {
+				return AfWidgets.CONTENT_ITEM_TYPE;
+			}
+			case AIXWIDGETS_ID_SETTINGS -> {
+				return AfWidgetSettingsDatabase.CONTENT_TYPE;
+			}
+			case AIXWIDGETSETTINGS -> {
+				return AfWidgetSettingsDatabase.CONTENT_TYPE;
+			}
+			case AIXWIDGETSETTINGS_ID -> {
+				return AfWidgetSettingsDatabase.CONTENT_ITEM_TYPE;
+			}
+			case AIXVIEWS -> {
+				return AfViews.CONTENT_TYPE;
+			}
+			case AIXVIEWS_ID -> {
+				return AfViews.CONTENT_ITEM_TYPE;
+			}
+			case AIXVIEWS_ID_SETTINGS -> {
+				return AfViewSettings.CONTENT_TYPE;
+			}
+			case AIXVIEWS_LOCATION -> {
+				return AfLocations.CONTENT_ITEM_TYPE;
+			}
+			case AIXVIEWSETTINGS -> {
+				return AfViewSettings.CONTENT_TYPE;
+			}
+			case AIXVIEWSETTINGS_ID -> {
+				return AfViewSettings.CONTENT_ITEM_TYPE;
+			}
+			case AIXLOCATIONS -> {
+				return AfLocations.CONTENT_TYPE;
+			}
+			case AIXLOCATIONS_ID -> {
+				return AfLocations.CONTENT_ITEM_TYPE;
+			}
+			case AIXLOCATIONS_POINTDATAFORECASTS -> {
+				return AfPointDataForecasts.CONTENT_ITEM_TYPE;
+			}
+			case AIXLOCATIONS_INTERVALDATAFORECASTS -> {
+				return AfIntervalDataForecasts.CONTENT_ITEM_TYPE;
+			}
+			case AIXLOCATIONS_SUNMOONDATA -> {
+				return AfSunMoonData.CONTENT_ITEM_TYPE;
+			}
+			case AIXPOINTDATAFORECASTS -> {
+				return AfPointDataForecasts.CONTENT_TYPE;
+			}
+			case AIXPOINTDATAFORECASTS_ID -> {
+				return AfPointDataForecasts.CONTENT_ITEM_TYPE;
+			}
+			case AIXINTERVALDATAFORECASTS -> {
+				return AfIntervalDataForecasts.CONTENT_TYPE;
+			}
+			case AIXINTERVALDATAFORECASTS_ID -> {
+				return AfIntervalDataForecasts.CONTENT_ITEM_TYPE;
+			}
+			case AIXSUNMOONDATA -> {
+				return AfSunMoonData.CONTENT_TYPE;
+			}
+			case AIXSUNMOONDATA_ID -> {
+				return AfSunMoonData.CONTENT_ITEM_TYPE;
+			}
+			case AIXRENDER -> {
+				return " ";
+			}
 		}
 		throw new IllegalStateException();
 	}
@@ -723,130 +723,119 @@ public class AfProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		
 		Uri resultUri = null;
-		
+
 		switch (sUriMatcher.match(uri)) {
-		case AIXWIDGETS: {
-			long rowId = db.replace(TABLE_AIXWIDGETS, null, values);
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfWidgets.CONTENT_URI, rowId);
-				getContext().getContentResolver().notifyChange(resultUri, null);
-			}
-			break;
-		}
-		case AIXWIDGETS_ID_SETTINGS: {
-			String widgetId = uri.getPathSegments().get(1);
-			boolean success = true;
-			for (Entry<String, Object> entry : values.valueSet()) {
-				if (addSetting(db, TABLE_AIXWIDGETSETTINGS, widgetId, entry) == -1) {
-					success = false;
+			case AIXWIDGETS -> {
+				long rowId = db.replace(TABLE_AIXWIDGETS, null, values);
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfWidgets.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(resultUri, null);
 				}
 			}
-			if (success) {
-				resultUri = AfWidgetSettingsDatabase.CONTENT_URI;
-			}
-			break;
-		}
-		case AIXWIDGETSETTINGS: {
-			long rowId = db.insert(TABLE_AIXWIDGETSETTINGS, null, values);
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfWidgetSettingsDatabase.CONTENT_URI, rowId);
-				getContext().getContentResolver().notifyChange(resultUri, null);
-			}
-			break;
-		}
-		case AIXVIEWS: {
-			long rowId = db.insert(TABLE_AIXVIEWS, null, values);
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfViews.CONTENT_URI, rowId);
-				getContext().getContentResolver().notifyChange(resultUri, null);
-			}
-			break;
-		}
-		case AIXVIEWS_ID_SETTINGS: {
-			String viewId = uri.getPathSegments().get(1);
-			boolean success = true;
-			for (Entry<String, Object> entry : values.valueSet()) {
-				if (addSetting(db, TABLE_AIXVIEWSETTINGS, viewId, entry) == -1) {
-					success = false;
+			case AIXWIDGETS_ID_SETTINGS -> {
+				String widgetId = uri.getPathSegments().get(1);
+				boolean success = true;
+				for (Entry<String, Object> entry : values.valueSet()) {
+					if (addSetting(db, TABLE_AIXWIDGETSETTINGS, widgetId, entry) == -1) {
+						success = false;
+					}
+				}
+				if (success) {
+					resultUri = AfWidgetSettingsDatabase.CONTENT_URI;
 				}
 			}
-			if (success) {
-				resultUri = AfViewSettings.CONTENT_URI;
-			}
-			break;
-		}
-		case AIXVIEWSETTINGS: {
-			long rowId = db.insert(TABLE_AIXVIEWSETTINGS, null, values);
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfViewSettings.CONTENT_URI, rowId);
-				getContext().getContentResolver().notifyChange(resultUri, null);
-			}
-			break;
-		}
-		case AIXLOCATIONS: {
-			long rowId = db.insert(TABLE_AIXLOCATIONS, null, values);
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfLocations.CONTENT_URI, rowId);
-				getContext().getContentResolver().notifyChange(resultUri, null);
-			}
-			break;
-		}
-		case AIXPOINTDATAFORECASTS: {
-			long rowId = db.insert(TABLE_AIXPOINTDATAFORECASTS, null, values);
-			
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfPointDataForecasts.CONTENT_URI, rowId);
-			}
-
-			break;
-		}
-		case AIXINTERVALDATAFORECASTS: {
-			long rowId = db.insert(TABLE_AIXINTERVALDATAFORECASTS, null, values);
-			
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfIntervalDataForecasts.CONTENT_URI, rowId);
-			}
-
-			break;
-		}
-		case AIXSUNMOONDATA: {
-			long rowId = -1;
-
-            SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-            qb.setStrict(true);
-            qb.setTables(TABLE_AIXSUNMOONDATA);
-
-            Cursor cursor = qb.query(db,
-                    new String[] { BaseColumns._ID },
-                    AfSunMoonDataColumns.LOCATION + "=? AND " + AfSunMoonDataColumns.DATE + "=?",
-                    new String[] {
-                            values.getAsString(AfSunMoonDataColumns.LOCATION),
-                            values.getAsString(AfSunMoonDataColumns.DATE)
-                    }, null, null, null);
-
-			if (cursor != null) {
-				if (cursor.moveToFirst()) {
-					rowId = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+			case AIXWIDGETSETTINGS -> {
+				long rowId = db.insert(TABLE_AIXWIDGETSETTINGS, null, values);
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfWidgetSettingsDatabase.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(resultUri, null);
 				}
-				cursor.close();
 			}
-			
-			if (rowId != -1) {
-				// A record already exists for this time and location. Update its values:
-				db.update(TABLE_AIXSUNMOONDATA, values, BaseColumns._ID + "=?", new String[] { Long.toString(rowId) });
-			} else {
-				// No record exists for this time. Insert new row:
-				rowId = db.insert(TABLE_AIXSUNMOONDATA, null, values);
+			case AIXVIEWS -> {
+				long rowId = db.insert(TABLE_AIXVIEWS, null, values);
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfViews.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(resultUri, null);
+				}
 			}
-			
-			if (rowId != -1) {
-				resultUri = ContentUris.withAppendedId(AfSunMoonData.CONTENT_URI, rowId);
+			case AIXVIEWS_ID_SETTINGS -> {
+				String viewId = uri.getPathSegments().get(1);
+				boolean success = true;
+				for (Entry<String, Object> entry : values.valueSet()) {
+					if (addSetting(db, TABLE_AIXVIEWSETTINGS, viewId, entry) == -1) {
+						success = false;
+					}
+				}
+				if (success) {
+					resultUri = AfViewSettings.CONTENT_URI;
+				}
 			}
+			case AIXVIEWSETTINGS -> {
+				long rowId = db.insert(TABLE_AIXVIEWSETTINGS, null, values);
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfViewSettings.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(resultUri, null);
+				}
+			}
+			case AIXLOCATIONS -> {
+				long rowId = db.insert(TABLE_AIXLOCATIONS, null, values);
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfLocations.CONTENT_URI, rowId);
+					getContext().getContentResolver().notifyChange(resultUri, null);
+				}
+			}
+			case AIXPOINTDATAFORECASTS -> {
+				long rowId = db.insert(TABLE_AIXPOINTDATAFORECASTS, null, values);
 
-			break;
-		}
-		default:
-			throw new UnsupportedOperationException();
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfPointDataForecasts.CONTENT_URI, rowId);
+				}
+
+			}
+			case AIXINTERVALDATAFORECASTS -> {
+				long rowId = db.insert(TABLE_AIXINTERVALDATAFORECASTS, null, values);
+
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfIntervalDataForecasts.CONTENT_URI, rowId);
+				}
+
+			}
+			case AIXSUNMOONDATA -> {
+				long rowId = -1;
+
+				SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+				qb.setStrict(true);
+				qb.setTables(TABLE_AIXSUNMOONDATA);
+
+				Cursor cursor = qb.query(db,
+						new String[]{BaseColumns._ID},
+						AfSunMoonDataColumns.LOCATION + "=? AND " + AfSunMoonDataColumns.DATE + "=?",
+						new String[]{
+								values.getAsString(AfSunMoonDataColumns.LOCATION),
+								values.getAsString(AfSunMoonDataColumns.DATE)
+						}, null, null, null);
+
+				if (cursor != null) {
+					if (cursor.moveToFirst()) {
+						rowId = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+					}
+					cursor.close();
+				}
+
+				if (rowId != -1) {
+					// A record already exists for this time and location. Update its values:
+					db.update(TABLE_AIXSUNMOONDATA, values, BaseColumns._ID + "=?", new String[]{Long.toString(rowId)});
+				} else {
+					// No record exists for this time. Insert new row:
+					rowId = db.insert(TABLE_AIXSUNMOONDATA, null, values);
+				}
+
+				if (rowId != -1) {
+					resultUri = ContentUris.withAppendedId(AfSunMoonData.CONTENT_URI, rowId);
+				}
+
+			}
+			default -> throw new UnsupportedOperationException();
 		}
 		
 		return resultUri;
@@ -932,185 +921,160 @@ public class AfProvider extends ContentProvider {
 		String   qbSortOrder     = null;
 
 		switch (sUriMatcher.match(uri)) {
-		case AIXWIDGETS: {
-			qbTables     = TABLE_AIXWIDGETS;
-			qbProjection = AfWidgets.ALL_COLUMNS;
-			break;
-		}
-		case AIXWIDGETS_ID: {
-			qbTables        = TABLE_AIXWIDGETS;
-			qbProjection    = AfWidgets.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXWIDGETS_ID_SETTINGS: {
-			qbTables        = TABLE_AIXWIDGETSETTINGS;
-			qbProjection    = AfSettings.ALL_COLUMNS;
-			qbSelection     = AfSettings.ROW_ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXWIDGETSETTINGS: {
-			qbTables     = TABLE_AIXWIDGETSETTINGS;
-			qbProjection = AfSettings.ALL_COLUMNS;
-			break;
-		}
-		case AIXWIDGETSETTINGS_ID: {
-			qbTables        = TABLE_AIXWIDGETSETTINGS;
-			qbProjection    = AfSettings.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXVIEWS: {
-			qbTables     = TABLE_AIXVIEWS;
-			qbProjection = AfViews.ALL_COLUMNS;
-			break;
-		}
-		case AIXVIEWS_ID: {
-			qbTables        = TABLE_AIXVIEWS;
-			qbProjection    = AfViews.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXVIEWS_ID_SETTINGS: {
-			qbTables        = TABLE_AIXVIEWSETTINGS;
-			qbProjection    = AfSettings.ALL_COLUMNS;
-			qbSelection     = AfSettings.ROW_ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXVIEWSETTINGS: {
-			qbTables     = TABLE_AIXVIEWSETTINGS;
-			qbProjection = AfSettings.ALL_COLUMNS;
-			break;
-		}
-		case AIXVIEWSETTINGS_ID: {
-			qbTables        = TABLE_AIXVIEWSETTINGS;
-			qbProjection    = AfSettings.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXLOCATIONS: {
-			qbTables     = TABLE_AIXLOCATIONS;
-			qbProjection = AfLocations.ALL_COLUMNS;
-			break;
-		}
-		case AIXLOCATIONS_ID: {
-			qbTables        = TABLE_AIXLOCATIONS;
-			qbProjection    = AfLocations.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXLOCATIONS_POINTDATAFORECASTS: {
-			qbTables     = TABLE_AIXPOINTDATAFORECASTS;
-			qbProjection = AfPointDataForecasts.ALL_COLUMNS;
-
-			final String locationId = uri.getPathSegments().get(1);
-			final String start      = uri.getQueryParameter("start");
-			final String end        = uri.getQueryParameter("end");
-
-			if (start != null && end != null) {
-				qbSelection = AfPointDataForecasts.LOCATION + "=? AND "
-						+ AfPointDataForecasts.TIME + ">=? AND "
-						+ AfPointDataForecasts.TIME + "<=?";
-				qbSelectionArgs = new String[] { locationId, start, end };
-				qbSortOrder     = AfPointDataForecasts.TIME + " ASC";
-			} else {
-				qbSelection     = AfPointDataForecasts.LOCATION + "=?";
-				qbSelectionArgs = new String[] { locationId };
+			case AIXWIDGETS -> {
+				qbTables = TABLE_AIXWIDGETS;
+				qbProjection = AfWidgets.ALL_COLUMNS;
 			}
-
-			break;
-		}
-		case AIXLOCATIONS_INTERVALDATAFORECASTS: {
-			qbTables     = TABLE_AIXINTERVALDATAFORECASTS;
-			qbProjection = AfIntervalDataForecasts.ALL_COLUMNS;
-
-			final String locationId = uri.getPathSegments().get(1);
-			final String start      = uri.getQueryParameter("start");
-			final String end        = uri.getQueryParameter("end");
-
-			if (start != null && end != null) {
-				qbSelection = AfIntervalDataForecasts.LOCATION + "=? AND "
-						+ AfIntervalDataForecasts.TIME_TO + ">? AND "
-						+ AfIntervalDataForecasts.TIME_FROM + "<?";
-				qbSelectionArgs = new String[] { locationId, start, end };
-				qbSortOrder     = '(' + AfIntervalDataForecasts.TIME_TO + '-' +
-						AfIntervalDataForecasts.TIME_FROM + ") ASC," +
-						AfIntervalDataForecasts.TIME_FROM + " ASC";
+			case AIXWIDGETS_ID -> {
+				qbTables = TABLE_AIXWIDGETS;
+				qbProjection = AfWidgets.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
 			}
-			else
-			{
-				qbSelection     = AfIntervalDataForecasts.LOCATION + "=?";
-				qbSelectionArgs = new String[] { locationId };
+			case AIXWIDGETS_ID_SETTINGS -> {
+				qbTables = TABLE_AIXWIDGETSETTINGS;
+				qbProjection = AfSettings.ALL_COLUMNS;
+				qbSelection = AfSettings.ROW_ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
 			}
-
-			break;
-		}
-		case AIXLOCATIONS_SUNMOONDATA: {
-			qbTables     = TABLE_AIXSUNMOONDATA;
-			qbProjection = AfSunMoonData.ALL_COLUMNS;
-
-            final String locationId = uri.getPathSegments().get(1);
-            final String start      = uri.getQueryParameter("start");
-            final String end        = uri.getQueryParameter("end");
-
-            if (start != null && end != null) {
-            	qbSelection = AfSunMoonData.LOCATION + "=? AND "
-						+ AfSunMoonData.DATE + ">=? AND "
-						+ AfSunMoonData.DATE + "<=?";
-            	qbSelectionArgs = new String[] { locationId, start, end };
-            	qbSortOrder     = AfSunMoonData.DATE + " ASC";
+			case AIXWIDGETSETTINGS -> {
+				qbTables = TABLE_AIXWIDGETSETTINGS;
+				qbProjection = AfSettings.ALL_COLUMNS;
 			}
-			else
-			{
-				qbSelection = AfSunMoonData.LOCATION + "=?";
-				qbSelectionArgs = new String[] { locationId };
+			case AIXWIDGETSETTINGS_ID -> {
+				qbTables = TABLE_AIXWIDGETSETTINGS;
+				qbProjection = AfSettings.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
 			}
+			case AIXVIEWS -> {
+				qbTables = TABLE_AIXVIEWS;
+				qbProjection = AfViews.ALL_COLUMNS;
+			}
+			case AIXVIEWS_ID -> {
+				qbTables = TABLE_AIXVIEWS;
+				qbProjection = AfViews.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
+			case AIXVIEWS_ID_SETTINGS -> {
+				qbTables = TABLE_AIXVIEWSETTINGS;
+				qbProjection = AfSettings.ALL_COLUMNS;
+				qbSelection = AfSettings.ROW_ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
+			case AIXVIEWSETTINGS -> {
+				qbTables = TABLE_AIXVIEWSETTINGS;
+				qbProjection = AfSettings.ALL_COLUMNS;
+			}
+			case AIXVIEWSETTINGS_ID -> {
+				qbTables = TABLE_AIXVIEWSETTINGS;
+				qbProjection = AfSettings.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
+			case AIXLOCATIONS -> {
+				qbTables = TABLE_AIXLOCATIONS;
+				qbProjection = AfLocations.ALL_COLUMNS;
+			}
+			case AIXLOCATIONS_ID -> {
+				qbTables = TABLE_AIXLOCATIONS;
+				qbProjection = AfLocations.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
+			case AIXLOCATIONS_POINTDATAFORECASTS -> {
+				qbTables = TABLE_AIXPOINTDATAFORECASTS;
+				qbProjection = AfPointDataForecasts.ALL_COLUMNS;
 
-			break;
-		}
-		case AIXPOINTDATAFORECASTS: {
-			qbTables     = TABLE_AIXPOINTDATAFORECASTS;
-			qbProjection = AfPointDataForecasts.ALL_COLUMNS;
-			break;
-		}
-		case AIXPOINTDATAFORECASTS_ID: {
-			qbTables        = TABLE_AIXPOINTDATAFORECASTS;
-			qbProjection    = AfPointDataForecasts.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXINTERVALDATAFORECASTS: {
-			qbTables     = TABLE_AIXINTERVALDATAFORECASTS;
-			qbProjection = AfIntervalDataForecasts.ALL_COLUMNS;
-			break;
-		}
-		case AIXINTERVALDATAFORECASTS_ID: {
-			qbTables        = TABLE_AIXINTERVALDATAFORECASTS;
-			qbProjection    = AfIntervalDataForecasts.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
-		case AIXSUNMOONDATA: {
-			qbTables     = TABLE_AIXSUNMOONDATA;
-			qbProjection = AfSunMoonData.ALL_COLUMNS;
-			break;
-		}
-		case AIXSUNMOONDATA_ID: {
-			qbTables        = TABLE_AIXSUNMOONDATA;
-			qbProjection    = AfSunMoonData.ALL_COLUMNS;
-			qbSelection     = BaseColumns._ID + "=?";
-			qbSelectionArgs = new String[] { uri.getPathSegments().get(1) };
-			break;
-		}
+				final String locationId = uri.getPathSegments().get(1);
+				final String start = uri.getQueryParameter("start");
+				final String end = uri.getQueryParameter("end");
+
+				if (start != null && end != null) {
+					qbSelection = AfPointDataForecasts.LOCATION + "=? AND "
+							+ AfPointDataForecasts.TIME + ">=? AND "
+							+ AfPointDataForecasts.TIME + "<=?";
+					qbSelectionArgs = new String[]{locationId, start, end};
+					qbSortOrder = AfPointDataForecasts.TIME + " ASC";
+				} else {
+					qbSelection = AfPointDataForecasts.LOCATION + "=?";
+					qbSelectionArgs = new String[]{locationId};
+				}
+
+			}
+			case AIXLOCATIONS_INTERVALDATAFORECASTS -> {
+				qbTables = TABLE_AIXINTERVALDATAFORECASTS;
+				qbProjection = AfIntervalDataForecasts.ALL_COLUMNS;
+
+				final String locationId = uri.getPathSegments().get(1);
+				final String start = uri.getQueryParameter("start");
+				final String end = uri.getQueryParameter("end");
+
+				if (start != null && end != null) {
+					qbSelection = AfIntervalDataForecasts.LOCATION + "=? AND "
+							+ AfIntervalDataForecasts.TIME_TO + ">? AND "
+							+ AfIntervalDataForecasts.TIME_FROM + "<?";
+					qbSelectionArgs = new String[]{locationId, start, end};
+					qbSortOrder = '(' + AfIntervalDataForecasts.TIME_TO + '-' +
+							AfIntervalDataForecasts.TIME_FROM + ") ASC," +
+							AfIntervalDataForecasts.TIME_FROM + " ASC";
+				} else {
+					qbSelection = AfIntervalDataForecasts.LOCATION + "=?";
+					qbSelectionArgs = new String[]{locationId};
+				}
+
+			}
+			case AIXLOCATIONS_SUNMOONDATA -> {
+				qbTables = TABLE_AIXSUNMOONDATA;
+				qbProjection = AfSunMoonData.ALL_COLUMNS;
+
+				final String locationId = uri.getPathSegments().get(1);
+				final String start = uri.getQueryParameter("start");
+				final String end = uri.getQueryParameter("end");
+
+				if (start != null && end != null) {
+					qbSelection = AfSunMoonData.LOCATION + "=? AND "
+							+ AfSunMoonData.DATE + ">=? AND "
+							+ AfSunMoonData.DATE + "<=?";
+					qbSelectionArgs = new String[]{locationId, start, end};
+					qbSortOrder = AfSunMoonData.DATE + " ASC";
+				} else {
+					qbSelection = AfSunMoonData.LOCATION + "=?";
+					qbSelectionArgs = new String[]{locationId};
+				}
+
+			}
+			case AIXPOINTDATAFORECASTS -> {
+				qbTables = TABLE_AIXPOINTDATAFORECASTS;
+				qbProjection = AfPointDataForecasts.ALL_COLUMNS;
+			}
+			case AIXPOINTDATAFORECASTS_ID -> {
+				qbTables = TABLE_AIXPOINTDATAFORECASTS;
+				qbProjection = AfPointDataForecasts.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
+			case AIXINTERVALDATAFORECASTS -> {
+				qbTables = TABLE_AIXINTERVALDATAFORECASTS;
+				qbProjection = AfIntervalDataForecasts.ALL_COLUMNS;
+			}
+			case AIXINTERVALDATAFORECASTS_ID -> {
+				qbTables = TABLE_AIXINTERVALDATAFORECASTS;
+				qbProjection = AfIntervalDataForecasts.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
+			case AIXSUNMOONDATA -> {
+				qbTables = TABLE_AIXSUNMOONDATA;
+				qbProjection = AfSunMoonData.ALL_COLUMNS;
+			}
+			case AIXSUNMOONDATA_ID -> {
+				qbTables = TABLE_AIXSUNMOONDATA;
+				qbProjection = AfSunMoonData.ALL_COLUMNS;
+				qbSelection = BaseColumns._ID + "=?";
+				qbSelectionArgs = new String[]{uri.getPathSegments().get(1)};
+			}
 		}
 
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
@@ -1129,112 +1093,114 @@ public class AfProvider extends ContentProvider {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
 		switch (sUriMatcher.match(uri)) {
-		case AIXWIDGETS_ID: {
-			return db.update(
-			        TABLE_AIXWIDGETS,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXWIDGETS_ID_SETTINGS: {
-			return db.update(
-			        TABLE_AIXWIDGETSETTINGS,
-                    values,
-                    AfSettingsColumns.ROW_ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXWIDGETSETTINGS_ID: {
-			return db.update(
-			        TABLE_AIXWIDGETSETTINGS,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXVIEWS_ID: {
-			return db.update(
-			        TABLE_AIXVIEWS,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXVIEWS_ID_SETTINGS: {
-			return db.update(
-			        TABLE_AIXVIEWSETTINGS,
-                    values,
-                    AfSettingsColumns.ROW_ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXVIEWS_LOCATION: {
-			long locationId = findLocationFromView(db, uri);
-			
-			if (locationId != -1) {
+			case AIXWIDGETS_ID -> {
 				return db.update(
-				        TABLE_AIXLOCATIONS,
-                        values,
-                        BaseColumns._ID + "=?",
-                        new String[] { Long.toString(locationId) });
-			} else {
-				if (LOGD) Log.d(TAG, "update() with uri=" + uri + " failed. No location in view!");
-				return 0; // Could not properly service request, as no location was found.
+						TABLE_AIXWIDGETS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
 			}
-		}
-		case AIXVIEWSETTINGS_ID: {
-			return db.update(
-			        TABLE_AIXVIEWSETTINGS,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXLOCATIONS: {
-			return db.update(TABLE_AIXLOCATIONS, values, null, null);
-		}
-		case AIXLOCATIONS_ID: {
-			return db.update(
-			        TABLE_AIXLOCATIONS,
-                    values,
-                    BaseColumns._ID + "=?",
-			        new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXPOINTDATAFORECASTS: {
-			return db.delete(TABLE_AIXPOINTDATAFORECASTS, "exists " +
-					"(select 1 from aixpointdataforecasts x where " +
-					"aixpointdataforecasts.location=x.location and " +
-					"aixpointdataforecasts.time=x.time and " +
-					"aixpointdataforecasts.timeAdded < x.timeAdded)",
-					null);
-		}
-		case AIXPOINTDATAFORECASTS_ID: {
-			return db.update(
-			        TABLE_AIXPOINTDATAFORECASTS,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXINTERVALDATAFORECASTS: {
-			return db.delete(TABLE_AIXINTERVALDATAFORECASTS, "exists " +
-					"(select 1 from aixintervaldataforecasts x where " +
-					"aixintervaldataforecasts.location=x.location and " +
-					"aixintervaldataforecasts.timeFrom=x.timeFrom and " +
-					"aixintervaldataforecasts.timeTo=x.timeTo and " +
-					"aixintervaldataforecasts.timeAdded < x.timeAdded);", null);
-		}
-		case AIXINTERVALDATAFORECASTS_ID: {
-			return db.update(
-			        TABLE_AIXINTERVALDATAFORECASTS,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		case AIXSUNMOONDATA_ID: {
-			return db.update(
-			        TABLE_AIXSUNMOONDATA,
-                    values,
-                    BaseColumns._ID + "=?",
-                    new String[] { uri.getPathSegments().get(1) });
-		}
-		default:
-			if (LOGD) Log.d(TAG, "update() with uri=" + uri + " not matched");
-			return 0;
+			case AIXWIDGETS_ID_SETTINGS -> {
+				return db.update(
+						TABLE_AIXWIDGETSETTINGS,
+						values,
+						AfSettingsColumns.ROW_ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXWIDGETSETTINGS_ID -> {
+				return db.update(
+						TABLE_AIXWIDGETSETTINGS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXVIEWS_ID -> {
+				return db.update(
+						TABLE_AIXVIEWS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXVIEWS_ID_SETTINGS -> {
+				return db.update(
+						TABLE_AIXVIEWSETTINGS,
+						values,
+						AfSettingsColumns.ROW_ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXVIEWS_LOCATION -> {
+				long locationId = findLocationFromView(db, uri);
+
+				if (locationId != -1) {
+					return db.update(
+							TABLE_AIXLOCATIONS,
+							values,
+							BaseColumns._ID + "=?",
+							new String[]{Long.toString(locationId)});
+				} else {
+					if (LOGD)
+						Log.d(TAG, "update() with uri=" + uri + " failed. No location in view!");
+					return 0; // Could not properly service request, as no location was found.
+				}
+			}
+			case AIXVIEWSETTINGS_ID -> {
+				return db.update(
+						TABLE_AIXVIEWSETTINGS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXLOCATIONS -> {
+				return db.update(TABLE_AIXLOCATIONS, values, null, null);
+			}
+			case AIXLOCATIONS_ID -> {
+				return db.update(
+						TABLE_AIXLOCATIONS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXPOINTDATAFORECASTS -> {
+				return db.delete(TABLE_AIXPOINTDATAFORECASTS, "exists " +
+								"(select 1 from aixpointdataforecasts x where " +
+								"aixpointdataforecasts.location=x.location and " +
+								"aixpointdataforecasts.time=x.time and " +
+								"aixpointdataforecasts.timeAdded < x.timeAdded)",
+						null);
+			}
+			case AIXPOINTDATAFORECASTS_ID -> {
+				return db.update(
+						TABLE_AIXPOINTDATAFORECASTS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXINTERVALDATAFORECASTS -> {
+				return db.delete(TABLE_AIXINTERVALDATAFORECASTS, "exists " +
+						"(select 1 from aixintervaldataforecasts x where " +
+						"aixintervaldataforecasts.location=x.location and " +
+						"aixintervaldataforecasts.timeFrom=x.timeFrom and " +
+						"aixintervaldataforecasts.timeTo=x.timeTo and " +
+						"aixintervaldataforecasts.timeAdded < x.timeAdded);", null);
+			}
+			case AIXINTERVALDATAFORECASTS_ID -> {
+				return db.update(
+						TABLE_AIXINTERVALDATAFORECASTS,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			case AIXSUNMOONDATA_ID -> {
+				return db.update(
+						TABLE_AIXSUNMOONDATA,
+						values,
+						BaseColumns._ID + "=?",
+						new String[]{uri.getPathSegments().get(1)});
+			}
+			default -> {
+				if (LOGD) Log.d(TAG, "update() with uri=" + uri + " not matched");
+				return 0;
+			}
 		}
 	}
 
@@ -1245,41 +1211,38 @@ public class AfProvider extends ContentProvider {
 		
 		final int match = sUriMatcher.match(uri);
 		int numInserted = 0;
-		
-		switch (match)
-		{
-		case AIXPOINTDATAFORECASTS:
-			try
-			{
-				db.beginTransaction();
-				numInserted = bulkInsertPointData(db, values);
-				db.setTransactionSuccessful();
-			} finally {
-				db.endTransaction();
+
+		switch (match) {
+			case AIXPOINTDATAFORECASTS -> {
+				try {
+					db.beginTransaction();
+					numInserted = bulkInsertPointData(db, values);
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
 			}
-			break;
-		case AIXINTERVALDATAFORECASTS:
-			try
-			{
-				db.beginTransaction();
-				numInserted = bulkInsertIntervalData(db, values);
-				db.setTransactionSuccessful();
-			} finally {
-				db.endTransaction();
+			case AIXINTERVALDATAFORECASTS -> {
+				try {
+					db.beginTransaction();
+					numInserted = bulkInsertIntervalData(db, values);
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
 			}
-			break;
-		case AIXWIDGETS_ID_SETTINGS:
-			String widgetId = uri.getPathSegments().get(1);
-			try {
-				db.beginTransaction();
-				bulkInsertSettings(db, values, widgetId);
-				db.setTransactionSuccessful();
-			} finally {
-				db.endTransaction();
+			case AIXWIDGETS_ID_SETTINGS -> {
+				String widgetId = uri.getPathSegments().get(1);
+				try {
+					db.beginTransaction();
+					bulkInsertSettings(db, values, widgetId);
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
 			}
-			break;
-		default:
-			throw new UnsupportedOperationException("AfProvider.bulkInsert() Unsupported URI: " + uri);
+			default ->
+					throw new UnsupportedOperationException("AfProvider.bulkInsert() Unsupported URI: " + uri);
 		}
 
 		return numInserted;
@@ -1355,15 +1318,10 @@ public class AfProvider extends ContentProvider {
 		
 		if (cursor != null)
 		{
-			try {
-				if (cursor.moveToFirst())
-				{
+			try (cursor) {
+				if (cursor.moveToFirst()) {
 					rowId = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
 				}
-			}
-			finally
-			{
-				cursor.close();
 			}
 		}
 		
