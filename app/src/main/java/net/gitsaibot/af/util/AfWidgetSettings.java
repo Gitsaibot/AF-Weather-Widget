@@ -15,6 +15,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.core.content.ContextCompat;
+
 public class AfWidgetSettings {
 
 	private Context mContext;
@@ -203,7 +205,7 @@ public class AfWidgetSettings {
 		for (int[] defaultColor : defaultColors) {
 			String key = r.getString(defaultColor[0]);
 			if (!mSettings.containsKey(key)) {
-				int value = r.getColor(defaultColor[1]);
+				int value = ContextCompat.getColor(mContext, defaultColor[1]);
 				mSettings.put(key, value);
 			}
 		}
@@ -290,73 +292,73 @@ public class AfWidgetSettings {
 	
 	public int getBorderColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.border_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.border);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.border);
 		return color;
 	}
 	
 	public int getBackgroundColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.background_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.background);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.background);
 		return color;
 	}
 	
 	public int getTextColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.text_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.text);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.text);
 		return color;
 	}
 	
 	public int getPatternColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.pattern_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.pattern);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.pattern);
 		return color;
 	}
 	
 	public int getDayColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.day_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.day);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.day);
 		return color;
 	}
 	
 	public int getNightColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.night_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.night);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.night);
 		return color;
 	}
 	
 	public int getGridColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.grid_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.grid);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.grid);
 		return color;
 	}
 	
 	public int getGridOutlineColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.grid_outline_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.grid_outline);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.grid_outline);
 		return color;
 	}
 	
 	public int getMaxRainColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.max_rain_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.maximum_rain);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.maximum_rain);
 		return color;
 	}
 	
 	public int getMinRainColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.min_rain_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.minimum_rain);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.minimum_rain);
 		return color;
 	}
 	
 	public int getAboveFreezingColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.above_freezing_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.above_freezing);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.above_freezing);
 		return color;
 	}
 	
 	public int getBelowFreezingColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.below_freezing_color_int));
-		if (color == null) color = mContext.getResources().getColor(R.color.below_freezing);
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.below_freezing);
 		return color;
 	}
 	

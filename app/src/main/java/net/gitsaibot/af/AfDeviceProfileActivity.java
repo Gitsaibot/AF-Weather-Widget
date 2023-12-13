@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import net.gitsaibot.af.util.AfWidgetInfo;
 
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -31,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class AfDeviceProfileActivity extends AppCompatActivity
 		implements OnCheckedChangeListener,
@@ -115,13 +115,11 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 
 	private void initialize()
 	{
-		Resources resources = getResources();
-		
 		TextView tv = findViewById(R.id.af_device_profile_guide);
 		tv.setMovementMethod(LinkMovementMethod.getInstance());
 		tv.setText(Html.fromHtml(getString(R.string.device_profile_guide_link)));
 		
-		mInvalidEditTextColor = resources.getColor(R.color.invalid_dimension_color);
+		mInvalidEditTextColor = ContextCompat.getColor(this, R.color.invalid_dimension_color);
 		
 		mModelTextView.setText(String.format("%s (%s)", Build.MODEL, Build.PRODUCT));
 		
