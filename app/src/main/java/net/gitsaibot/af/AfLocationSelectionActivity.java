@@ -1,6 +1,7 @@
 package net.gitsaibot.af;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -10,16 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 import net.gitsaibot.af.AfProvider.AfLocations;
 import net.gitsaibot.af.AfProvider.AfLocationsColumns;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.HttpHostConnectException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -489,18 +484,9 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
                                     "&maxRows=" + MAX_RESULTS +
                                     "&username="+ BuildConfig.USER_GEONAMES, null);
 
-					HttpGet httpGet = new HttpGet(uri);
-					httpGet.addHeader("Accept-Encoding", "gzip");
+					HttpURLConnection httpClient = AfUtils.setupHttpClient(uri.toURL(), mContext);
 
-					HttpClient httpclient = AfUtils.setupHttpClient(mContext);
-					HttpResponse response = httpclient.execute(httpGet);
-					InputStream content = response.getEntity().getContent();
-					
-					Header contentEncoding = response.getFirstHeader("Content-Encoding");
-					if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-						content = new GZIPInputStream(content);
-					}
-
+					InputStream content = AfUtils.getGzipInputStream(httpClient);
                     JSONObject jObject = new JSONObject(AfUtils.convertStreamToString(content));
 
 					if (jObject.has("status")) {
@@ -535,7 +521,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 					} else {
 						return NO_RESULTS;
 					}
-				} catch (HttpHostConnectException | UnknownHostException e) {
+				} catch (UnknownHostException e) {
 					return NO_CONNECTION;
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -1,6 +1,9 @@
 package net.gitsaibot.af.data;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,9 +22,6 @@ import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
 import net.gitsaibot.af.util.AfLocationInfo;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
@@ -107,21 +107,25 @@ public class AfMetSunTimeData implements AfDataSource {
 
 	private JSONObject fetchData(String type, Double latitude, Double longitude, Date date, String offset) throws AfDataUpdateException {
 		try {
-			String url = String.format(
+			String buildUrl = String.format(
 					Locale.US,
 					"https://" + BuildConfig.API_KEY + "/weatherapi/sunrise/3.0/%s?lat=%.1f&lon=%.1f&date=%s&offset=%s",
 					type, latitude, longitude, mDateFormat.format(date), offset);
 
-			HttpClient httpClient = AfUtils.setupHttpClient(mContext);
-			HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
+			URL url = new URL(buildUrl);
+			HttpURLConnection httpClient = AfUtils.setupHttpClient(url, mContext);
 
-			if (httpResponse.getStatusLine().getStatusCode() == 429)
-			{
-				throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
+			int code = httpClient.getResponseCode();
+			if (code !=  200) {
+				if (code == 429) {
+					throw new AfDataUpdateException(buildUrl, AfDataUpdateException.Reason.RATE_LIMITED);
+				}
+				else {
+					throw new IOException("Invalid response from server: " + code);
+				}
 			}
 
-			InputStream content = AfUtils.getGzipInputStream(httpResponse);
+			InputStream content = AfUtils.getGzipInputStream(httpClient);
 			JSONObject jObject = new JSONObject(AfUtils.convertStreamToString(content)).getJSONObject("properties");
 			return jObject;
 		}

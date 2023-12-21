@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -25,17 +27,6 @@ import net.gitsaibot.af.AfProvider.AfSunMoonData;
 import net.gitsaibot.af.AfProvider.AfViews;
 import net.gitsaibot.af.AfProvider.AfWidgets;
 import net.gitsaibot.af.AfProvider.AfWidgetsColumns;
-import net.gitsaibot.af.BuildConfig;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -51,10 +42,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -310,13 +298,6 @@ public class AfUtils {
 		return (n % 2 != 0 && prime && n > 2) || n == 2;
 	}
 	
-	public static HttpGet buildGzipHttpGet(String url)
-	{
-		HttpGet httpGet = new HttpGet(url);
-		httpGet.addHeader("Accept-Encoding", "gzip");
-		return httpGet;
-	}
-	
 	public static Point buildDimension(String widthString, String heightString)
 	{
 		if (widthString == null) {
@@ -469,18 +450,17 @@ public class AfUtils {
 			e.printStackTrace();
 		}
 	}
-	
-	public static InputStream getGzipInputStream(HttpResponse httpResponse)
-			throws IllegalStateException, IOException
-	{
-		InputStream content = httpResponse.getEntity().getContent();
-		
-		Header contentEncoding = httpResponse.getFirstHeader("Content-Encoding");
-		if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-			content = new GZIPInputStream(content);
+
+	public static InputStream getGzipInputStream(HttpURLConnection con)
+			throws IOException {
+
+		InputStream inputStream = con.getInputStream();
+
+		if ("gzip".equals(con.getContentEncoding())) {
+			inputStream = new GZIPInputStream(inputStream);
 		}
-		
-		return content;
+
+		return inputStream;
 	}
 	
 	public static String getUserAgent(Context context)
@@ -555,14 +535,16 @@ public class AfUtils {
 					null, null);
 		}
 	}
-	
-	public static HttpClient setupHttpClient(Context context) {
-		HttpParams httpParameters = new BasicHttpParams();
-		httpParameters.setParameter(CoreConnectionPNames.SO_TIMEOUT, 7777);
-		httpParameters.setParameter(CoreProtocolPNames.USER_AGENT, getUserAgent(context));
-		return new DefaultHttpClient(httpParameters);
+
+	public static HttpURLConnection setupHttpClient(URL url, Context context) throws IOException {
+
+		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		urlConnection.setRequestProperty("User-Agent", AfUtils.getUserAgent(context));
+		urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+
+		return urlConnection;
 	}
-	
+
 	public static Uri storeBitmap(
 			Context context, Bitmap bitmap,
 			int appWidgetId, long time, boolean landscape

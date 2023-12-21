@@ -23,6 +23,8 @@ import static net.gitsaibot.af.AfUtils.WEATHER_ICON_SNOW;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,9 +43,6 @@ import net.gitsaibot.af.MultiKey;
 import net.gitsaibot.af.PointData;
 import net.gitsaibot.af.util.AfLocationInfo;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -470,22 +469,26 @@ public class AfNoaaWeatherData implements AfDataSource {
 			
 			long t1 = System.currentTimeMillis();
 			
-			String url = String.format(
+			String buildUrl = String.format(
 					Locale.US,
 					"https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
 							+ "?lat=%.3f&lon=%.3f&product=time-series&temp=temp&rh=rh&icons=icons&qpf=qpf",
 					latitude, longitude);
-			
-			HttpClient httpClient = AfUtils.setupHttpClient(mContext);
-			HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
 
-			if (httpResponse.getStatusLine().getStatusCode() == 429)
-			{
-				throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
+			URL url = new URL(buildUrl);
+			HttpURLConnection httpClient = AfUtils.setupHttpClient(url, mContext);
+
+			int code = httpClient.getResponseCode();
+			if (code !=  200) {
+				if (code == 429) {
+					throw new AfDataUpdateException(buildUrl, AfDataUpdateException.Reason.RATE_LIMITED);
+				}
+				else {
+					throw new IOException("Invalid response from server: " + code);
+				}
 			}
 
-			InputStream content = AfUtils.getGzipInputStream(httpResponse);
+			InputStream content = AfUtils.getGzipInputStream(httpClient);
 			
 			long t2 = System.currentTimeMillis();
 			

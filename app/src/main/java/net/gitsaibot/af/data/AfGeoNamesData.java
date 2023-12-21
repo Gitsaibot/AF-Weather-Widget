@@ -1,6 +1,9 @@
 package net.gitsaibot.af.data;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 
 import net.gitsaibot.af.AfSettings;
@@ -9,9 +12,6 @@ import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
 import net.gitsaibot.af.util.AfLocationInfo;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -58,25 +58,29 @@ public class AfGeoNamesData implements AfDataSource {
 		if (timeZone == null || timeZone.length() == 0 || timeZone.equalsIgnoreCase("null") ||
 		    countryCode == null || countryCode.length() == 0 || countryCode.equalsIgnoreCase("null"))
 		{
-			String url = String.format(
+			String buildUrl = String.format(
 					Locale.US,
 					"https://secure.geonames.org/timezoneJSON?lat=%.5f&lng=%.5f&username=" + BuildConfig.USER_GEONAMES,
 					latitude, longitude);
 			
-			Log.d(TAG, "Retrieving timezone data from URL=" + url);
+			Log.d(TAG, "Retrieving timezone data from URL=" + buildUrl);
 			
 			try
 			{
-				HttpClient httpClient = AfUtils.setupHttpClient(mContext);
-				HttpGet httpGet = new HttpGet(url);
-				HttpResponse response = httpClient.execute(httpGet);
+				URL url = new URL(buildUrl);
+				HttpURLConnection httpClient = AfUtils.setupHttpClient(url, mContext);
 
-				if (response.getStatusLine().getStatusCode() == 429)
-				{
-					throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
+				int code = httpClient.getResponseCode();
+				if (code !=  200) {
+					if (code == 429) {
+						throw new AfDataUpdateException(buildUrl, AfDataUpdateException.Reason.RATE_LIMITED);
+					}
+					else {
+						throw new IOException("Invalid response from server: " + code);
+					}
 				}
 
-				InputStream content = response.getEntity().getContent();
+				InputStream content = AfUtils.getGzipInputStream(httpClient);
 				
 				String input = AfUtils.convertStreamToString(content);
 				

@@ -1,6 +1,9 @@
 package net.gitsaibot.af.data;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,9 +19,6 @@ import net.gitsaibot.af.AfUtils;
 import net.gitsaibot.af.BuildConfig;
 import net.gitsaibot.af.util.AfLocationInfo;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.xmlpull.v1.XmlPullParser;
 
 import android.content.ContentResolver;
@@ -104,23 +104,27 @@ public class AfMetWeatherData implements AfDataSource {
 				throw new AfDataUpdateException("Missing location information. Latitude/Longitude was null");
 			}
 			
-			String url = String.format(
+			String buildUrl = String.format(
 					Locale.US,
 					"https://" + BuildConfig.API_KEY + "/weatherapi/locationforecast/2.0/classic?lat=%.3f&lon=%.3f",
 					latitude, longitude);
 			
-			Log.d(TAG, "Attempting to download weather data from URL=" + url);
-			
-			HttpClient httpClient = AfUtils.setupHttpClient(mContext);
-			HttpGet httpGet = AfUtils.buildGzipHttpGet(url);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
+			Log.d(TAG, "Attempting to download weather data from URL=" + buildUrl);
 
-			if (httpResponse.getStatusLine().getStatusCode() == 429)
-			{
-				throw new AfDataUpdateException(url, AfDataUpdateException.Reason.RATE_LIMITED);
+			URL url = new URL(buildUrl);
+			HttpURLConnection httpClient = AfUtils.setupHttpClient(url, mContext);
+
+			int code = httpClient.getResponseCode();
+			if (code !=  200) {
+				if (code == 429) {
+					throw new AfDataUpdateException(buildUrl, AfDataUpdateException.Reason.RATE_LIMITED);
+				}
+				else {
+					throw new IOException("Invalid response from server: " + code);
+				}
 			}
 
-			InputStream content = AfUtils.getGzipInputStream(httpResponse);
+			InputStream content = AfUtils.getGzipInputStream(httpClient);
 			
 			mAfUpdate.updateWidgetRemoteViews("Parsing NMI weather data...", false);
 			

@@ -36,8 +36,6 @@ android {
         buildConfig = true
     }
 
-    useLibrary 'org.apache.http.legacy'
-
     lint {
         abortOnError false
     }
