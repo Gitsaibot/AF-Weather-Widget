@@ -26,7 +26,8 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
@@ -207,9 +208,13 @@ public class AfUpdate {
 	
 	private boolean isWiFiAvailable() {
 		ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo wifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		final Network n = connManager.getActiveNetwork();
 
-		return wifiInfo != null && wifiInfo.isConnected();
+		if (n != null) {
+			final NetworkCapabilities nc = connManager.getNetworkCapabilities(n);
+			return (nc != null && nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
+		}
+		return false;
 	}
 
 	private boolean isLocationInUS(AfLocationInfo locationInfo) {

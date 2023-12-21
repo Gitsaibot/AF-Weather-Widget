@@ -1363,7 +1363,7 @@ public class AfDetailedWidget {
 			}
 		}
 
-		Collections.sort(transitions, new Comparator<Pair<Date, DayState>>() {
+		transitions.sort(new Comparator<Pair<Date, DayState>>() {
 			@Override
 			public int compare(final Pair<Date, DayState> t1, final Pair<Date, DayState> t2) {
 				int dateComparison = t1.first.compareTo(t2.first);
@@ -1569,7 +1569,7 @@ public class AfDetailedWidget {
 				mWidgetWidth, mWidgetHeight);
 	}
 	
-	private void validatePointData() throws AfWidgetDrawException, AfWidgetDataException {
+	private void validatePointData() throws AfWidgetDataException {
 		float maxTemperature = Float.NEGATIVE_INFINITY;
 		float minTemperature = Float.POSITIVE_INFINITY;
 		
