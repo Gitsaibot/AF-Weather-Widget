@@ -373,40 +373,35 @@ public class AfNoaaWeatherData implements AfDataSource {
 			case XmlPullParser.START_TAG:
 				if (tagName != null)
 				{
-					if (tagName.equals("time-layout"))
-					{
-						currentTimeLayout = new AfNoaaTimeLayout();
-					}
-					else if (tagName.equals("temperature"))
-					{
-						String type = parser.getAttributeValue(null, "type");
-						if (type == null || !type.equals("hourly")) continue;
-						temperatureData.type = type;
-						temperatureData.units = parser.getAttributeValue(null, "units");
-						temperatureData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
-					}
-					else if (tagName.equals("precipitation"))
-					{
-						String type = parser.getAttributeValue(null, "type");
-						if (type == null || !type.equals("liquid")) continue;
-						precipitationData.type = type;
-						precipitationData.units = parser.getAttributeValue(null, "units");
-						precipitationData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
-					}
-					else if (tagName.equals("humidity"))
-					{
-						String type = parser.getAttributeValue(null, "type");
-						if (type == null || !type.equals("relative")) continue;
-						humidityData.type = type;
-						humidityData.units = parser.getAttributeValue(null, "units");
-						humidityData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
-					}
-					else if (tagName.equals("conditions-icon"))
-					{
-						String type = parser.getAttributeValue(null, "type");
-						if (type == null || !type.equals("forecast-NWS")) continue;
-						weatherIconData.type = type;
-						weatherIconData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
+					switch (tagName) {
+						case "time-layout" -> currentTimeLayout = new AfNoaaTimeLayout();
+						case "temperature" -> {
+							String type = parser.getAttributeValue(null, "type");
+							if (type == null || !type.equals("hourly")) continue;
+							temperatureData.type = type;
+							temperatureData.units = parser.getAttributeValue(null, "units");
+							temperatureData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
+						}
+						case "precipitation" -> {
+							String type = parser.getAttributeValue(null, "type");
+							if (type == null || !type.equals("liquid")) continue;
+							precipitationData.type = type;
+							precipitationData.units = parser.getAttributeValue(null, "units");
+							precipitationData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
+						}
+						case "humidity" -> {
+							String type = parser.getAttributeValue(null, "type");
+							if (type == null || !type.equals("relative")) continue;
+							humidityData.type = type;
+							humidityData.units = parser.getAttributeValue(null, "units");
+							humidityData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
+						}
+						case "conditions-icon" -> {
+							String type = parser.getAttributeValue(null, "type");
+							if (type == null || !type.equals("forecast-NWS")) continue;
+							weatherIconData.type = type;
+							weatherIconData.timeLayoutKey = parser.getAttributeValue(null, "time-layout");
+						}
 					}
 					
 					Integer flag = mKeyFlagMap.get(tagName);

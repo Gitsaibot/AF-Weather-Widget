@@ -167,13 +167,7 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
             case DialogInterface.BUTTON_NEUTRAL:
                 View view = View.inflate(getActivity(), R.layout.preference_widget_color,null);
                 mRevertView = view.findViewById(R.id.revert);
-                mRevertView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showHexDialog = true;
-
-                    }
-                }, 100);
+                mRevertView.postDelayed(() -> showHexDialog = true, 100);
                 break;
             case DialogInterface.BUTTON_NEGATIVE:
                 // TODO: End the world?
