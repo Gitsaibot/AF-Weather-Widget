@@ -5,9 +5,6 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -59,28 +56,26 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 	private LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
 	// The adapter that binds our data to the ListView
 	private SimpleCursorAdapter mAdapter;
-	private static final List<String> geonamesDetailedNameComponents = Collections.unmodifiableList(
-            Arrays.asList("name", "adminName5", "adminName4", "adminName3", "adminName2", "adminName1", "countryName"));
+	private static final List<String> geonamesDetailedNameComponents = List.of("name", "adminName5", "adminName4", "adminName3", "adminName2", "adminName1", "countryName");
 
     private static final Map<Integer, String> geonamesWebserviceExceptions;
     static {
-        Map<Integer, String> gwe = new HashMap<>();
-        gwe.put(10, "Authorization exception");
-        gwe.put(11, "Record does not exist");
-        gwe.put(12, "Other error");
-        gwe.put(13, "Database timeout");
-        gwe.put(14, "Invalid parameter");
-        gwe.put(15, "No result found");
-        gwe.put(16, "Duplicate exception");
-        gwe.put(17, "Postal code not found");
-        gwe.put(18, "Daily limit of credits exceeded");
-        gwe.put(19, "Hourly limit of credits exceeded");
-        gwe.put(20, "Weekly limit of credits exceeded");
-        gwe.put(21, "Invalid input");
-        gwe.put(22, "Server overloaded exception");
-        gwe.put(23, "Service not implemented");
-        gwe.put(24, "Radius too large");
-        geonamesWebserviceExceptions = Collections.unmodifiableMap(gwe);
+		geonamesWebserviceExceptions = Map.ofEntries(
+				Map.entry(10, "Authorization exception"),
+				Map.entry(11, "Record does not exist"),
+				Map.entry(12, "Other error"),
+				Map.entry(13, "Database timeout"),
+				Map.entry(14, "Invalid parameter"),
+				Map.entry(15, "No result found"),
+				Map.entry(16, "Duplicate exception"),
+				Map.entry(17, "Postal code not found"),
+				Map.entry(18, "Daily limit of credits exceeded"),
+				Map.entry(19, "Hourly limit of credits exceeded"),
+				Map.entry(20, "Weekly limit of credits exceeded"),
+				Map.entry(21, "Invalid input"),
+				Map.entry(22, "Server overloaded exception"),
+				Map.entry(23, "Service not implemented"),
+				Map.entry(24, "Radius too large"));
     }
 
     private static String buildTitleDetailed(final JSONObject result) {
@@ -243,65 +238,64 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		View content = getLayoutInflater().inflate(R.layout.dialog_edittext, null);
 		mEditText = content.findViewById(R.id.edittext);
 		mEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
-		
+
 		switch (id) {
-		case DIALOG_ADD:
-			dialog = new AlertDialog.Builder(this)
-					.setTitle(R.string.dialog_search_location)
-	                .setView(content)
-	                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-	                    public void onClick(DialogInterface dialog, int which) {
-	                    	InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	                		imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-	                		String searchString = mEditText.getText().toString();
-	                		if (!TextUtils.isEmpty(searchString)) {
-	                			mLocationSearchTask = new LocationSearchTask();
-	                			mLocationSearchTask.execute(searchString);
-	                    	} else {
-	                    		mEditText.setText("");
-	                    		Toast.makeText(mContext, getString(R.string.location_empty_search_string_toast), Toast.LENGTH_SHORT).show();
-	                    	}
-	                    }})
-	                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-	                    public void onClick(DialogInterface dialog, int which) {
-	                    	InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	                		imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-	                    	dialog.cancel();
-	                    }})
-	                .create();
-			
-			dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
-					WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-	        break;
-		case DIALOG_EDIT:
-			dialog = new AlertDialog.Builder(this)
+			case DIALOG_ADD -> {
+				dialog = new AlertDialog.Builder(this)
+						.setTitle(R.string.dialog_search_location)
+						.setView(content)
+						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+								String searchString = mEditText.getText().toString();
+								if (!TextUtils.isEmpty(searchString)) {
+									mLocationSearchTask = new LocationSearchTask();
+									mLocationSearchTask.execute(searchString);
+								} else {
+									mEditText.setText("");
+									Toast.makeText(mContext, getString(R.string.location_empty_search_string_toast), Toast.LENGTH_SHORT).show();
+								}
+							}
+						})
+						.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+								imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+								dialog.cancel();
+							}
+						})
+						.create();
+				dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
+						WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+			}
+			case DIALOG_EDIT -> dialog = new AlertDialog.Builder(this)
 					.setTitle("Display title:")
 					.setView(content)
 					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						
+
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	                		imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-	                		String displayTitle = mEditText.getText().toString();
-							
-	                		if (TextUtils.isEmpty(displayTitle)) {
-	                			Toast.makeText(AfLocationSelectionActivity.this, "Invalid display title", Toast.LENGTH_SHORT).show();
-	                		} else {
+							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+							imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+							String displayTitle = mEditText.getText().toString();
+
+							if (TextUtils.isEmpty(displayTitle)) {
+								Toast.makeText(AfLocationSelectionActivity.this, "Invalid display title", Toast.LENGTH_SHORT).show();
+							} else {
 								setLocationDisplayTitle(displayTitle);
-	                		}
+							}
 						}
 					})
 					.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-						
+
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-	                		imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-	                    	dialog.cancel();
+							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+							imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+							dialog.cancel();
 						}
 					}).create();
-			break;
 		}
 
         return dialog;
@@ -378,77 +372,63 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
             }
 
 			switch (result) {
-			case INVALID_INPUT:
-				mResetSearch = true;
-				Toast.makeText(
-						mContext,
-						getString(R.string.invalid_search_input_toast),
-						Toast.LENGTH_SHORT).show();
-				break;
-			case NO_CONNECTION:
-				Toast.makeText(
+				case INVALID_INPUT -> {
+					mResetSearch = true;
+					Toast.makeText(
+							mContext,
+							getString(R.string.invalid_search_input_toast),
+							Toast.LENGTH_SHORT).show();
+				}
+				case NO_CONNECTION -> Toast.makeText(
 						mContext,
 						getString(R.string.location_search_no_connection_toast),
 						Toast.LENGTH_SHORT).show();
-				break;
-			case SEARCH_CANCELLED:
-				Log.d(TAG, "Search was cancelled!");
-				break;
-			case SEARCH_SUCCESS:
-				mResetSearch = true;
-				
-				String[] listItems = new String[mAddresses.size()];
-				for (int i = 0; i < mAddresses.size(); i++) {
-					listItems[i] = mAddresses.get(i).title_detailed;
+				case SEARCH_CANCELLED -> Log.d(TAG, "Search was cancelled!");
+				case SEARCH_SUCCESS -> {
+					mResetSearch = true;
+					String[] listItems = new String[mAddresses.size()];
+					for (int i = 0; i < mAddresses.size(); i++) {
+						listItems[i] = mAddresses.get(i).title_detailed;
+					}
+					AlertDialog alertDialog = new AlertDialog.Builder(mContext)
+							.setTitle(R.string.location_search_results_select_dialog_title)
+							.setItems(listItems, new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// Add selected location to provider
+									AfAddress a = mAddresses.get(which);
+									ContentResolver resolver = mContext.getContentResolver();
+									ContentValues values = new ContentValues();
+									values.put(AfLocationsColumns.LATITUDE, a.latitude);
+									values.put(AfLocationsColumns.LONGITUDE, a.longitude);
+									values.put(AfLocationsColumns.TITLE, a.title);
+									values.put(AfLocationsColumns.TITLE_DETAILED, a.title_detailed);
+									resolver.insert(AfLocations.CONTENT_URI, values);
+
+									getLoaderManager().restartLoader(LOADER_ID, null, mCallbacks);
+									getListView().setSelection(getListView().getCount() - 1);
+								}
+							})
+							.create();
+					alertDialog.show();
 				}
-				
-				AlertDialog alertDialog = new AlertDialog.Builder(mContext)
-						.setTitle(R.string.location_search_results_select_dialog_title)
-						.setItems(listItems, new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// Add selected location to provider
-								AfAddress a = mAddresses.get(which);
-								ContentResolver resolver = mContext.getContentResolver();
-								ContentValues values = new ContentValues();
-								values.put(AfLocationsColumns.LATITUDE, a.latitude);
-								values.put(AfLocationsColumns.LONGITUDE, a.longitude);
-								values.put(AfLocationsColumns.TITLE, a.title);
-								values.put(AfLocationsColumns.TITLE_DETAILED, a.title_detailed);
-								resolver.insert(AfLocations.CONTENT_URI, values);
-
-								getLoaderManager().restartLoader(LOADER_ID,null,mCallbacks);
-								getListView().setSelection(getListView().getCount() - 1);
-							}
-						})
-						.create();
-				alertDialog.show();
-				break;
-			case NO_RESULTS:
-				Toast.makeText(
+				case NO_RESULTS -> Toast.makeText(
 						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_no_results),
 						Toast.LENGTH_SHORT).show();
-				break;
-			case OVER_QUERY_LIMIT:
-				Toast.makeText(
+				case OVER_QUERY_LIMIT -> Toast.makeText(
 						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_over_query_limit_toast),
 						Toast.LENGTH_LONG).show();
-				break;
-			case REQUEST_DENIED:
-				Toast.makeText(
+				case REQUEST_DENIED -> Toast.makeText(
 						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_request_denied_toast),
 						Toast.LENGTH_SHORT).show();
-				break;
-			case INVALID_REQUEST:
-				Toast.makeText(
+				case INVALID_REQUEST -> Toast.makeText(
 						AfLocationSelectionActivity.this,
 						getString(R.string.location_search_invalid_request_toast),
 						Toast.LENGTH_SHORT).show();
-				break;
 			}
 		}
 
@@ -494,7 +474,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
                         return SEARCH_ERROR + errorCode;
                     }
 
-					mAddresses = new ArrayList<AfAddress>();
+					mAddresses = new ArrayList<>();
 
 					JSONArray results = jObject.getJSONArray("geonames");
 					int numResults = Math.min(results.length(), MAX_RESULTS);

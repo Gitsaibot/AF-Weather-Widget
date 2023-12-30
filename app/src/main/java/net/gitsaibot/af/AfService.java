@@ -60,7 +60,7 @@ public class AfService extends JobIntentService {
 	public final static String ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION";
 	public final static String ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION";
 	
-	Map<String, Pair<String, Integer>> mCalibrationAdjustmentsMap = new HashMap<String, Pair<String, Integer>>() {{
+	Map<String, Pair<String, Integer>> mCalibrationAdjustmentsMap = new HashMap<>() {{
 		put(ACTION_DECREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, -1));
 		put(ACTION_INCREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, +1));
 		put(ACTION_DECREASE_LANDSCAPE_WIDTH, new Pair<>(LANDSCAPE_WIDTH, -1));
@@ -71,7 +71,7 @@ public class AfService extends JobIntentService {
 		put(ACTION_INCREASE_PORTRAIT_WIDTH, new Pair<>(PORTRAIT_WIDTH, +1));
 	}};
 	
-	Map<String, String> mCalibrationAcceptActionsMap = new HashMap<String, String>() {{
+	Map<String, String> mCalibrationAcceptActionsMap = new HashMap<>() {{
 		put(ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION, PORTRAIT_WIDTH);
 		put(ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION, PORTRAIT_HEIGHT);
 		put(ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION, LANDSCAPE_WIDTH);

@@ -226,8 +226,7 @@ public class MultiKey implements Serializable {
         if (other == this) {
             return true;
         }
-        if (other instanceof MultiKey) {
-            MultiKey otherMulti = (MultiKey) other;
+        if (other instanceof MultiKey otherMulti) {
             return Arrays.equals(keys, otherMulti.keys);
         }
         return false;

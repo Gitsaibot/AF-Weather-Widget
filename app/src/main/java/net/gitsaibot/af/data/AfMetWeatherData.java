@@ -150,98 +150,97 @@ public class AfMetWeatherData implements AfDataSource {
 			
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				switch (eventType) {
-				case XmlPullParser.END_TAG:
-					if (parser.getName().equals("time") && contentValues != null)
-					{
-						currentList.add(contentValues);
-					}
-					break;
-				case XmlPullParser.START_TAG:
-					if (parser.getName().equals("time")) {
-						contentValues = new ContentValues();
-						
-						String fromString = parser.getAttributeValue(null, "from");
-						String toString = parser.getAttributeValue(null, "to");
-						
-						try {
-    						long from = dateFormat.parse(fromString).getTime();
-							long to = dateFormat.parse(toString).getTime();
-							
-							if (from != to) {
-								currentList = intervalDataValues;
-								contentValues.put(AfIntervalDataForecastColumns.LOCATION, afLocationInfo.getId());
-								contentValues.put(AfIntervalDataForecastColumns.TIME_ADDED, currentUtcTime);
-								contentValues.put(AfIntervalDataForecastColumns.TIME_FROM, from);
-								contentValues.put(AfIntervalDataForecastColumns.TIME_TO, to);
-							} else {
-								currentList = pointDataValues;
-								contentValues.put(AfPointDataForecastColumns.LOCATION, afLocationInfo.getId());
-								contentValues.put(AfPointDataForecastColumns.TIME_ADDED, currentUtcTime);
-								contentValues.put(AfPointDataForecastColumns.TIME, from);
-							}
-						} catch (Exception e) {
-							Log.d(TAG, "Error parsing from & to values. from="
-									+ fromString + " to=" + toString);
-							contentValues = null;
-						}
-					} else if (parser.getName().equals("temperature")) {
-						if (contentValues != null) {
-							contentValues.put(AfPointDataForecastColumns.TEMPERATURE,
-									Float.parseFloat(parser.getAttributeValue(null, "value")));
-						}
-					} else if (parser.getName().equals("humidity")) {
-						if (contentValues != null) {
-							contentValues.put(AfPointDataForecastColumns.HUMIDITY,
-									Float.parseFloat(parser.getAttributeValue(null, "value")));
-						}
-					} else if (parser.getName().equals("pressure")) {
-						if (contentValues != null) {
-							contentValues.put(AfPointDataForecastColumns.PRESSURE,
-									Float.parseFloat(parser.getAttributeValue(null, "value")));
-						}
-					} else if (parser.getName().equals("symbol")) {
-						if (contentValues != null) {
-							contentValues.put(AfIntervalDataForecastColumns.WEATHER_ICON,
-									mapWeatherIconToOldApi(
-											Integer.parseInt(parser.getAttributeValue(null, "number"))));
-						}
-					} else if (parser.getName().equals("precipitation")) {
-						if (contentValues != null) {
-							contentValues.put(AfIntervalDataForecastColumns.RAIN_VALUE,
-									Float.parseFloat(
-											parser.getAttributeValue(null, "value")));
-							try {
-								contentValues.put(AfIntervalDataForecastColumns.RAIN_MINVAL,
-    									Float.parseFloat(
-    											parser.getAttributeValue(null, "minvalue")));
-							} catch (Exception e) {
-								/* LOW VALUE IS OPTIONAL */
-							}
-							try {
-    							contentValues.put(AfIntervalDataForecastColumns.RAIN_MAXVAL,
-    									Float.parseFloat(
-    											parser.getAttributeValue(null, "maxvalue")));
-							} catch (Exception e) {
-								/* HIGH VALUE IS OPTIONAL */
-							}
-						}
-					} else if (parser.getName().equals("model")) {
-						String model = parser.getAttributeValue(null, "name");
-						if (model.toLowerCase(Locale.US).equals("yr")) {
-							try {
-								nextUpdate = dateFormat.parse(parser.getAttributeValue(null, "nextrun")).getTime();
-							} catch (ParseException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							try {
-								forecastValidTo = dateFormat.parse(parser.getAttributeValue(null, "to")).getTime();
-							} catch (ParseException e) {
-								e.printStackTrace();
-							}
+					case XmlPullParser.END_TAG -> {
+						if (parser.getName().equals("time") && contentValues != null) {
+							currentList.add(contentValues);
 						}
 					}
-					break;
+					case XmlPullParser.START_TAG -> {
+						if (parser.getName().equals("time")) {
+							contentValues = new ContentValues();
+
+							String fromString = parser.getAttributeValue(null, "from");
+							String toString = parser.getAttributeValue(null, "to");
+
+							try {
+								long from = dateFormat.parse(fromString).getTime();
+								long to = dateFormat.parse(toString).getTime();
+
+								if (from != to) {
+									currentList = intervalDataValues;
+									contentValues.put(AfIntervalDataForecastColumns.LOCATION, afLocationInfo.getId());
+									contentValues.put(AfIntervalDataForecastColumns.TIME_ADDED, currentUtcTime);
+									contentValues.put(AfIntervalDataForecastColumns.TIME_FROM, from);
+									contentValues.put(AfIntervalDataForecastColumns.TIME_TO, to);
+								} else {
+									currentList = pointDataValues;
+									contentValues.put(AfPointDataForecastColumns.LOCATION, afLocationInfo.getId());
+									contentValues.put(AfPointDataForecastColumns.TIME_ADDED, currentUtcTime);
+									contentValues.put(AfPointDataForecastColumns.TIME, from);
+								}
+							} catch (Exception e) {
+								Log.d(TAG, "Error parsing from & to values. from="
+										+ fromString + " to=" + toString);
+								contentValues = null;
+							}
+						} else if (parser.getName().equals("temperature")) {
+							if (contentValues != null) {
+								contentValues.put(AfPointDataForecastColumns.TEMPERATURE,
+										Float.parseFloat(parser.getAttributeValue(null, "value")));
+							}
+						} else if (parser.getName().equals("humidity")) {
+							if (contentValues != null) {
+								contentValues.put(AfPointDataForecastColumns.HUMIDITY,
+										Float.parseFloat(parser.getAttributeValue(null, "value")));
+							}
+						} else if (parser.getName().equals("pressure")) {
+							if (contentValues != null) {
+								contentValues.put(AfPointDataForecastColumns.PRESSURE,
+										Float.parseFloat(parser.getAttributeValue(null, "value")));
+							}
+						} else if (parser.getName().equals("symbol")) {
+							if (contentValues != null) {
+								contentValues.put(AfIntervalDataForecastColumns.WEATHER_ICON,
+										mapWeatherIconToOldApi(
+												Integer.parseInt(parser.getAttributeValue(null, "number"))));
+							}
+						} else if (parser.getName().equals("precipitation")) {
+							if (contentValues != null) {
+								contentValues.put(AfIntervalDataForecastColumns.RAIN_VALUE,
+										Float.parseFloat(
+												parser.getAttributeValue(null, "value")));
+								try {
+									contentValues.put(AfIntervalDataForecastColumns.RAIN_MINVAL,
+											Float.parseFloat(
+													parser.getAttributeValue(null, "minvalue")));
+								} catch (Exception e) {
+									/* LOW VALUE IS OPTIONAL */
+								}
+								try {
+									contentValues.put(AfIntervalDataForecastColumns.RAIN_MAXVAL,
+											Float.parseFloat(
+													parser.getAttributeValue(null, "maxvalue")));
+								} catch (Exception e) {
+									/* HIGH VALUE IS OPTIONAL */
+								}
+							}
+						} else if (parser.getName().equals("model")) {
+							String model = parser.getAttributeValue(null, "name");
+							if (model.toLowerCase(Locale.US).equals("yr")) {
+								try {
+									nextUpdate = dateFormat.parse(parser.getAttributeValue(null, "nextrun")).getTime();
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								try {
+									forecastValidTo = dateFormat.parse(parser.getAttributeValue(null, "to")).getTime();
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}
 				}
 				eventType = parser.next();
 			}

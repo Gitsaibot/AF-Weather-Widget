@@ -9,7 +9,6 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 public class AfDeviceProfileActivity extends AppCompatActivity
 		implements OnCheckedChangeListener,
@@ -117,7 +117,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 	{
 		TextView tv = findViewById(R.id.af_device_profile_guide);
 		tv.setMovementMethod(LinkMovementMethod.getInstance());
-		tv.setText(Html.fromHtml(getString(R.string.device_profile_guide_link)));
+		tv.setText(HtmlCompat.fromHtml(getString(R.string.device_profile_guide_link), HtmlCompat.FROM_HTML_MODE_LEGACY));
 		
 		mInvalidEditTextColor = ContextCompat.getColor(this, R.color.invalid_dimension_color);
 		

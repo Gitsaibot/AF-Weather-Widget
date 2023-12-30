@@ -38,7 +38,7 @@ public class AfMetSunTimeData implements AfDataSource {
 	private final static int NUM_DAYS_MINIMUM = 5;
 	private final static int NUM_DAYS_REQUEST = 8;
 
-	private Map<String, Integer> moonPhaseMap = new HashMap<String, Integer>() {{
+	private Map<String, Integer> moonPhaseMap = new HashMap<>() {{
 		put("new moon", AfSunMoonData.NEW_MOON);
 		put("waxing crescent", AfSunMoonData.WAXING_CRESCENT);
 		put("first quarter", AfSunMoonData.FIRST_QUARTER);

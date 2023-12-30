@@ -72,7 +72,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 	}
 	
 	@SuppressWarnings("serial")
-	private final Map<String, Integer> mWeatherIconMap = new HashMap<String, Integer>() {{
+	private final Map<String, Integer> mWeatherIconMap = new HashMap<>() {{
 		/* Night icons */
 		put("ntsra", WEATHER_ICON_RAINTHUNDER);
 		put("nscttsra", WEATHER_ICON_NIGHT_LIGHTRAINTHUNDERSUN);
@@ -96,7 +96,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 		put("nsct", WEATHER_ICON_NIGHT_LIGHTCLOUD);
 		put("nfew", WEATHER_ICON_NIGHT_LIGHTCLOUD);
 		put("nskc", WEATHER_ICON_NIGHT_SUN);
-		
+
 		/* Day icons */
 		put("tsra", WEATHER_ICON_RAINTHUNDER);
 		put("scttsra", WEATHER_ICON_DAY_POLAR_LIGHTRAINTHUNDERSUN);
@@ -136,7 +136,7 @@ public class AfNoaaWeatherData implements AfDataSource {
 	private static final int PARSE_WEATHER_ICONS_LINK_FLAG		= 1<<9;
 	
 	@SuppressWarnings("serial")
-	private final Map<String, Integer> mKeyFlagMap = new HashMap<String, Integer>() {{
+	private final Map<String, Integer> mKeyFlagMap = new HashMap<>() {{
 		put("time-layout", PARSE_TIME_LAYOUT_FLAG);
 		put("layout-key", PARSE_TIME_LAYOUT_KEY_FLAG);
 		put("start-valid-time", PARSE_TIME_START_FLAG);

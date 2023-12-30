@@ -3,6 +3,7 @@ package net.gitsaibot.af;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -887,7 +888,7 @@ public class AfSettings {
 			// int x = AixUtils.clamp(dimensions.x, 1, maxDimension);
 			// int y = AixUtils.clamp(dimensions.y, 1, maxDimension);
 			
-			String value = String.format("%dx%d", dimensions.x, dimensions.y);
+			String value = String.format(Locale.US, "%dx%d", dimensions.x, dimensions.y);
 			
 			editor.putString(key, value);
 		} else {

@@ -59,9 +59,7 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
 
             // Get the related Preference and save the value
             DialogPreference preference = getPreference();
-            if (preference instanceof ColorPreference) {
-                ColorPreference colorPreference =
-                        ((ColorPreference) preference);
+            if (preference instanceof ColorPreference colorPreference) {
                 // This allows the client to ignore the user value.
                 // Save the value
                 colorPreference.setValue(Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV));
