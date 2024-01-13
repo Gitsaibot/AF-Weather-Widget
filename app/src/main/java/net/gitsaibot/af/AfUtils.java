@@ -43,11 +43,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import androidx.preference.PreferenceManager;
 
 public class AfUtils {
 	

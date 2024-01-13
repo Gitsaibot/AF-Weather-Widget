@@ -2,7 +2,6 @@ package net.gitsaibot.af;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements

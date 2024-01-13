@@ -177,7 +177,7 @@ public class AfDetailedWidget {
 	}
 	
 	public Bitmap render(int width, int height, boolean isLandscape) throws AfWidgetDrawException {
-		setupWidgetDimensions(width, height, isLandscape);
+		setupWidgetDimensions(width, height);
 		Bitmap bitmap = Bitmap.createBitmap(mWidgetWidth, mWidgetHeight, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 
@@ -1466,7 +1466,7 @@ public class AfDetailedWidget {
 				",timeTo=" + sdf.format(new Date(mTimeTo))); 
 	}
 	
-	private void setupSampleTimes() throws AfWidgetDrawException, AfWidgetDataException {
+	private void setupSampleTimes() throws AfWidgetDataException {
 		long sampleResolutionHrs = Long.MAX_VALUE;
 		
 		long lastIntervalPos = -1;
@@ -1504,7 +1504,7 @@ public class AfDetailedWidget {
 		mNumHoursBetweenSamples = (int)sampleResolutionHrs;
 	}
 	
-	private void setupTimesAndPointData() throws AfWidgetDrawException {
+	private void setupTimesAndPointData() {
 		// Set up time variables
 		Calendar calendar = Calendar.getInstance(mUtcTimeZone);
 		mTimeNow = calendar.getTimeInMillis();
@@ -1555,7 +1555,7 @@ public class AfDetailedWidget {
 		mPointData = pointData;
 	}
 	
-	private void setupWidgetDimensions(int width, int height, final boolean isLandscape) {
+	private void setupWidgetDimensions(int width, int height) {
 		mWidgetWidth = width;
 		mWidgetHeight = height;
 		

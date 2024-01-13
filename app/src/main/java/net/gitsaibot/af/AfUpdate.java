@@ -29,10 +29,11 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import androidx.preference.PreferenceManager;
 
 public class AfUpdate {
 	

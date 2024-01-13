@@ -28,10 +28,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import androidx.core.app.JobIntentService;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import androidx.preference.PreferenceManager;
 
 public class AfService extends JobIntentService {
 	

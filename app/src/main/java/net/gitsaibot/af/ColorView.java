@@ -182,6 +182,16 @@ public class ColorView extends View {
 				Color.WHITE, Color.BLACK, Shader.TileMode.CLAMP);
 	}
 
+	private Shader buildColorShader() {
+		Shader colorShader = new LinearGradient(
+				(mOrientation & ORIENTATION_DOWN) != 0 ? 1.0f : 0.0f,
+				(mOrientation & ORIENTATION_LEFT) != 0 ? 1.0f : 0.0f,
+				(mOrientation & ORIENTATION_RIGHT) != 0 ? 1.0f : 0.0f,
+				(mOrientation & ORIENTATION_DOWN) != 0 ? 1.0f : 0.0f,
+				Color.WHITE, Color.HSVToColor(mHSV), Shader.TileMode.CLAMP);
+		return new ComposeShader(mShader, colorShader, PorterDuff.Mode.MULTIPLY);
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// Draw transparency background
@@ -235,14 +245,7 @@ public class ColorView extends View {
 			canvas.drawRect(mColorAreaRect, mColorAreaPaint);
 		} else {
 			if (mMode == MODE_SV) {
-				Shader colorShader = new LinearGradient(
-						(mOrientation & ORIENTATION_DOWN) != 0 ? 1.0f : 0.0f,
-						(mOrientation & ORIENTATION_LEFT) != 0 ? 1.0f : 0.0f,
-						(mOrientation & ORIENTATION_RIGHT) != 0 ? 1.0f : 0.0f,
-						(mOrientation & ORIENTATION_DOWN) != 0 ? 1.0f : 0.0f,
-						Color.WHITE, Color.HSVToColor(mHSV), Shader.TileMode.CLAMP);
-	        	ComposeShader s = new ComposeShader(mShader, colorShader, PorterDuff.Mode.MULTIPLY);
-	        	mColorAreaPaint.setShader(s);
+	        	mColorAreaPaint.setShader(buildColorShader());
 			}
 
 			canvas.save();

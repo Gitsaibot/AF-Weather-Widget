@@ -20,10 +20,11 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Point;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 public class AfSettings {
 	
