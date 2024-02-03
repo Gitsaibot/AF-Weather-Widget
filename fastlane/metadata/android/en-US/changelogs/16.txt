@@ -1,0 +1,2 @@
+- Support Material3 dynamic colors
+- Code cleanup and other bugfixes
