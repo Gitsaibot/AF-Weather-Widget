@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="AfTheme" parent="Theme.Material3.DynamicColors.DayNight">
+		<item name="android:statusBarColor">@android:color/transparent</item>
+		<item name="colorPreferenceStyle">@style/ColorPreference</item>
+		<item name="preferenceTheme">@style/Theme.AppCompat</item>
+		<item name="preferenceFragmentCompatStyle">@style/AppSettings.Fragment.Material</item>
+	</style>
+
+	<style name="AppSettings.Fragment.Material" parent="PreferenceFragment.Material">
+		<item name="allowDividerAfterLastItem">false</item>
+	</style>
+
+</resources>
