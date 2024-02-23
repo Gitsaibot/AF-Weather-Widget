@@ -100,7 +100,6 @@
 	<string name="button_add_widget_label">Add widget</string>
 	
 	<string name="location_selector_no_items_title">No locations added</string>
-	<string name="location_selector_no_items_text">Click "add location" to continue.</string>
 	
 	<string name="dialog_search_location">Search for location</string>
 

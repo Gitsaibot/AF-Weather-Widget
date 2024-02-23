@@ -117,7 +117,10 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 		mCallbacks = this;
 		mContext = this;
 		setContentView(R.layout.location_selection_list);
-		
+
+		ListView listView = findViewById(android.R.id.list);
+		listView.setEmptyView(findViewById(R.id.ListItemTitle));
+
 		mAddLocationButton = findViewById(R.id.add_location_button);
 		mAddLocationButton.setOnClickListener(this);
 

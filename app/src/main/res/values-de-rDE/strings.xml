@@ -55,7 +55,6 @@
     <string name="dialog_search_location">Suche nach Standort</string>
     <string name="noaa">NOAA NWS Daten</string>
     <string name="location_search_over_query_limit_toast">Tägliches Suchkontingent für Ihre IP-Adresse erschöpft. Versuchen Sie, zu WiFi zu wechseln.</string>
-    <string name="location_selector_no_items_text">Klicken Sie auf Standort hinzufügen, um fortzufahren.</string>
     <string name="precipitation_units_invalid_number_toast">Die Niederschlagsskalierung muss eine Zahl sein.</string>
     <string name="precipitation_units_invalid_range_toast">Die Niederschlagsskalierung muss größer als Null und kleiner als 100 sein.</string>
     <string name="text_color_title">Textfarbe</string>
