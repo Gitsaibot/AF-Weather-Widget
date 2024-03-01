@@ -1362,7 +1362,7 @@ public class AfDetailedWidget {
 			}
 		}
 
-		transitions.sort(new Comparator<Pair<Date, DayState>>() {
+		transitions.sort(new Comparator<>() {
 			@Override
 			public int compare(final Pair<Date, DayState> t1, final Pair<Date, DayState> t2) {
 				int dateComparison = t1.first.compareTo(t2.first);

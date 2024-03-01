@@ -247,26 +247,22 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 				dialog = new AlertDialog.Builder(this)
 						.setTitle(R.string.dialog_search_location)
 						.setView(content)
-						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-								imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-								String searchString = mEditText.getText().toString();
-								if (!TextUtils.isEmpty(searchString)) {
-									mLocationSearchTask = new LocationSearchTask();
-									mLocationSearchTask.execute(searchString);
-								} else {
-									mEditText.setText("");
-									Toast.makeText(mContext, getString(R.string.location_empty_search_string_toast), Toast.LENGTH_SHORT).show();
-								}
+						.setPositiveButton(android.R.string.ok, (pDialog, which) -> {
+							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+							imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+							String searchString = mEditText.getText().toString();
+							if (!TextUtils.isEmpty(searchString)) {
+								mLocationSearchTask = new LocationSearchTask();
+								mLocationSearchTask.execute(searchString);
+							} else {
+								mEditText.setText("");
+								Toast.makeText(mContext, getString(R.string.location_empty_search_string_toast), Toast.LENGTH_SHORT).show();
 							}
 						})
-						.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-								imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-								dialog.cancel();
-							}
+						.setNegativeButton(android.R.string.cancel, (nDialog, which) -> {
+							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+							imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+							nDialog.cancel();
 						})
 						.create();
 				dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
@@ -275,29 +271,21 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 			case DIALOG_EDIT -> dialog = new AlertDialog.Builder(this)
 					.setTitle("Display title:")
 					.setView(content)
-					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					.setPositiveButton(android.R.string.ok, (pDialog, which) -> {
+						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+						String displayTitle = mEditText.getText().toString();
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-							imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-							String displayTitle = mEditText.getText().toString();
-
-							if (TextUtils.isEmpty(displayTitle)) {
-								Toast.makeText(AfLocationSelectionActivity.this, "Invalid display title", Toast.LENGTH_SHORT).show();
-							} else {
-								setLocationDisplayTitle(displayTitle);
-							}
+						if (TextUtils.isEmpty(displayTitle)) {
+							Toast.makeText(AfLocationSelectionActivity.this, "Invalid display title", Toast.LENGTH_SHORT).show();
+						} else {
+							setLocationDisplayTitle(displayTitle);
 						}
 					})
-					.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-							imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-							dialog.cancel();
-						}
+					.setNegativeButton(android.R.string.cancel, (nDialog, which) -> {
+						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+						nDialog.cancel();
 					}).create();
 		}
 
@@ -395,23 +383,19 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 					}
 					AlertDialog alertDialog = new AlertDialog.Builder(mContext)
 							.setTitle(R.string.location_search_results_select_dialog_title)
-							.setItems(listItems, new DialogInterface.OnClickListener() {
+							.setItems(listItems, (dialog, which) -> {
+								// Add selected location to provider
+								AfAddress a = mAddresses.get(which);
+								ContentResolver resolver = mContext.getContentResolver();
+								ContentValues values = new ContentValues();
+								values.put(AfLocationsColumns.LATITUDE, a.latitude);
+								values.put(AfLocationsColumns.LONGITUDE, a.longitude);
+								values.put(AfLocationsColumns.TITLE, a.title);
+								values.put(AfLocationsColumns.TITLE_DETAILED, a.title_detailed);
+								resolver.insert(AfLocations.CONTENT_URI, values);
 
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									// Add selected location to provider
-									AfAddress a = mAddresses.get(which);
-									ContentResolver resolver = mContext.getContentResolver();
-									ContentValues values = new ContentValues();
-									values.put(AfLocationsColumns.LATITUDE, a.latitude);
-									values.put(AfLocationsColumns.LONGITUDE, a.longitude);
-									values.put(AfLocationsColumns.TITLE, a.title);
-									values.put(AfLocationsColumns.TITLE_DETAILED, a.title_detailed);
-									resolver.insert(AfLocations.CONTENT_URI, values);
-
-									getLoaderManager().restartLoader(LOADER_ID, null, mCallbacks);
-									getListView().setSelection(getListView().getCount() - 1);
-								}
+								getLoaderManager().restartLoader(LOADER_ID, null, mCallbacks);
+								getListView().setSelection(getListView().getCount() - 1);
 							})
 							.create();
 					alertDialog.show();
