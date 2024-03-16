@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AfTheme" parent="Theme.AppCompat">
+	<style name="BaseTheme" parent="Theme.Material3.DayNight">
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="colorPrimary">@color/colorAccent</item>
+		<item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
+		<item name="android:statusBarColor">?android:colorBackground</item>
+		<item name="android:navigationBarColor">?android:colorBackground</item>
 		<item name="colorPreferenceStyle">@style/ColorPreference</item>
-		<item name="preferenceTheme">@style/Theme.AppCompat</item>
+		<item name="preferenceTheme">@style/Theme.Material3.DayNight</item>
 		<item name="preferenceFragmentCompatStyle">@style/AppSettings.Fragment.Material</item>
 	</style>
+
+	<!-- Inherit base theme to allow overriding Light Theme as per API levels -->
+	<style name="AfTheme" parent="BaseTheme" />
 
 	<style name="AppSettings.Fragment.Material" parent="PreferenceFragment.Material">
 		<item name="allowDividerAfterLastItem">false</item>

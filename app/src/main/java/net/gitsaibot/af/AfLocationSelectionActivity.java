@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.LoaderManager;
@@ -50,6 +49,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class AfLocationSelectionActivity extends ListActivity implements OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 	private static final int LOADER_ID = 1;
@@ -244,7 +247,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 
 		switch (id) {
 			case DIALOG_ADD -> {
-				dialog = new AlertDialog.Builder(this)
+				dialog = new MaterialAlertDialogBuilder(this)
 						.setTitle(R.string.dialog_search_location)
 						.setView(content)
 						.setPositiveButton(android.R.string.ok, (pDialog, which) -> {
@@ -268,7 +271,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 				dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN |
 						WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 			}
-			case DIALOG_EDIT -> dialog = new AlertDialog.Builder(this)
+			case DIALOG_EDIT -> dialog = new MaterialAlertDialogBuilder(this)
 					.setTitle("Display title:")
 					.setView(content)
 					.setPositiveButton(android.R.string.ok, (pDialog, which) -> {
@@ -381,7 +384,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 					for (int i = 0; i < mAddresses.size(); i++) {
 						listItems[i] = mAddresses.get(i).title_detailed;
 					}
-					AlertDialog alertDialog = new AlertDialog.Builder(mContext)
+					AlertDialog alertDialog = new MaterialAlertDialogBuilder(mContext)
 							.setTitle(R.string.location_search_results_select_dialog_title)
 							.setItems(listItems, (dialog, which) -> {
 								// Add selected location to provider
