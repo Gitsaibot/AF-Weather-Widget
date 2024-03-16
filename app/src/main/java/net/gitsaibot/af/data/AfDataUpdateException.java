@@ -1,7 +1,6 @@
 package net.gitsaibot.af.data;
 
 
-@SuppressWarnings("serial")
 public class AfDataUpdateException extends Exception {
 
 	public enum Reason {
