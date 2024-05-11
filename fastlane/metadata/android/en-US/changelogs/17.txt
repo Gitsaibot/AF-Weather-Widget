@@ -1,0 +1,2 @@
+- Geoname Server now requires TLS v1.3 which is only available from android 10 onwards. Removed support for older android versions.
+- Code cleanup and other bugfixes
