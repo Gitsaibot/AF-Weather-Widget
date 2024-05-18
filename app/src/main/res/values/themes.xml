@@ -10,6 +10,7 @@
 		<item name="colorPreferenceStyle">@style/ColorPreference</item>
 		<item name="preferenceTheme">@style/Theme.Material3.DayNight</item>
 		<item name="preferenceFragmentCompatStyle">@style/AppSettings.Fragment.Material</item>
+		<item name="android:windowLightStatusBar">true</item>
 	</style>
 
 	<!-- Inherit base theme to allow overriding Light Theme as per API levels -->
