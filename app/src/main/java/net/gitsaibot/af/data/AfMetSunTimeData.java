@@ -285,7 +285,7 @@ public class AfMetSunTimeData implements AfDataSource {
 					calendar.add(Calendar.DAY_OF_YEAR, 1);
 				}
 
-				if (contentValuesList.size() > 0)
+				if (!contentValuesList.isEmpty())
 				{
 					updateDatabase(contentValuesList.toArray(new ContentValues[0]));
 				}

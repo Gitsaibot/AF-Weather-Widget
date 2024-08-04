@@ -851,7 +851,7 @@ public class AfDetailedWidget {
 				measureState++;
 				break;
 			case 2:
-				if (locationName.length() == 0) {
+				if (locationName.isEmpty()) {
 					isMeasuring = false;
 					break;
 				}
@@ -870,17 +870,17 @@ public class AfDetailedWidget {
 
 		StringBuilder sb = new StringBuilder();
 
-		if (pressureString.length() != 0) {
+		if (!pressureString.isEmpty()) {
 			sb.append(pressureString);
 			sb.append("  ");
 		}
 		
-		if (humidityString.length() != 0) {
+		if (!humidityString.isEmpty()) {
 			sb.append(humidityString);
 			sb.append("  ");
 		}
 		
-		if (rainScaleString.length() != 0) {
+		if (!rainScaleString.isEmpty()) {
 			sb.append(rainScaleString);
 		}
 		
@@ -1373,9 +1373,9 @@ public class AfDetailedWidget {
 			}
 		});
 
-		if (mSunMoonData.size() > 0) {
+		if (!mSunMoonData.isEmpty()) {
 			SunMoonData firstSunMoonData = mSunMoonData.get(0);
-			Pair<Date, DayState> firstTransition = transitions.size() > 0 ? transitions.get(0) : null;
+			Pair<Date, DayState> firstTransition = !transitions.isEmpty() ? transitions.get(0) : null;
 
 			if (firstTransition == null || firstSunMoonData.date < firstTransition.first.getTime()) {
 				if (firstSunMoonData.sunRise == AfSunMoonData.NEVER_RISE) {
@@ -1402,7 +1402,7 @@ public class AfDetailedWidget {
 			}
 		}
 
-		if (mSunMoonData.size() > 0 && transitions.size() > 0) {
+		if (!mSunMoonData.isEmpty() && !transitions.isEmpty()) {
 			SunMoonData lastSunMoonData = mSunMoonData.get(mSunMoonData.size() - 1);
 			Pair<Date, DayState> lastTransition = transitions.get(transitions.size() - 1);
 

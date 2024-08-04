@@ -55,8 +55,8 @@ public class AfGeoNamesData implements AfDataSource {
 		if (timeZone != null) timeZone = timeZone.trim();
 		if (countryCode != null) countryCode = countryCode.trim();
 		
-		if (timeZone == null || timeZone.length() == 0 || timeZone.equalsIgnoreCase("null") ||
-		    countryCode == null || countryCode.length() == 0 || countryCode.equalsIgnoreCase("null"))
+		if (timeZone == null || timeZone.isEmpty() || timeZone.equalsIgnoreCase("null") ||
+		    countryCode == null || countryCode.isEmpty() || countryCode.equalsIgnoreCase("null"))
 		{
 			String buildUrl = String.format(
 					Locale.US,

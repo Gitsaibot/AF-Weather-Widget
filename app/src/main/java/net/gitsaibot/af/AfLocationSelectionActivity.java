@@ -88,7 +88,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
             if (result.has(key)) {
                 String component = result.optString(key).trim();
 
-                if (component.length() > 0) {
+                if (!component.isEmpty()) {
                     if (titleDetailedSb.length() > 0) {
                         titleDetailedSb.append(", ");
                     }
@@ -486,7 +486,7 @@ public class AfLocationSelectionActivity extends ListActivity implements OnClick
 						} catch (Exception e) { }
 					}
 					
-					if (mAddresses != null && mAddresses.size() > 0) {
+					if (mAddresses != null && !mAddresses.isEmpty()) {
 						return SEARCH_SUCCESS;
 					} else {
 						return NO_RESULTS;
