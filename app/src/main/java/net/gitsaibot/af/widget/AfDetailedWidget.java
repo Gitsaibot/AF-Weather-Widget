@@ -586,7 +586,7 @@ public class AfDetailedWidget {
 		
 		if (borderThickness > 0.0f) {
 			canvas.save();
-			canvas.clipRect(mBackgroundRect, Region.Op.DIFFERENCE);
+			canvas.clipOutRect(mBackgroundRect);
 			canvas.drawRoundRect(mBorderRect, borderRounding, borderRounding, mBorderPaint);
 			canvas.restore();
 			
