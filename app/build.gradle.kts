@@ -19,12 +19,12 @@ fun getKey(key: String): String {
 
 android {
     namespace = "net.gitsaibot.af"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "net.gitsaibot.af"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 18
         versionName = "2.7"
         buildConfigField("String", "USER_AGENT", "\"" + getKey("user_agent") + "\"")
@@ -63,9 +63,9 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.core:core:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("androidx.preference:preference:1.2.1")
     implementation("androidx.legacy:legacy-preference-v14:1.0.0")
     implementation("com.google.android.material:material:1.12.0")
