@@ -1,0 +1,2 @@
+- Add support for adaptive Icon
+- Add support for android 16
