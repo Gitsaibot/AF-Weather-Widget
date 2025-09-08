@@ -7,7 +7,7 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<application
-			android:icon="@mipmap/app_icon"
+			android:icon="@mipmap/ic_launcher"
 			android:label="@string/widget_name"
 			android:description="@string/app_description"
 			android:theme="@style/AfTheme"
