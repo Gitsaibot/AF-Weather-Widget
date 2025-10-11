@@ -68,6 +68,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.preference:preference:1.2.1")
     implementation("androidx.legacy:legacy-preference-v14:1.0.0")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
 }

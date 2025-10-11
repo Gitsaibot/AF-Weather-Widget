@@ -33,7 +33,7 @@ public class AfProvider extends ContentProvider {
 	public interface AfWidgetsColumns {
 		String APPWIDGET_ID = BaseColumns._ID;
 		
-		/* The size of the widge in the format COLUMNS_ROWS
+		/* The size of the widget in the format COLUMNS_ROWS
 		 * where TINY=1, SMALL=2, MEDIUM=3, LARGE=4 */
 		String SIZE = "size";
 		int SIZE_INVALID = 0;
@@ -319,12 +319,6 @@ public class AfProvider extends ContentProvider {
 	
 	public static class AfViewSettings extends AfSettings {
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/aixviewsettings");
-		
-		/* The period of the view; 24 hours / 48 hours / 96 hours */
-//		public static final String PERIOD = "period";
-//		public static final int PERIOD_24_HOURS = 1;
-//		public static final int PERIOD_48_HOURS = 2;
-//		public static final int PERIOD_96_HOURS = 3;
 	}
 	
 	private static final String TABLE_AIXWIDGETS = "aixwidgets";

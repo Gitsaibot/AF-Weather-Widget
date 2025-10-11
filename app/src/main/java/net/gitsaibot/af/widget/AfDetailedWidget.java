@@ -938,35 +938,36 @@ public class AfDetailedWidget {
 		}
 		canvas.restore();
 	}
-	
+
 	private void drawTemperature(Canvas canvas, Path temperaturePath)
 	{
 		float freezingTemperature = mWidgetSettings.useFahrenheit() ? 32.0f : 0.0f;
-		
-		Rect graphRectInner = new Rect(mGraphRect.left + 1, mGraphRect.top + 1, mGraphRect.right, mGraphRect.bottom);
-		
+
+		// This is the y-coordinate on the graph that corresponds to the freezing temperature.
+		float freezingPosY = mGraphRect.bottom - (float)((freezingTemperature - mTemperatureRangeMin) / (mTemperatureRangeMax - mTemperatureRangeMin) * mGraphRect.height());
+
+		// Ensure the position is within the graph bounds
+		freezingPosY = Math.max(mGraphRect.top, Math.min(mGraphRect.bottom, freezingPosY));
+
+		RectF graphRectInner = new RectF(mGraphRect.left + 1, mGraphRect.top, mGraphRect.right, mGraphRect.bottom);
+
 		canvas.save();
 		if (mTemperatureRangeMin >= freezingTemperature) {
-			// All positive
+			// All above freezing
 			canvas.clipRect(graphRectInner);
 			canvas.drawPath(temperaturePath, mAboveFreezingTemperaturePaint);
 		} else if (mTemperatureRangeMax <= freezingTemperature) {
-			// All negative
+			// All below freezing
 			canvas.clipRect(graphRectInner);
 			canvas.drawPath(temperaturePath, mBelowFreezingTemperaturePaint);
 		} else {
-			float freezingPosY = (float)Math.floor(mGraphRect.height() *
-					(freezingTemperature - mTemperatureRangeMin) / (mTemperatureRangeMax - mTemperatureRangeMin));
-			
-			canvas.clipRect(graphRectInner.left, graphRectInner.top,
-					graphRectInner.right, graphRectInner.bottom - freezingPosY);
+			// Path is both above and below freezing, split the drawing
+			canvas.clipRect(graphRectInner.left, graphRectInner.top, graphRectInner.right, freezingPosY);
 			canvas.drawPath(temperaturePath, mAboveFreezingTemperaturePaint);
-			
-			canvas.restore();
-			canvas.save();
+			canvas.restore(); // Restore from the first clip
 
-			canvas.clipRect(graphRectInner.left, graphRectInner.bottom - freezingPosY,
-					graphRectInner.right, graphRectInner.bottom);
+			canvas.save();
+			canvas.clipRect(graphRectInner.left, freezingPosY, graphRectInner.right, graphRectInner.bottom);
 			canvas.drawPath(temperaturePath, mBelowFreezingTemperaturePaint);
 		}
 		canvas.restore();
@@ -1009,207 +1010,173 @@ public class AfDetailedWidget {
 					mLabelPaint);
 		}
 	}
-	
-	private void drawWeatherIcons(Canvas canvas)
-	{
-		// Calculate number of cells per icon
-		double hoursPerCell = (double)mNumHours / (double)mNumHorizontalCells;
-		int numCellsPerIcon = (int)Math.ceil((float)mNumHoursBetweenSamples / hoursPerCell);
-		
-		while (	(numCellsPerIcon * mCellSizeX < mIconWidth) ||
-				((float)mNumHours % (numCellsPerIcon * hoursPerCell) != 0.0f))
-		{
-			numCellsPerIcon++;
-		}
-		
-		int hoursPerIcon = (int)(numCellsPerIcon * hoursPerCell);
-		
-		float iconWidthValOver4 = mIconWidth * (mTimeTo - mTimeFrom) / mGraphRect.width() / 4.0f;
-		
-		long loMarker = mTimeFrom + hoursPerIcon * DateUtils.HOUR_IN_MILLIS / 2;
-		long hiMarker = mTimeTo - hoursPerIcon * DateUtils.HOUR_IN_MILLIS / 2;
-		
-		double tempRange = mTemperatureRangeMax - mTemperatureRangeMin;
-		
+
+	// DELETE the current drawWeatherIcons method and REPLACE it with this one.
+	private void drawWeatherIcons(Canvas canvas) {
+		int hoursPerIcon = mNumHoursBetweenSamples; // 2 hours
+		int numIcons = mNumHours / hoursPerIcon;   // 12 icons
+
 		Calendar calendar = Calendar.getInstance(mUtcTimeZone);
-		
-		for (IntervalData dataPoint : mIntervalData) {
-			if (dataPoint.weatherIcon != null && dataPoint.weatherIcon >= 1 && dataPoint.weatherIcon <= 23) {
-				long iconTimePos = dataPoint.getLengthInHours() == 1 ? dataPoint.timeFrom : (dataPoint.timeFrom + dataPoint.timeTo) / 2;
-				if (iconTimePos < loMarker || iconTimePos > hiMarker) continue;
-				
-				PointF Z1 = interpolateTemperature(iconTimePos - (long)Math.round(iconWidthValOver4));
-				PointF Z2 = interpolateTemperature(iconTimePos + (long)Math.round(iconWidthValOver4));
-				
-				float val = Float.NEGATIVE_INFINITY;
-				if (Z1 != null) val = Math.max(val, Z1.y);
-				if (Z2 != null) val = Math.max(val, Z2.y);
-				if (val == Float.NEGATIVE_INFINITY) {
+
+		// Loop through each of the 12 icon slots
+		for (int i = 0; i < numIcons; i++) {
+
+			long slotStartTime = mTimeFrom + (i * hoursPerIcon * DateUtils.HOUR_IN_MILLIS);
+			long secondHourTime = slotStartTime + DateUtils.HOUR_IN_MILLIS;
+			long slotCenterTime = slotStartTime + (hoursPerIcon * DateUtils.HOUR_IN_MILLIS / 2);
+
+			// For a 2-hour slot, we look for data for the two 1-hour intervals within it.
+			// We prioritize the data for the second hour as it's more representative.
+			IntervalData firstHourData = null;
+			IntervalData secondHourData = null;
+
+			for (IntervalData dataPoint : mIntervalData) {
+				// Basic validation for the data point
+				if (dataPoint.weatherIcon == null || dataPoint.weatherIcon < 1 || dataPoint.weatherIcon > 50) {
 					continue;
 				}
-		
-				double horizontalPosition = Math.round(((double)(iconTimePos - mTimeFrom) / ((double)DateUtils.HOUR_IN_MILLIS * hoursPerCell)) * mCellSizeX);
-				double verticalPosition = (double)mGraphRect.height() * (val - mTemperatureRangeMin) / tempRange;
-				
-				int iconX = (int) Math.round((double)mGraphRect.left + horizontalPosition - (double)mIconWidth / 2.0);
-				int iconY = (int) Math.round((double)mGraphRect.bottom - (double)mIconHeight - (double)mIconSpacingY - verticalPosition);
-				
-				iconY = lcap(iconY, mGraphRect.top);
-				iconY = hcap(iconY, mGraphRect.bottom - (int)Math.ceil(mIconHeight));
-				
-				Rect dest = new Rect(iconX, iconY,
-						Math.round(iconX + mIconWidth), Math.round(iconY + mIconHeight));
-				
-				calendar.setTimeInMillis(iconTimePos);
-				truncateDay(calendar);
-				long iconDate = calendar.getTimeInMillis();
-				
-				int[] weatherIcons = WEATHER_ICONS_NIGHT;
-				
-				for (SunMoonData smd : mSunMoonData) {
-					if (smd.date == iconDate) {
-						if (smd.sunRise == AfSunMoonData.NEVER_RISE) {
-							weatherIcons = WEATHER_ICONS_POLAR;
-						} else if (smd.sunSet == AfSunMoonData.NEVER_SET) {
-							weatherIcons = WEATHER_ICONS_DAY;
-						}
-					}
-					if (smd.sunRise < iconTimePos && smd.sunSet > iconTimePos) {
-						weatherIcons = WEATHER_ICONS_DAY;
-					}
+				// Check if this data point matches the first hour of slot
+				if (dataPoint.timeFrom == slotStartTime) {
+					firstHourData = dataPoint;
 				}
-				Bitmap weatherIcon = ((BitmapDrawable) Objects.requireNonNull(ResourcesCompat.getDrawable(
-						mContext.getResources(), weatherIcons[dataPoint.weatherIcon - 1], null))).getBitmap();
-				canvas.drawBitmap(weatherIcon, null, dest, null);
-				
-				loMarker = iconTimePos + hoursPerIcon * DateUtils.HOUR_IN_MILLIS;
+				// Check if this data point matches the second hour of slot
+				if (dataPoint.timeFrom == secondHourTime) {
+					secondHourData = dataPoint;
+				}
+				// If both are found, stop searching for this slot
+				if (firstHourData != null && secondHourData != null) {
+					break;
+				}
 			}
+
+			IntervalData dataForIcon;
+			// Prioritize the second hour's data. If it doesn't exist, use the first hour's.
+			if (secondHourData != null) {
+				dataForIcon = secondHourData;
+			} else {
+				dataForIcon = firstHourData;
+			}
+
+			if (dataForIcon == null) {
+				continue; // No icon found for this slot, move to the next one
+			}
+
+			// --- From here, the rest of the method is for positioning and drawing ---
+			// Find the HIGHEST temperature on the graph line underneath the icon's width.
+			long iconTimeWidth = (long) (mIconWidth / (float) mGraphRect.width() * (mTimeTo - mTimeFrom));
+			long leftTime = slotCenterTime - (iconTimeWidth / 2);
+			long centerTime = slotCenterTime;
+			long rightTime = slotCenterTime + (iconTimeWidth / 2);
+
+			PointF leftTempPoint = interpolateTemperature(leftTime);
+			PointF centerTempPoint = interpolateTemperature(centerTime);
+			PointF rightTempPoint = interpolateTemperature(rightTime);
+
+			float highestTemperatureValue = Float.NEGATIVE_INFINITY;
+			if (leftTempPoint != null) {
+				highestTemperatureValue = Math.max(highestTemperatureValue, leftTempPoint.y);
+			}
+			if (centerTempPoint != null) {
+				highestTemperatureValue = Math.max(highestTemperatureValue, centerTempPoint.y);
+			}
+			if (rightTempPoint != null) {
+				highestTemperatureValue = Math.max(highestTemperatureValue, rightTempPoint.y);
+			}
+
+			if (highestTemperatureValue == Float.NEGATIVE_INFINITY) {
+				continue;
+			}
+
+			// Calculate icon position
+			double verticalPositionOnGraph = mGraphRect.height() * (highestTemperatureValue - mTemperatureRangeMin) / (mTemperatureRangeMax - mTemperatureRangeMin);
+			double horizontalPosition = ((double) (slotCenterTime - mTimeFrom) / (double) (mTimeTo - mTimeFrom)) * mGraphRect.width();
+			int iconX = (int) Math.round(mGraphRect.left + horizontalPosition - (double) mIconWidth / 2.0);
+			int iconY = (int) Math.round((mGraphRect.bottom - verticalPositionOnGraph) - mIconHeight - mIconSpacingY);
+
+			iconY = lcap(iconY, mGraphRect.top);
+			iconY = hcap(iconY, mGraphRect.bottom - (int) Math.ceil(mIconHeight));
+			Rect dest = new Rect(iconX, iconY, Math.round(iconX + mIconWidth), Math.round(iconY + mIconHeight));
+
+			// Determine Day/Night/Polar icons
+			calendar.setTimeInMillis(slotCenterTime);
+			truncateDay(calendar);
+			long iconDate = calendar.getTimeInMillis();
+			int[] weatherIcons = WEATHER_ICONS_NIGHT; // Default to Night
+
+			SunMoonData relevantSmd = null;
+			for (SunMoonData smd : mSunMoonData) {
+				if (smd.date == iconDate) {
+					relevantSmd = smd;
+					break;
+				}
+			}
+
+			if (relevantSmd != null) {
+				if (relevantSmd.sunRise == AfSunMoonData.NEVER_RISE) {
+					weatherIcons = WEATHER_ICONS_POLAR; // Polar Night
+				} else if (relevantSmd.sunSet == AfSunMoonData.NEVER_SET) {
+					weatherIcons = WEATHER_ICONS_DAY; // Polar Day
+				} else if (slotCenterTime >= relevantSmd.sunRise && slotCenterTime < relevantSmd.sunSet) {
+					weatherIcons = WEATHER_ICONS_DAY; // Standard Day
+				}
+			}
+
+			// This check ensures we don't try to access an index that doesn't exist
+			// or one that is a placeholder in the array.
+			int iconResourceId = weatherIcons[dataForIcon.weatherIcon - 1];
+			if (iconResourceId == 0) {
+				continue;
+			}
+
+			// Draw the final icon
+			Bitmap weatherIcon = ((BitmapDrawable) Objects.requireNonNull(ResourcesCompat.getDrawable(
+					mContext.getResources(), iconResourceId, null))).getBitmap();
+			canvas.drawBitmap(weatherIcon, null, dest, null);
 		}
-		
 	}
-	
+
 	private PointF interpolateTemperature(long time) {
-		PointData before = null, at = null, after = null;
-		int beforeIndex = -1, atIndex = -1, afterIndex = -1;
-		
-		for (int i = 0; i < mPointData.size(); i++) {
-			PointData p = mPointData.get(i);
-			if (p.time != null && p.temperature != null)
-			{
-				if (	(p.time < time) && // && p.mTime >= mTimeFrom) &&
-						(before == null || p.time > before.time))
-				{
+		PointData before = null;
+		PointData after = null;
+
+		// Find the closest data points before and after the requested time
+		for (PointData p : mPointData) {
+			if (p.time != null && p.temperature != null) {
+				if (p.time <= time && (before == null || p.time > before.time)) {
 					before = p;
-					beforeIndex = i;
 				}
-				if (p.time == time) {
-					at = p;
-					atIndex = i;
-				}
-				if (	(p.time > time) && // && p.mTime <= mTimeTo) &&
-						(after == null || p.time < after.time))
-				{
+				if (p.time >= time && (after == null || p.time < after.time)) {
 					after = p;
-					afterIndex = i;
 				}
 			}
 		}
-		
-		PointData Q1, Q2, Q3, Q4;
-		
-		if (beforeIndex != -1) {
-			if (atIndex == -1 && afterIndex == -1) {
-				return null;
-			}
-			Q2 = before;
-			if (beforeIndex > 0) {
-				Q1 = mPointData.get(beforeIndex - 1);
-			} else {
-				Q1 = Q2;
-			}
-			
-			if (atIndex != -1) {
-				Q3 = at;
-				if (afterIndex != -1) {
-					Q4 = mPointData.get(afterIndex);
-				} else {
-					Q4 = Q3;
-				}
-			} else {
-				Q3 = after;
-				if (afterIndex < mPointData.size() - 1) {
-					Q4 = mPointData.get(afterIndex + 1);
-				} else {
-					Q4 = Q3;
-				}
-			}
-		} else {
-			if (atIndex == -1 || afterIndex == -1) {
-				return null;
-			}
-			
-			Q1 = Q2 = at;
-			Q3 = after;
-			
-			if (afterIndex < mPointData.size() - 1) {
-				Q4 = mPointData.get(afterIndex + 1);
-			} else {
-				Q4 = Q3;
-			}
-		}
 
-		double timeRange = (double)(mTimeTo - mTimeFrom);
-		double qx = (double)(time - mTimeFrom) / timeRange;
-		
-		double q1x = (double)(Q1.time - mTimeFrom) / timeRange;
-		double q2x = (double)(Q2.time - mTimeFrom) / timeRange;
-		double q3x = (double)(Q3.time - mTimeFrom) / timeRange;
-		double q4x = (double)(Q4.time - mTimeFrom) / timeRange;
-
-		qx = Math.max(qx, q2x);
-		qx = Math.min(qx, q3x);
-		
-		double a = -0.5f * q1x + 1.5f * q2x - 1.5f * q3x + 0.5f * q4x;
-		double b = q1x - 2.5f * q2x + 2.0f * q3x - 0.5f * q4x;
-		double c = -0.5f * q1x + 0.5f * q3x;
-		double d = q2x - qx;
-		
-		Double t = findT(a, b, c, d);
-		if (t == null) return null;
-		
-		double QX = a * Math.pow(t, 3.0f) + b * Math.pow(t, 2.0f) + c * t + q2x;
-		double QY = (-0.5f * Q1.temperature + 1.5f * Q2.temperature - 1.5f * Q3.temperature + 0.5f * Q4.temperature) * Math.pow(t, 3.0f)
-				+ (Q1.temperature - 2.5f * Q2.temperature + 2.0f * Q3.temperature - 0.5f * Q4.temperature) * Math.pow(t, 2.0f)
-				+ (0.5f * Q3.temperature - 0.5f * Q1.temperature) * t + Q2.temperature;
-		
-		return new PointF((float)QX, (float)QY);
-	}
-	
-	private Double findT(double a, double b, double c, double d) {
-		CubicResult cubicResult = Cubic.solveReal(a, b, c, d);
-		
-		if (cubicResult == null || cubicResult.roots.length == 0) {
+		// If we can't find points, we can't interpolate.
+		if (before == null && after == null) {
 			return null;
 		}
-		
-		double t = 0.0;
-		double error = Double.MAX_VALUE;
-		
-		for (double root : cubicResult.roots) {
-			double e = Math.abs(root - 0.5);
-			
-			if (e < error) {
-				t = root;
-				error = e;
-			}
+		// If time is outside the known data range, clamp to the nearest point.
+		if (before == null) {
+			return new PointF(0, after.temperature);
 		}
-		
-		t = Math.min(t, 1.0);
-		t = Math.max(t, 0.0);
-		
-		return t;
+		if (after == null) {
+			return new PointF(0, before.temperature);
+		}
+
+		// If the points are the same, just return that point
+		if (before.time.equals(after.time)) {
+			return new PointF(0, before.temperature);
+		}
+
+		// Perform linear interpolation to find the exact temperature at the given time.
+		double t = (double) (time - before.time) / (double) (after.time - before.time);
+		float interpolatedTemp = (float) (before.temperature * (1 - t) + after.temperature * t);
+
+		// The 'x' coordinate in the returned PointF is not used by the new drawWeatherIcons,
+		// but we return the real temperature in 'y'.
+		return new PointF(0, interpolatedTemp);
 	}
-	
+
 	private void setupIntervalData() {
 		ArrayList<IntervalData> intervalData = new ArrayList<>();
 
@@ -1414,95 +1381,35 @@ public class AfDetailedWidget {
 
 		mSunMoonTransitions = transitions;
 	}
-	
+
 	private void setupEpochAndTimes() {
 		Calendar calendar = Calendar.getInstance(mUtcTimeZone);
 		calendar.setTimeInMillis(mTimeNow);
 		truncateHour(calendar);
 		calendar.add(Calendar.HOUR_OF_DAY, 1);
-		
-		long nextHour = calendar.getTimeInMillis();
-		
-		long firstIntervalSampleAfter = Long.MAX_VALUE;
-		
-		for (IntervalData inter : mIntervalData) {
-			if (inter.weatherIcon == null) continue;
-			if (inter.timeFrom > nextHour) {
-				firstIntervalSampleAfter = Math.min(firstIntervalSampleAfter, inter.timeFrom);
-			}
-		}
-		
-		long epoch = Math.min(nextHour, firstIntervalSampleAfter - mNumHoursBetweenSamples * DateUtils.HOUR_IN_MILLIS);
-		
-		long firstPointSample = Long.MAX_VALUE;
-		
-		for (PointData p : mPointData) {
-			if (p.time != null)
-			{
-				firstPointSample = Math.min(firstPointSample, p.time);
-			}
-		}
-		
-		if (firstPointSample != Long.MAX_VALUE) {
-			epoch = Math.max(epoch, firstPointSample);
-		}
-		
-		// Update timeFrom and timeTo to correct values given the epoch
+		long epoch = calendar.getTimeInMillis();
 		calendar.setTimeInMillis(epoch);
 		mTimeFrom = calendar.getTimeInMillis();
 		calendar.add(Calendar.HOUR_OF_DAY, mNumHours);
 		mTimeTo = calendar.getTimeInMillis();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.US);
-		sdf.setTimeZone(mAfLocationInfo.buildTimeZone());
-		
-		Log.d(TAG, mAfLocationInfo.getTitle() + " (" + mAfLocationInfo.buildTimeZone().getDisplayName() + "): " + sdf.format(new Date(mTimeNow)) +
-				" nextHour=" + sdf.format(new Date(nextHour)) +
-				" -> firstIntervalSampleAfter=" + sdf.format(new Date(firstIntervalSampleAfter)) +
-				",firstPointSample=" + sdf.format(new Date(firstPointSample)) +
-				",numHoursBetweenSamples=" + mNumHoursBetweenSamples +
-				" -> timeFrom=" + sdf.format(new Date(mTimeFrom)) +
-				",timeTo=" + sdf.format(new Date(mTimeTo))); 
-	}
-	
-	private void setupSampleTimes() throws AfWidgetDataException {
-		long sampleResolutionHrs = Long.MAX_VALUE;
-		
-		long lastIntervalPos = -1;
-		for (IntervalData inter : mIntervalData) {
-			if (inter.timeFrom != null && inter.timeTo != null && inter.weatherIcon != null) {
-				long intervalPos = (inter.timeFrom + inter.timeTo) / 2;
-				if (lastIntervalPos != -1 && lastIntervalPos != intervalPos) {
-					sampleResolutionHrs = Math.min(sampleResolutionHrs, Math.abs(intervalPos - lastIntervalPos));
-				}
-				lastIntervalPos = intervalPos;
-			}
-		}
-		
-		sampleResolutionHrs = Math.round((double)sampleResolutionHrs / (double)DateUtils.HOUR_IN_MILLIS);
 
-		if (sampleResolutionHrs > 6) {
-			sampleResolutionHrs = Long.MAX_VALUE;
-			long lastPointPos = -1;
-			for (PointData p : mPointData) {
-				if (p.time != null)
-				{
-					if (lastPointPos != -1 && lastPointPos != p.time) {
-						sampleResolutionHrs = Math.min(sampleResolutionHrs, Math.abs(p.time - lastPointPos));
-					}
-					lastPointPos = p.time;
-				}
-			}
-			sampleResolutionHrs = Math.round((double)sampleResolutionHrs / (double)DateUtils.HOUR_IN_MILLIS);
-		}
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm", Locale.US);
+		sdf.setTimeZone(mAfLocationInfo.buildTimeZone());
+
+		Log.d(TAG, "New graph time range. From: " + sdf.format(new Date(mTimeFrom)) + ", To: " + sdf.format(new Date(mTimeTo)));
+	}
+
+	private void setupSampleTimes() throws AfWidgetDataException {
+		long sampleResolutionHrs = 2;
+		Log.d(TAG, "Forcing sample resolution to " + sampleResolutionHrs + "hrs for correct icon and label layout.");
+
 		if ((sampleResolutionHrs < 1) || (sampleResolutionHrs > mNumHours / 2)) {
 			throw new AfWidgetDataException("Invalid sample resolution");
 		}
-		
+
 		mNumHoursBetweenSamples = (int)sampleResolutionHrs;
 	}
-	
+
 	private void setupTimesAndPointData() {
 		// Set up time variables
 		Calendar calendar = Calendar.getInstance(mUtcTimeZone);

@@ -73,25 +73,52 @@ public class AfUtils {
 		R.drawable.weather_icon_fair_day,
 		R.drawable.weather_icon_partlycloudy_day,
 		R.drawable.weather_icon_cloudy,
-		R.drawable.weather_icon_lightrainshowers_day,
-		R.drawable.weather_icon_lightrainshowersandthunder_day,
-		R.drawable.weather_icon_lightsleetshowers_day,
-		R.drawable.weather_icon_lightsnowshowers_day,
-		R.drawable.weather_icon_lightrain,
+		R.drawable.weather_icon_rainshowers_day,
+		R.drawable.weather_icon_rainshowersandthunder_day,
+		R.drawable.weather_icon_sleetshowers_day,
+		R.drawable.weather_icon_snowshowers_day,
 		R.drawable.weather_icon_rain,
-		R.drawable.weather_icon_lightrainandthunder,
-		R.drawable.weather_icon_lightsleet,
-		R.drawable.weather_icon_lightsnow,
-		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_heavyrain,
+		R.drawable.weather_icon_heavyrainandthunder,
+		R.drawable.weather_icon_sleet,
+		R.drawable.weather_icon_snow,
+		R.drawable.weather_icon_snowandthunder,
 		R.drawable.weather_icon_fog,
-		R.drawable.weather_icon_clearsky_day, // invalid for day
-		R.drawable.weather_icon_fair_day, // invalid for day
-		R.drawable.weather_icon_lightrainshowers_day, // invalid for day
-		R.drawable.weather_icon_lightsnowshowers_day, // invalid for day
-		R.drawable.weather_icon_lightssleetshowersandthunder_day,
-		R.drawable.weather_icon_lightsnowandthunder,
+		0, // 16 placeholder
+		0, // 17 placeholder
+		0, // 18 placeholder
+		0, // 19 placeholder
+		R.drawable.weather_icon_sleetshowersandthunder_day,
+		R.drawable.weather_icon_snowshowersandthunder_day,
+		R.drawable.weather_icon_rainandthunder,
+		R.drawable.weather_icon_sleetandthunder,
+		R.drawable.weather_icon_lightrainshowersandthunder_day,
+		R.drawable.weather_icon_heavyrainshowersandthunder_day,
+		R.drawable.weather_icon_lightsleetshowersandthunder_day,
+		R.drawable.weather_icon_heavysleetshowersandthunder_day,
+		R.drawable.weather_icon_lightsnowshowersandthunder_day,
+		R.drawable.weather_icon_heavysnowshowersandthunder_day,
 		R.drawable.weather_icon_lightrainandthunder,
-		R.drawable.weather_icon_lightsleetandthunder
+		R.drawable.weather_icon_lightsleetandthunder,
+		R.drawable.weather_icon_heavysleetandthunder,
+		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_heavysnowandthunder,
+		0, // 35 placeholder
+		0, // 36 placeholder
+		0, // 37 placeholder
+		0, // 38 placeholder
+		0, // 39 placeholder
+		R.drawable.weather_icon_lightrainshowers_day,
+		R.drawable.weather_icon_heavyrainshowers_day,
+		R.drawable.weather_icon_lightsleetshowers_day,
+		R.drawable.weather_icon_heavysleetshowers_day,
+		R.drawable.weather_icon_lightsnowshowers_day,
+		R.drawable.weather_icon_heavysnowshowers_day,
+		R.drawable.weather_icon_lightrain,
+		R.drawable.weather_icon_lightsleet,
+		R.drawable.weather_icon_heavysleet,
+		R.drawable.weather_icon_lightsnow,
+		R.drawable.weather_icon_heavysnow,
 	};
 
 	public static final int[] WEATHER_ICONS_NIGHT = {
@@ -99,118 +126,153 @@ public class AfUtils {
 		R.drawable.weather_icon_fair_night,
 		R.drawable.weather_icon_partlycloudy_night,
 		R.drawable.weather_icon_cloudy,
-		R.drawable.weather_icon_lightrainshowers_night,
-		R.drawable.weather_icon_lightrainshowersandthunder_night,
-		R.drawable.weather_icon_lightsleetshowers_night,
-		R.drawable.weather_icon_lightsnowshowers_night,
-		R.drawable.weather_icon_lightrain,
+		R.drawable.weather_icon_rainshowers_night,
+		R.drawable.weather_icon_rainshowersandthunder_night,
+		R.drawable.weather_icon_sleetshowers_night,
+		R.drawable.weather_icon_snowshowers_night,
 		R.drawable.weather_icon_rain,
-		R.drawable.weather_icon_lightrainandthunder,
-		R.drawable.weather_icon_lightsleet,
-		R.drawable.weather_icon_lightsnow,
-		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_heavyrain,
+		R.drawable.weather_icon_heavyrainandthunder,
+		R.drawable.weather_icon_sleet,
+		R.drawable.weather_icon_snow,
+		R.drawable.weather_icon_snowandthunder,
 		R.drawable.weather_icon_fog,
-		R.drawable.weather_icon_clearsky_night, // invalid for night
-		R.drawable.weather_icon_fair_night, // invalid for night
-		R.drawable.weather_icon_lightrainshowers_night, // invalid for night
-		R.drawable.weather_icon_lightsnowshowers_night, // invalid for night
-		R.drawable.weather_icon_lightssleetshowersandthunder_night,
-		R.drawable.weather_icon_lightssnowshowersandthunder_night,
+		0, // 16 placeholder
+		0, // 17 placeholder
+		0, // 18 placeholder
+		0, // 19 placeholder
+		R.drawable.weather_icon_sleetshowersandthunder_night,
+		R.drawable.weather_icon_snowshowersandthunder_night,
+		R.drawable.weather_icon_rainandthunder,
+		R.drawable.weather_icon_sleetandthunder,
+		R.drawable.weather_icon_lightrainshowersandthunder_night,
+		R.drawable.weather_icon_heavyrainshowersandthunder_night,
+		R.drawable.weather_icon_lightsleetshowersandthunder_night,
+		R.drawable.weather_icon_heavysleetshowersandthunder_night,
+		R.drawable.weather_icon_lightsnowshowersandthunder_night,
+		R.drawable.weather_icon_heavysnowshowersandthunder_night,
 		R.drawable.weather_icon_lightrainandthunder,
-		R.drawable.weather_icon_lightsleetandthunder
+		R.drawable.weather_icon_lightsleetandthunder,
+		R.drawable.weather_icon_heavysleetandthunder,
+		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_heavysnowandthunder,
+		0, // 35 placeholder
+		0, // 36 placeholder
+		0, // 37 placeholder
+		0, // 38 placeholder
+		0, // 39 placeholder
+		R.drawable.weather_icon_lightrainshowers_night,
+		R.drawable.weather_icon_heavyrainshowers_night,
+		R.drawable.weather_icon_lightsleetshowers_night,
+		R.drawable.weather_icon_heavysleetshowers_night,
+		R.drawable.weather_icon_lightsnowshowers_night,
+		R.drawable.weather_icon_heavysnowshowers_night,
+		R.drawable.weather_icon_lightrain,
+		R.drawable.weather_icon_lightsleet,
+		R.drawable.weather_icon_heavysleet,
+		R.drawable.weather_icon_lightsnow,
+		R.drawable.weather_icon_heavysnow,
 	};
 
 	public static final int[] WEATHER_ICONS_POLAR = {
 		R.drawable.weather_icon_clearsky_polartwilight,
-		R.drawable.weather_icon_fair_day,
 		R.drawable.weather_icon_fair_polartwilight,
+		R.drawable.weather_icon_partlycloudy_polartwilight,
 		R.drawable.weather_icon_cloudy,
-		R.drawable.weather_icon_lightrainshowers_polartwilight,
-		R.drawable.weather_icon_lightrainshowersandthunder_day,
-		R.drawable.weather_icon_lightsleetshowers_day,
-		R.drawable.weather_icon_lightsnowshowers_polartwilight,
-		R.drawable.weather_icon_lightrain,
+		R.drawable.weather_icon_rainshowers_polartwilight,
+		R.drawable.weather_icon_rainshowersandthunder_polartwilight,
+		R.drawable.weather_icon_sleetshowers_polartwilight,
+		R.drawable.weather_icon_snowshowers_polartwilight,
 		R.drawable.weather_icon_rain,
-		R.drawable.weather_icon_lightrainandthunder,
-		R.drawable.weather_icon_lightsleet,
-		R.drawable.weather_icon_lightsnow,
-		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_heavyrain,
+		R.drawable.weather_icon_heavyrainandthunder,
+		R.drawable.weather_icon_sleet,
+		R.drawable.weather_icon_snow,
+		R.drawable.weather_icon_snowandthunder,
 		R.drawable.weather_icon_fog,
-		R.drawable.weather_icon_clearsky_polartwilight,
-		R.drawable.weather_icon_fair_day,
-		R.drawable.weather_icon_lightrainshowers_polartwilight,
-		R.drawable.weather_icon_lightsnowshowers_polartwilight,
-		R.drawable.weather_icon_lightssleetshowersandthunder_polartwilight,
-		R.drawable.weather_icon_lightssnowshowersandthunder_polartwilight,
+		0, // 16 placeholder
+		0, // 17 placeholder
+		0, // 18 placeholder
+		0, // 19 placeholder
+		R.drawable.weather_icon_sleetshowersandthunder_polartwilight,
+		R.drawable.weather_icon_snowshowersandthunder_polartwilight,
+		R.drawable.weather_icon_rainandthunder,
+		R.drawable.weather_icon_sleetandthunder,
+		R.drawable.weather_icon_lightrainshowersandthunder_polartwilight,
+		R.drawable.weather_icon_heavyrainshowersandthunder_polartwilight,
+		R.drawable.weather_icon_lightsleetshowersandthunder_polartwilight,
+		R.drawable.weather_icon_heavysleetshowersandthunder_polartwilight,
+		R.drawable.weather_icon_lightsnowshowersandthunder_polartwilight,
+		R.drawable.weather_icon_heavysnowshowersandthunder_polartwilight,
 		R.drawable.weather_icon_lightrainandthunder,
-		R.drawable.weather_icon_lightsleetandthunder
+		R.drawable.weather_icon_lightsleetandthunder,
+		R.drawable.weather_icon_heavysleetandthunder,
+		R.drawable.weather_icon_lightsnowandthunder,
+		R.drawable.weather_icon_heavysnowandthunder,
+		0, // 35 placeholder
+		0, // 36 placeholder
+		0, // 37 placeholder
+		0, // 38 placeholder
+		0, // 39 placeholder
+		R.drawable.weather_icon_lightrainshowers_polartwilight,
+		R.drawable.weather_icon_heavyrainshowers_polartwilight,
+		R.drawable.weather_icon_lightsleetshowers_polartwilight,
+		R.drawable.weather_icon_heavysleetshowers_polartwilight,
+		R.drawable.weather_icon_lightsnowshowers_polartwilight,
+		R.drawable.weather_icon_heavysnowshowers_polartwilight,
+		R.drawable.weather_icon_lightrain,
+		R.drawable.weather_icon_lightsleet,
+		R.drawable.weather_icon_heavysleet,
+		R.drawable.weather_icon_lightsnow,
+		R.drawable.weather_icon_heavysnow,
 	};
-	
-	public static final int WEATHER_ICON_DAY_SUN = 1;
-	public static final int WEATHER_ICON_NIGHT_SUN = 1;
-	public static final int WEATHER_ICON_POLAR_SUN = 1;
-	public static final int WEATHER_ICON_DAY_POLAR_LIGHTCLOUD = 2;
-	public static final int WEATHER_ICON_NIGHT_LIGHTCLOUD = 2;
-	public static final int WEATHER_ICON_DAY_PARTLYCLOUD = 3;
-	public static final int WEATHER_ICON_NIGHT_PARTLYCLOUD = 3;
-	public static final int WEATHER_ICON_POLAR_PARTLYCLOUD = 3;
-	public static final int WEATHER_ICON_CLOUD = 4;
-	public static final int WEATHER_ICON_DAY_LIGHTRAINSUN = 5;
-	public static final int WEATHER_ICON_NIGHT_LIGHTRAINSUN = 5;
-	public static final int WEATHER_ICON_POLAR_LIGHTRAINSUN = 5;
-	public static final int WEATHER_ICON_DAY_POLAR_LIGHTRAINTHUNDERSUN = 6;
-	public static final int WEATHER_ICON_NIGHT_LIGHTRAINTHUNDERSUN = 6;
-	public static final int WEATHER_ICON_DAY_POLAR_SLEETSUN = 7;
-	public static final int WEATHER_ICON_NIGHT_SLEETSUN = 7;
-	public static final int WEATHER_ICON_DAY_SNOWSUN = 8;
-	public static final int WEATHER_ICON_NIGHT_SNOWSUN = 8;
-	public static final int WEATHER_ICON_POLAR_SNOWSUN = 8;
-	public static final int WEATHER_ICON_LIGHTRAIN = 9;
-	public static final int WEATHER_ICON_RAIN = 10;
-	public static final int WEATHER_ICON_RAINTHUNDER = 11;
+
+	public static final int WEATHER_ICON_CLEARSKY = 1;
+	public static final int WEATHER_ICON_FAIR = 2;
+	public static final int WEATHER_ICON_PARTLYCLOUD = 3;
+	public static final int WEATHER_ICON_CLOUDY = 4;
+	public static final int WEATHER_ICON_RAINSHOWERS = 5;
+	public static final int WEATHER_ICON_RAINSHOWERANDTHUNDER = 6;
+	public static final int WEATHER_ICON_SLEETSHOWERS = 7;
+	public static final int WEATHER_ICON_SNOWSHOWERS = 8;
+	public static final int WEATHER_ICON_RAIN = 9;
+	public static final int WEATHER_ICON_HEAVYRAIN = 10;
+	public static final int WEATHER_ICON_HEAVYRAINANDTHUNDER = 11;
 	public static final int WEATHER_ICON_SLEET = 12;
 	public static final int WEATHER_ICON_SNOW = 13;
-	public static final int WEATHER_ICON_SNOWTHUNDER = 14;
+	public static final int WEATHER_ICON_SNOWANDTHUNDER = 14;
 	public static final int WEATHER_ICON_FOG = 15;
-	//public static final int WEATHER_ICON_POLAR_SUN = 16;
-	//public static final int WEATHER_ICON_DAY_POLAR_LIGHTCLOUD = 17;
-	//public static final int WEATHER_ICON_POLAR_LIGHTRAINSUN = 18;
-	//public static final int WEATHER_ICON_POLAR_SNOWSUN = 19;
-	public static final int WEATHER_ICON_DAY_SLEETSUNTHUNDER = 20;
-	public static final int WEATHER_ICON_DAY_SNOWSUNTHUNDER = 21;
-	public static final int WEATHER_ICON_LIGHTRAINTHUNDER = 22;
-	public static final int WEATHER_ICON_SLEETTHUNDER = 23;
-	
-	public static final int BORDER_COLOR = 0;
-	public static final int BACKGROUND_COLOR = 1;
-	public static final int TEXT_COLOR = 2;
-	public static final int PATTERN_COLOR = 3;
-	public static final int DAY_COLOR = 4;
-	public static final int NIGHT_COLOR = 5;
-	public static final int GRID_COLOR = 6;
-	public static final int GRID_OUTLINE_COLOR = 7;
-	public static final int MAX_RAIN_COLOR = 8;
-	public static final int MIN_RAIN_COLOR = 9;
-	public static final int ABOVE_FREEZING_COLOR = 10;
-	public static final int BELOW_FREEZING_COLOR = 11;
-	
-	public static final int TOP_TEXT_NEVER = 1;
-	public static final int TOP_TEXT_LANDSCAPE = 2;
-	public static final int TOP_TEXT_PORTRAIT = 3;
-	public static final int TOP_TEXT_ALWAYS = 4;
-	
+	public static final int WEATHER_ICON_SLEETSHOWERSANDTHUNDER = 20;
+	public static final int WEATHER_ICON_SNOWSHOWERSANDTHUNDER = 21;
+	public static final int WEATHER_ICON_RAINANDTHUNDER = 22;
+	public static final int WEATHER_ICON_SLEETANDTHUNDER = 23;
+	public static final int WEATHER_ICON_LIGHTRAINSHOWERSANDTHUNDER = 24;
+	public static final int WEATHER_ICON_HEAVYRAINSHOWERSANDTHUNDER = 25;
+	public static final int WEATHER_ICON_LIGHTSLEETSHOWERSANDTHUNDER = 26;
+	public static final int WEATHER_ICON_HEAVYSLEETSHOWERSANDTHUNDER = 27;
+	public static final int WEATHER_ICON_LIGHTSNOWSHOWERSANDTHUNDER = 28;
+	public static final int WEATHER_ICON_HEAVYSNOWSHOWERSANDTHUNDER = 29;
+	public static final int WEATHER_ICON_LIGHTRAINANDTHUNDER = 30;
+	public static final int WEATHER_ICON_LIGHTSLEETANDTHUNDER = 31;
+	public static final int WEATHER_ICON_HEAVYSLEETANDTHUNDER = 32;
+	public static final int WEATHER_ICON_LIGHTSNOWANDTHUNDER = 33;
+	public static final int WEATHER_ICON_HEAVYSNOWANDTHUNDER = 34;
+	public static final int WEATHER_ICON_LIGHTRAINSHOWERS = 40;
+	public static final int WEATHER_ICON_HEAVYRAINSHOWERS = 41;
+	public static final int WEATHER_ICON_LIGHTSLEETSHOWERS = 42;
+	public static final int WEATHER_ICON_HEAVYSLEETSHOWERS = 43;
+	public static final int WEATHER_ICON_LIGHTSNOWSHOWERS = 44;
+	public static final int WEATHER_ICON_HEAVYSNOWSHOWERS = 45;
+	public static final int WEATHER_ICON_LIGHTRAIN = 46;
+	public static final int WEATHER_ICON_LIGHTSLEET = 47;
+	public static final int WEATHER_ICON_HEAVYSLEET = 48;
+	public static final int WEATHER_ICON_LIGHTSNOW = 49;
+	public static final int WEATHER_ICON_HEAVYSNOW = 50;
+
 	private AfUtils() {
 		
 	}
 	
-	public final static int even(int value) {
-		return (value % 2 != 0) ? value - 1 : value;
-	}
-	
-	public final static int odd(int value) {
-		return (value % 2 != 0) ? value : value - 1;
-	}
-
 	public final static int clamp(int value, int min, int max) {
 		int result = value;
 		if (min == max) {
