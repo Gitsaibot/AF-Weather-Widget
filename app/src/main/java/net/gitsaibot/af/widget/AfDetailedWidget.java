@@ -264,58 +264,57 @@ public class AfDetailedWidget {
 		Float[] rainValues = new Float[mNumHorizontalCells];
 		Float[] rainMinValues = new Float[mNumHorizontalCells];
 		Float[] rainMaxValues = new Float[mNumHorizontalCells];
-		
+
 		int[] pointers = new int[mNumHorizontalCells];
 		int[] precision = new int[mNumHorizontalCells];
-		
+
 		Arrays.fill(pointers, -1);
-		
+
 		for (int dataIndex = 0; dataIndex < mIntervalData.size(); dataIndex++) {
 			IntervalData d = mIntervalData.get(dataIndex);
 			if (d.timeFrom.equals(d.timeTo)) continue;
-			
+
 			int startCell = (int)Math.floor((float)mNumHorizontalCells *
 					(float)(d.timeFrom - mTimeFrom) / (float)(mTimeTo - mTimeFrom));
-			
+
 			if (startCell >= mNumHorizontalCells) continue;
-			
+
 			float endCellPos = (float)mNumHorizontalCells *
 					(float)(d.timeTo - mTimeFrom) / (float)(mTimeTo - mTimeFrom);
 			int endCell = (endCellPos == Math.round(endCellPos))
 					? (int)endCellPos - 1 : (int)Math.ceil(endCellPos);
-			
+
 			startCell = lcap(startCell, 0);
 			endCell = hcap(endCell, mNumHorizontalCells - 1);
-			
+
 			for (int cellIndex = startCell; cellIndex <= endCell; cellIndex++) {
 				if (d.rainValue != null)
 				{
 					if ((pointers[cellIndex] == -1) ||
-						(d.getLengthInHours() < precision[cellIndex]))
+							(d.getLengthInHours() < precision[cellIndex]))
 					{
 						rainValues[cellIndex] = d.rainValue;
 						rainMinValues[cellIndex] = d.rainMinValue;
 						rainMaxValues[cellIndex] = d.rainMaxValue;
-						
+
 						precision[cellIndex] = d.getLengthInHours();
 						pointers[cellIndex] = dataIndex;
 					}
 				}
 			}
 		}
-		
+
 		RectF rainRect = new RectF();
-		
+
 		float precipitationScale = mWidgetSettings.getPrecipitationScaling();
-		
+
 		for (int cellIndex = 0; cellIndex < mNumHorizontalCells;)
 		{
-			Float lowVal, highVal = null;
-			
-			if (rainMinValues[cellIndex] != null && rainMaxValues[cellIndex] != null)
+			Float lowVal, highVal;
+
+			if (rainMinValues[cellIndex] != null)
 			{
 				lowVal = rainMinValues[cellIndex];
-				highVal = rainMaxValues[cellIndex];
 			}
 			else if (rainValues[cellIndex] != null)
 			{
@@ -326,9 +325,11 @@ public class AfDetailedWidget {
 				cellIndex++;
 				continue;
 			}
-			
-			lowVal = hcap(lowVal / precipitationScale, mNumVerticalCells);
-			
+
+			highVal = rainMaxValues[cellIndex];
+
+			float cappedLowVal = hcap(lowVal / precipitationScale, mNumVerticalCells);
+
 			int endCellIndex = cellIndex + 1;
 			while (	(endCellIndex < mNumHorizontalCells) &&
 					(pointers[cellIndex] == pointers[endCellIndex]) &&
@@ -336,30 +337,30 @@ public class AfDetailedWidget {
 			{
 				endCellIndex++;
 			}
-			
+
 			rainRect.set(
 					(float)(mGraphRect.left + Math.round(cellIndex * mCellSizeX) + 1.0),
-					(float)(mGraphRect.bottom - lowVal * mCellSizeY),
+					(float)(mGraphRect.bottom - cappedLowVal * mCellSizeY),
 					(float)(mGraphRect.left + Math.round(endCellIndex * mCellSizeX)),
 					(float)(mGraphRect.bottom));
 			minRainPath.addRect(rainRect, Path.Direction.CCW);
-			
+
 			if (highVal != null)
 			{
-				highVal = hcap(highVal / precipitationScale, mNumVerticalCells);
-				
-				if (highVal > lowVal && highVal < mNumVerticalCells)
+				float cappedHighVal = hcap(highVal / precipitationScale, mNumVerticalCells);
+
+				if (cappedHighVal > cappedLowVal)
 				{
 					rainRect.bottom = rainRect.top;
-					rainRect.top = (float)(mGraphRect.bottom - highVal * mCellSizeY);
+					rainRect.top = (float)(mGraphRect.bottom - cappedHighVal * mCellSizeY);
 					maxRainPath.addRect(rainRect, Path.Direction.CCW);
 				}
 			}
-			
+
 			cellIndex = endCellIndex;
 		}
 	}
-	
+
 	private PointF[] buildTemperaturePointArray(
 			ArrayList<PointData> pointData,
 			long timeIntervalStart, long timeIntervalEnd,
