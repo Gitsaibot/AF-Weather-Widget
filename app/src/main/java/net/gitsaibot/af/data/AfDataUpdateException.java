@@ -7,7 +7,7 @@ public class AfDataUpdateException extends Exception {
 		UNSPECIFIED,
 		UNKNOWN,
 		PARSE_ERROR,
-		RATE_LIMITED,
+		RATE_LIMITED, UNSUPPORTED_LOCATION,
 	}
 
 	public Reason reason;
