@@ -208,20 +208,23 @@ public class AfMetWeatherData implements AfDataSource {
 					cvInterval.put(AfIntervalDataForecastColumns.TIME_TO, from + (60 * 60 * 1000));
 
 					float precipitationAmount = 0.0f;
+					Float precipitationMin = null;
 					Float precipitationMax = null;
 
 					if (ts.data.next1Hours.details != null) {
 						if (ts.data.next1Hours.details.precipitation_amount != null) {
 							precipitationAmount = ts.data.next1Hours.details.precipitation_amount;
 						}
+						precipitationMin = ts.data.next1Hours.details.precipitation_amount_min;
 						precipitationMax = ts.data.next1Hours.details.precipitation_amount_max;
 					}
 
 					cvInterval.put(AfIntervalDataForecastColumns.RAIN_VALUE, precipitationAmount);
-					cvInterval.put(AfIntervalDataForecastColumns.RAIN_MINVAL, precipitationAmount);
 
-					// The top of the diagonals (RAIN_MAXVAL) is the maximum potential amount.
-					float rainMaxVal = (precipitationMax != null && precipitationMax > precipitationAmount) ? precipitationMax : precipitationAmount;
+					float rainMinVal = (precipitationMin != null) ? precipitationMin : precipitationAmount;
+					cvInterval.put(AfIntervalDataForecastColumns.RAIN_MINVAL, rainMinVal);
+
+					float rainMaxVal = (precipitationMax != null && precipitationMax > rainMinVal) ? precipitationMax : rainMinVal;
 					cvInterval.put(AfIntervalDataForecastColumns.RAIN_MAXVAL, rainMaxVal);
 
 					if (ts.data.next1Hours.summary != null && ts.data.next1Hours.summary.symbol_code != null) {
@@ -308,18 +311,12 @@ public class AfMetWeatherData implements AfDataSource {
 	}
 
 	private static class InstantDetails {
-		@SerializedName("air_pressure_at_sea_level")
-		public Float air_pressure_at_sea_level;
 		@SerializedName("air_temperature")
 		public Float air_temperature;
-		@SerializedName("cloud_area_fraction")
-		public Float cloud_area_fraction;
 		@SerializedName("relative_humidity")
 		public Float relative_humidity;
-		@SerializedName("wind_from_direction")
-		public Float wind_from_direction;
-		@SerializedName("wind_speed")
-		public Float wind_speed;
+		@SerializedName("air_pressure_at_sea_level")
+		public Float air_pressure_at_sea_level;
 	}
 
 	private static class NextHoursData {
@@ -327,19 +324,19 @@ public class AfMetWeatherData implements AfDataSource {
 		public Summary summary;
 		@SerializedName("details")
 		public Details details;
+	}
 
-		private static class Summary {
-			@SerializedName("symbol_code")
-			public String symbol_code;
-		}
+	private static class Summary {
+		@SerializedName("symbol_code")
+		public String symbol_code;
+	}
 
-		private static class Details {
-			@SerializedName("precipitation_amount")
-			public Float precipitation_amount;
-			@SerializedName("precipitation_amount_min")
-			public Float precipitation_amount_min;
-			@SerializedName("precipitation_amount_max")
-			public Float precipitation_amount_max;
-		}
+	private static class Details {
+		@SerializedName("precipitation_amount")
+		public Float precipitation_amount;
+		@SerializedName("precipitation_amount_min")
+		public Float precipitation_amount_min;
+		@SerializedName("precipitation_amount_max")
+		public Float precipitation_amount_max;
 	}
 }

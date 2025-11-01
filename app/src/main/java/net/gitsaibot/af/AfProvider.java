@@ -302,7 +302,7 @@ public class AfProvider extends ContentProvider {
 //		public static final String PRECIPITATION_UNITS = "precipitationUnits";
 		public static final int PRECIPITATION_UNITS_MM = 1;
 		public static final int PRECIPITATION_UNITS_INCHES = 2;
-//		
+
 //		public static final String PRECIPITATION_SCALE = "precipitationScale";
 //		
 //		public static final String BACKGROUND_COLOR = "backgroundColor";
@@ -644,13 +644,10 @@ public class AfProvider extends ContentProvider {
 			case AIXWIDGETS_ID -> {
 				return AfWidgets.CONTENT_ITEM_TYPE;
 			}
-			case AIXWIDGETS_ID_SETTINGS -> {
+			case AIXWIDGETS_ID_SETTINGS, AIXWIDGETSETTINGS, AIXVIEWS_ID_SETTINGS, AIXVIEWSETTINGS -> {
 				return AfWidgetSettingsDatabase.CONTENT_TYPE;
 			}
-			case AIXWIDGETSETTINGS -> {
-				return AfWidgetSettingsDatabase.CONTENT_TYPE;
-			}
-			case AIXWIDGETSETTINGS_ID -> {
+            case AIXWIDGETSETTINGS_ID, AIXVIEWSETTINGS_ID -> {
 				return AfWidgetSettingsDatabase.CONTENT_ITEM_TYPE;
 			}
 			case AIXVIEWS -> {
@@ -659,52 +656,31 @@ public class AfProvider extends ContentProvider {
 			case AIXVIEWS_ID -> {
 				return AfViews.CONTENT_ITEM_TYPE;
 			}
-			case AIXVIEWS_ID_SETTINGS -> {
-				return AfViewSettings.CONTENT_TYPE;
-			}
-			case AIXVIEWS_LOCATION -> {
+            case AIXVIEWS_LOCATION, AIXLOCATIONS_ID -> {
 				return AfLocations.CONTENT_ITEM_TYPE;
 			}
-			case AIXVIEWSETTINGS -> {
-				return AfViewSettings.CONTENT_TYPE;
-			}
-			case AIXVIEWSETTINGS_ID -> {
-				return AfViewSettings.CONTENT_ITEM_TYPE;
-			}
-			case AIXLOCATIONS -> {
+            case AIXLOCATIONS -> {
 				return AfLocations.CONTENT_TYPE;
 			}
-			case AIXLOCATIONS_ID -> {
-				return AfLocations.CONTENT_ITEM_TYPE;
-			}
-			case AIXLOCATIONS_POINTDATAFORECASTS -> {
+            case AIXLOCATIONS_POINTDATAFORECASTS, AIXPOINTDATAFORECASTS_ID -> {
 				return AfPointDataForecasts.CONTENT_ITEM_TYPE;
 			}
-			case AIXLOCATIONS_INTERVALDATAFORECASTS -> {
+			case AIXLOCATIONS_INTERVALDATAFORECASTS, AIXINTERVALDATAFORECASTS_ID -> {
 				return AfIntervalDataForecasts.CONTENT_ITEM_TYPE;
 			}
-			case AIXLOCATIONS_SUNMOONDATA -> {
+			case AIXLOCATIONS_SUNMOONDATA, AIXSUNMOONDATA_ID -> {
 				return AfSunMoonData.CONTENT_ITEM_TYPE;
 			}
 			case AIXPOINTDATAFORECASTS -> {
 				return AfPointDataForecasts.CONTENT_TYPE;
 			}
-			case AIXPOINTDATAFORECASTS_ID -> {
-				return AfPointDataForecasts.CONTENT_ITEM_TYPE;
-			}
-			case AIXINTERVALDATAFORECASTS -> {
+            case AIXINTERVALDATAFORECASTS -> {
 				return AfIntervalDataForecasts.CONTENT_TYPE;
 			}
-			case AIXINTERVALDATAFORECASTS_ID -> {
-				return AfIntervalDataForecasts.CONTENT_ITEM_TYPE;
-			}
-			case AIXSUNMOONDATA -> {
+            case AIXSUNMOONDATA -> {
 				return AfSunMoonData.CONTENT_TYPE;
 			}
-			case AIXSUNMOONDATA_ID -> {
-				return AfSunMoonData.CONTENT_ITEM_TYPE;
-			}
-			case AIXRENDER -> {
+            case AIXRENDER -> {
 				return " ";
 			}
 		}
@@ -985,15 +961,17 @@ public class AfProvider extends ContentProvider {
 				final String start = uri.getQueryParameter("start");
 				final String end = uri.getQueryParameter("end");
 
+				String timeAddedSubQuery = " AND " + AfPointDataForecasts.TIME_ADDED + " = (SELECT MAX(" + AfPointDataForecasts.TIME_ADDED + ") FROM " + TABLE_AIXPOINTDATAFORECASTS + " WHERE " + AfPointDataForecasts.LOCATION + " = ?)";
+
 				if (start != null && end != null) {
 					qbSelection = AfPointDataForecasts.LOCATION + "=? AND "
 							+ AfPointDataForecasts.TIME + ">=? AND "
-							+ AfPointDataForecasts.TIME + "<=?";
-					qbSelectionArgs = new String[]{locationId, start, end};
+							+ AfPointDataForecasts.TIME + "<=?" + timeAddedSubQuery;
+					qbSelectionArgs = new String[]{locationId, start, end, locationId};
 					qbSortOrder = AfPointDataForecasts.TIME + " ASC";
 				} else {
-					qbSelection = AfPointDataForecasts.LOCATION + "=?";
-					qbSelectionArgs = new String[]{locationId};
+					qbSelection = AfPointDataForecasts.LOCATION + "=?" + timeAddedSubQuery;
+					qbSelectionArgs = new String[]{locationId, locationId};
 				}
 
 			}
@@ -1005,17 +983,19 @@ public class AfProvider extends ContentProvider {
 				final String start = uri.getQueryParameter("start");
 				final String end = uri.getQueryParameter("end");
 
+				String timeAddedSubQuery = " AND " + AfIntervalDataForecasts.TIME_ADDED + " = (SELECT MAX(" + AfIntervalDataForecasts.TIME_ADDED + ") FROM " + TABLE_AIXINTERVALDATAFORECASTS + " WHERE " + AfIntervalDataForecasts.LOCATION + " = ?)";
+
 				if (start != null && end != null) {
 					qbSelection = AfIntervalDataForecasts.LOCATION + "=? AND "
 							+ AfIntervalDataForecasts.TIME_TO + ">? AND "
-							+ AfIntervalDataForecasts.TIME_FROM + "<?";
-					qbSelectionArgs = new String[]{locationId, start, end};
+							+ AfIntervalDataForecasts.TIME_FROM + "<?" + timeAddedSubQuery;
+					qbSelectionArgs = new String[]{locationId, start, end, locationId};
 					qbSortOrder = '(' + AfIntervalDataForecasts.TIME_TO + '-' +
 							AfIntervalDataForecasts.TIME_FROM + ") ASC," +
 							AfIntervalDataForecasts.TIME_FROM + " ASC";
 				} else {
-					qbSelection = AfIntervalDataForecasts.LOCATION + "=?";
-					qbSelectionArgs = new String[]{locationId};
+					qbSelection = AfIntervalDataForecasts.LOCATION + "=?" + timeAddedSubQuery;
+					qbSelectionArgs = new String[]{locationId, locationId};
 				}
 
 			}
