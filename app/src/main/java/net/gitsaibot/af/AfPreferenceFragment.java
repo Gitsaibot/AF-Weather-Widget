@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import net.gitsaibot.af.location.AfLocationSelectionActivity;
 import net.gitsaibot.af.util.AfLocationInfo;
 import net.gitsaibot.af.util.AfWidgetInfo;
 

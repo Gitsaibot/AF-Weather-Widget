@@ -32,7 +32,7 @@
 		    	android:windowSoftInputMode="stateHidden|adjustPan"
 		    	android:excludeFromRecents="true" />
         
-        <activity android:name="net.gitsaibot.af.AfLocationSelectionActivity"
+        <activity android:name="net.gitsaibot.af.location.AfLocationSelectionActivity"
         		android:label="@string/location_settings_title"
         		android:taskAffinity="net.gitsaibot.af.configure"
         		android:windowSoftInputMode="stateHidden|adjustPan"
