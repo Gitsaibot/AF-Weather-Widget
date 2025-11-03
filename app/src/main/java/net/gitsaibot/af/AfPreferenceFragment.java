@@ -152,16 +152,16 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
                 Uri widgetUri = mAfWidgetInfo.getWidgetUri();
 
                 if (isProviderModified || globalSettingModified) {
-                    AfService.enqueueWork(
+                    AfWorkManager.enqueueWork(
                             mContext,
                             new Intent(isProviderModified
-                                    ? AfService.ACTION_UPDATE_ALL_PROVIDER_CHANGE
-                                    : AfService.ACTION_UPDATE_ALL,
-                                    widgetUri, mContext, AfService.class));
+                                    ? AfWorker.ACTION_UPDATE_ALL_PROVIDER_CHANGE
+                                    : AfWorker.ACTION_UPDATE_ALL)
+                                    .setData(widgetUri));
                 } else {
-                    AfService.enqueueWork(
+                    AfWorkManager.enqueueWork(
                             mContext,
-                            new Intent(AfService.ACTION_UPDATE_WIDGET, widgetUri, mContext, AfService.class));
+                            new Intent(AfWorker.ACTION_UPDATE_WIDGET).setData(widgetUri));
                 }
 
                 Intent resultIntent = new Intent();
@@ -230,26 +230,25 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
 
                         if (activeCalibrationTarget != AppWidgetManager.INVALID_APPWIDGET_ID) {
                             // Redraw the currently active calibration widget
-                            AfService.enqueueWork(getContext(), new Intent(
-                                    AfService.ACTION_UPDATE_WIDGET,
-                                    ContentUris.withAppendedId(AfProvider.AfWidgets.CONTENT_URI, activeCalibrationTarget),
-                                    getContext(), AfService.class));
+                            AfWorkManager.enqueueWork(getContext(), new Intent(
+                                    AfWorker.ACTION_UPDATE_WIDGET)
+                                    .setData(ContentUris.withAppendedId(AfProvider.AfWidgets.CONTENT_URI, activeCalibrationTarget)));
                         }
 
                         Uri widgetUri = mAfWidgetInfo.getWidgetUri();
 
                         if (isProviderModified || globalSettingModified) {
-                            AfService.enqueueWork(
+                            AfWorkManager.enqueueWork(
                                     getActivity().getApplicationContext(),
                                     new Intent(isProviderModified
-                                            ? AfService.ACTION_UPDATE_ALL_PROVIDER_CHANGE
-                                            : AfService.ACTION_UPDATE_ALL,
-                                            widgetUri, getContext(), AfService.class));
+                                            ? AfWorker.ACTION_UPDATE_ALL_PROVIDER_CHANGE
+                                            : AfWorker.ACTION_UPDATE_ALL)
+                                            .setData(widgetUri));
                         } else {
-                            AfService.enqueueWork(
+                            AfWorkManager.enqueueWork(
                                     getActivity().getApplicationContext(),
-                                    new Intent(AfService.ACTION_UPDATE_WIDGET,
-                                            widgetUri, getContext(), AfService.class));
+                                    new Intent(AfWorker.ACTION_UPDATE_WIDGET)
+                                            .setData(widgetUri));
                         }
 
                     }

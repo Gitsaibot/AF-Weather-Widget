@@ -13,11 +13,9 @@ public class AfWidget extends AppWidgetProvider {
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		for (int appWidgetId : appWidgetIds) {
-			Intent updateIntent = new Intent(
-					AfService.ACTION_DELETE_WIDGET,
-					ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId),
-					context, AfService.class);
-			AfService.enqueueWork(context, updateIntent);
+			Intent updateIntent = new Intent(AfWorker.ACTION_DELETE_WIDGET)
+					.setData(ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId));
+			AfWorkManager.enqueueWork(context, updateIntent);
 		}
 	}
 
@@ -30,11 +28,9 @@ public class AfWidget extends AppWidgetProvider {
 					new ComponentName(context, AfWidget.class));
 		}
 		for (int appWidgetId : appWidgetIds) {
-			Intent updateIntent = new Intent(
-					AfService.ACTION_UPDATE_WIDGET,
-					ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId),
-					context, AfService.class);
-			AfService.enqueueWork(context, updateIntent);
+			Intent updateIntent = new Intent(AfWorker.ACTION_UPDATE_WIDGET)
+					.setData(ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId));
+			AfWorkManager.enqueueWork(context, updateIntent);
 		}
 	}
 	

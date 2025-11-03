@@ -692,13 +692,13 @@ public class AfUtils {
 	
 	public static PendingIntent buildDisableSpecificDimensionsIntent(Context context, Uri widgetUri)
 	{
-		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS, widgetUri, context, AfServiceReceiver.class);
+		Intent intent = new Intent(AfWorker.ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS, widgetUri, context, AfServiceReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, PI_FLAG_IMMUTABLE);
 	}
 	
 	public static PendingIntent buildWidgetProviderAutoIntent(Context context, Uri widgetUri)
 	{
-		Intent intent = new Intent(AfService.ACTION_UPDATE_ALL_PROVIDER_AUTO, widgetUri, context, AfServiceReceiver.class);
+		Intent intent = new Intent(AfWorker.ACTION_UPDATE_ALL_PROVIDER_AUTO, widgetUri, context, AfServiceReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, PI_FLAG_IMMUTABLE);
 	}
 	

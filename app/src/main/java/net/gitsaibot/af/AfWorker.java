@@ -7,13 +7,6 @@ import static net.gitsaibot.af.AfSettings.LANDSCAPE_WIDTH;
 import static net.gitsaibot.af.AfSettings.PORTRAIT_HEIGHT;
 import static net.gitsaibot.af.AfSettings.PORTRAIT_WIDTH;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.gitsaibot.af.AfProvider.AfWidgets;
-import net.gitsaibot.af.util.AfWidgetInfo;
-import net.gitsaibot.af.util.Pair;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -21,25 +14,37 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.net.Uri;
-import androidx.core.app.JobIntentService;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
+import androidx.work.Data;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
-public class AfService extends JobIntentService {
-	
-	private static final String TAG = "AfService";
+import net.gitsaibot.af.AfProvider.AfWidgets;
+import net.gitsaibot.af.util.AfWidgetInfo;
+import net.gitsaibot.af.util.Pair;
 
-	public static final int JOB_ID = 1;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+public class AfWorker extends Worker {
+
+    private static final String TAG = "AfWorker";
+
+    public static final String KEY_ACTION = "ACTION";
+    public static final String KEY_WIDGET_URI = "WIDGET_URI";
+
+    // Actions
 	public final static String ACTION_DELETE_WIDGET = "net.gitsaibot.af.DELETE_WIDGET";
 	public final static String ACTION_UPDATE_ALL = "net.gitsaibot.af.UPDATE_ALL";
 	public final static String ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS = "net.gitsaibot.af.UPDATE_WIDGET_MINIMAL_DIMENSIONS";
@@ -60,7 +65,7 @@ public class AfService extends JobIntentService {
 	public final static String ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_PORTRAIT_VERTICAL_CALIBRATION";
 	public final static String ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION";
 	public final static String ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION = "net.gitsaibot.af.ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION";
-	
+
 	Map<String, Pair<String, Integer>> mCalibrationAdjustmentsMap = new HashMap<>() {{
 		put(ACTION_DECREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, -1));
 		put(ACTION_INCREASE_LANDSCAPE_HEIGHT, new Pair<>(LANDSCAPE_HEIGHT, +1));
@@ -71,7 +76,7 @@ public class AfService extends JobIntentService {
 		put(ACTION_DECREASE_PORTRAIT_WIDTH, new Pair<>(PORTRAIT_WIDTH, -1));
 		put(ACTION_INCREASE_PORTRAIT_WIDTH, new Pair<>(PORTRAIT_WIDTH, +1));
 	}};
-	
+
 	Map<String, String> mCalibrationAcceptActionsMap = new HashMap<>() {{
 		put(ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION, PORTRAIT_WIDTH);
 		put(ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION, PORTRAIT_HEIGHT);
@@ -79,17 +84,34 @@ public class AfService extends JobIntentService {
 		put(ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION, LANDSCAPE_HEIGHT);
 	}};
 
-	public static void enqueueWork(Context context, Intent work) {
-		enqueueWork(context, AfService.class, JOB_ID, work);
-	}
+    public AfWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
-	@Override
-	protected void onHandleWork(Intent intent) {
-		Log.d(TAG, "onHandleIntent() " + intent.getAction() + " " + intent.getData());
-		
-		String action = intent.getAction();
-		Uri widgetUri = intent.getData();
-		
+    @NonNull
+    @Override
+    public Result doWork() {
+        Data inputData = getInputData();
+        String action = inputData.getString(KEY_ACTION);
+        String widgetUriString = inputData.getString(KEY_WIDGET_URI);
+
+        if (action == null) {
+            return Result.failure();
+        }
+
+        Uri widgetUri = null;
+        if (widgetUriString != null) {
+            widgetUri = Uri.parse(widgetUriString);
+        }
+
+        Log.d(TAG, "doWork() " + action + " " + widgetUri);
+
+        handleWork(action, widgetUri);
+
+        return Result.success();
+    }
+
+    private void handleWork(String action, Uri widgetUri) {
 		if (	action.equals(ACTION_UPDATE_WIDGET) ||
 				mCalibrationAdjustmentsMap.containsKey(action) ||
 				mCalibrationAcceptActionsMap.containsKey(action))
@@ -101,25 +123,25 @@ public class AfService extends JobIntentService {
 		}
 		else if (action.equals(ACTION_UPDATE_ALL_PROVIDER_CHANGE))
 		{
-			AfUtils.clearProviderData(getContentResolver());
+			AfUtils.clearProviderData(getApplicationContext().getContentResolver());
 			updateAllWidgets(widgetUri);
 		}
 		else if (action.equals(ACTION_UPDATE_ALL_PROVIDER_AUTO))
 		{
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-			Editor editor = sharedPreferences.edit();
-			editor.putInt(getString(R.string.provider_string), AfUtils.PROVIDER_AUTO);
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putInt(getApplicationContext().getString(R.string.provider_string), AfUtils.PROVIDER_AUTO);
 			editor.apply();
-			
-			AfUtils.clearProviderData(getContentResolver());
-			
+
+			AfUtils.clearProviderData(getApplicationContext().getContentResolver());
+
 			updateAllWidgets(widgetUri);
 		}
 		else if (action.equals(ACTION_UPDATE_ALL_MINIMAL_DIMENSIONS))
 		{
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-			Editor editor = sharedPreferences.edit();
-			editor.putBoolean(getString(R.string.useDeviceSpecificDimensions_bool), false);
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putBoolean(getApplicationContext().getString(R.string.useDeviceSpecificDimensions_bool), false);
 			editor.apply();
 
 			updateAllWidgets(widgetUri);
@@ -127,106 +149,101 @@ public class AfService extends JobIntentService {
 		else if (action.equals(ACTION_DELETE_WIDGET))
 		{
 			int appWidgetId = (int)ContentUris.parseId(widgetUri);
-			AfUtils.deleteWidget(this, appWidgetId);
+			AfUtils.deleteWidget(getApplicationContext(), appWidgetId);
 		}
 		else {
 			Log.d(TAG, "onHandleIntent() called with unhandled action (" + action + ")");
 		}
 	}
-	
-	private void updateWidget(String action, Uri widgetUri)
+
+    private void updateWidget(String action, Uri widgetUri)
 	{
 		int appWidgetId = (int)ContentUris.parseId(widgetUri);
-		
+        Context context = getApplicationContext();
+
 		AfWidgetInfo widgetInfo;
 		try {
-			widgetInfo = AfWidgetInfo.build(this, widgetUri);
-			widgetInfo.loadSettings(this);
+			widgetInfo = AfWidgetInfo.build(context, widgetUri);
+			widgetInfo.loadSettings(context);
 		} catch (Exception e) {
-			PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetUri);
-			AfUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to get widget information", true, pendingIntent);
+			PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(context, widgetUri);
+			AfUtils.updateWidgetRemoteViews(context, appWidgetId, "Failed to get widget information", true, pendingIntent);
 			Log.d(TAG, "onHandleIntent() failed: Could not retrieve widget information (" + e.getMessage() + ")");
 			return;
 		}
-		
-		AfSettings afSettings = AfSettings.build(this, widgetInfo);
+
+		AfSettings afSettings = AfSettings.build(context, widgetInfo);
 		afSettings.loadSettings();
-		
+
 		int calibrationTarget = afSettings.getCalibrationTarget();
-		
+
 		if (calibrationTarget == widgetInfo.getAppWidgetId()) {
 			calibrationMethod(widgetInfo, afSettings, action);
 		} else {
 			try {
-				AfUpdate afUpdate = AfUpdate.build(this, widgetInfo, afSettings);
+				AfUpdate afUpdate = AfUpdate.build(context, widgetInfo, afSettings);
 				afUpdate.process();
 			} catch (Exception e) {
-				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetUri);
-				AfUtils.updateWidgetRemoteViews(this, appWidgetId, "Failed to update widget", true, pendingIntent);
+				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(context, widgetUri);
+				AfUtils.updateWidgetRemoteViews(context, appWidgetId, "Failed to update widget", true, pendingIntent);
 				Log.d(TAG, "AfUpdate of " + widgetUri + " failed! (" + e.getMessage() + ")");
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	private void updateAllWidgets(Uri widgetUri)
 	{
-		AfSettings.clearAllWidgetStates(PreferenceManager.getDefaultSharedPreferences(this));
-		
+        Context context = getApplicationContext();
+		AfSettings.clearAllWidgetStates(PreferenceManager.getDefaultSharedPreferences(context));
+
 		// Update all widgets except widgetUri
 		int widgetIdExclude = AppWidgetManager.INVALID_APPWIDGET_ID;
 		if (widgetUri != null)
 		{
 			widgetIdExclude = (int)ContentUris.parseId(widgetUri);
-			
-			
 			updateWidget(ACTION_UPDATE_WIDGET, widgetUri);
 		}
-		
-		AppWidgetManager manager = AppWidgetManager.getInstance(this);
-		int[] appWidgetIds = manager.getAppWidgetIds(new ComponentName(this, AfWidget.class));
+
+		AppWidgetManager manager = AppWidgetManager.getInstance(context);
+		int[] appWidgetIds = manager.getAppWidgetIds(new ComponentName(context, AfWidget.class));
 		for (int appWidgetId : appWidgetIds) {
 			if (appWidgetId != widgetIdExclude)
 			{
-				Intent updateIntent = new Intent(
-						ACTION_UPDATE_WIDGET,
-						ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId),
-						this, AfService.class);
-				AfService.enqueueWork(getApplicationContext(), updateIntent);
+                AfWorkManager.enqueueWork(context, new Intent(ACTION_UPDATE_WIDGET).setData(ContentUris.withAppendedId(AfWidgets.CONTENT_URI, appWidgetId)));
 			}
 		}
 	}
-	
+
 	private void calibrationMethod(AfWidgetInfo widgetInfo, AfSettings afSettings, String action) {
+        Context context = getApplicationContext();
 		Log.d(TAG, "calibrationMethod() " + action);
-		
+
 		if (mCalibrationAcceptActionsMap.containsKey(action)) {
 			String property = mCalibrationAcceptActionsMap.get(action);
-			
+
 			afSettings.saveCalibratedDimension(property);
-			
+
 			if (	action.equals(ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION) ||
 					action.equals(ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION))
 			{
 				afSettings.setCalibrationState(CALIBRATION_STATE_VERTICAL);
-				
+
 				// Update relevant widget only, still calibrating
-				Intent updateIntent = new Intent(ACTION_UPDATE_WIDGET, widgetInfo.getWidgetUri(), this, AfService.class);
-				AfService.enqueueWork(getApplicationContext(), updateIntent);
+                AfWorkManager.enqueueWork(context, new Intent(ACTION_UPDATE_WIDGET).setData(widgetInfo.getWidgetUri()));
 			} else {
 				afSettings.setCalibrationState(CALIBRATION_STATE_FINISHED);
 				afSettings.exitCalibrationMode();
-				
-				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(this, widgetInfo.getWidgetUri());
-				AfUtils.updateWidgetRemoteViews(this, widgetInfo.getAppWidgetId(), getString(R.string.widget_loading), true, pendingIntent);
-				
+
+				PendingIntent pendingIntent = AfUtils.buildConfigurationIntent(context, widgetInfo.getWidgetUri());
+				AfUtils.updateWidgetRemoteViews(context, widgetInfo.getAppWidgetId(), context.getString(R.string.widget_loading), true, pendingIntent);
+
 				// Update all widgets after ended calibration
-				Intent updateIntent = new Intent(ACTION_UPDATE_ALL, widgetInfo.getWidgetUri(), this, AfService.class);
-				AfService.enqueueWork(getApplicationContext(), updateIntent);
+                AfWorkManager.enqueueWork(context, new Intent(ACTION_UPDATE_ALL).setData(widgetInfo.getWidgetUri()));
 			}
 		} else {
 			Pair<String, Integer> adjustParams = mCalibrationAdjustmentsMap.get(action);
-			
+
 			if (adjustParams != null) {
 				afSettings.adjustCalibrationDimension(adjustParams.first, adjustParams.second);
 			}
@@ -238,17 +255,17 @@ public class AfService extends JobIntentService {
 			}
 		}
 	}
-	
+
 	private Bitmap renderCalibrationBitmap(int width, int height, boolean vertical) {
 		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		canvas.drawColor(Color.WHITE);
-		
+
 		Paint p = new Paint() {{
 			setColor(Color.BLACK);
 			setStrokeWidth(0);
 		}};
-		
+
 		if (vertical) {
 			for (int y = 0; y < height; y += 2) {
 				canvas.drawLine(0.0f, (float)y, (float)width, (float)y, p);
@@ -258,50 +275,51 @@ public class AfService extends JobIntentService {
 				canvas.drawLine((float)x, 0.0f, (float)x, (float)height, p);
 			}
 		}
-		
+
 		return bitmap;
 	}
-	
+
 	private void setupCalibrationWidget(AfWidgetInfo afWidgetInfo, AfSettings afSettings) throws IOException {
+        Context context = getApplicationContext();
 		int calibrationState = afSettings.getCalibrationState();
 		boolean vertical = (calibrationState == AfSettings.CALIBRATION_STATE_VERTICAL);
-		
+
 		int appWidgetId = afWidgetInfo.getAppWidgetId();
 		Uri widgetUri = afWidgetInfo.getWidgetUri();
-		
+
 		Point portraitDimensions = afSettings.getCalibrationPixelDimensionsOrStandard(false);
 		Point landscapeDimensions = afSettings.getCalibrationPixelDimensionsOrStandard(true);
-		
+
 		Bitmap portraitBitmap = renderCalibrationBitmap(portraitDimensions.x, portraitDimensions.y, vertical);
 		Bitmap landscapeBitmap = renderCalibrationBitmap(landscapeDimensions.x, landscapeDimensions.y, vertical);
-		
+
 		long now = System.currentTimeMillis();
-		
-		Uri portraitUri = AfUtils.storeBitmap(this, portraitBitmap, appWidgetId, now, false);
-		Uri landscapeUri = AfUtils.storeBitmap(this, landscapeBitmap, appWidgetId, now, true);
-		
-		RemoteViews updateView = new RemoteViews(getPackageName(), R.layout.af_calibrate);
-		
+
+		Uri portraitUri = AfUtils.storeBitmap(context, portraitBitmap, appWidgetId, now, false);
+		Uri landscapeUri = AfUtils.storeBitmap(context, landscapeBitmap, appWidgetId, now, true);
+
+		RemoteViews updateView = new RemoteViews(context.getPackageName(), R.layout.af_calibrate);
+
 		setupPendingIntent(updateView, widgetUri, R.id.landscape_decrease, vertical ? ACTION_DECREASE_LANDSCAPE_HEIGHT : ACTION_DECREASE_LANDSCAPE_WIDTH);
 		setupPendingIntent(updateView, widgetUri, R.id.landscape_increase, vertical ? ACTION_INCREASE_LANDSCAPE_HEIGHT : ACTION_INCREASE_LANDSCAPE_WIDTH);
 		setupPendingIntent(updateView, widgetUri, R.id.portrait_decrease,  vertical ? ACTION_DECREASE_PORTRAIT_HEIGHT  : ACTION_DECREASE_PORTRAIT_WIDTH);
 		setupPendingIntent(updateView, widgetUri, R.id.portrait_increase,  vertical ? ACTION_INCREASE_PORTRAIT_HEIGHT  : ACTION_INCREASE_PORTRAIT_WIDTH);
-		
+
 		setupPendingIntent(updateView, widgetUri, R.id.landscape_accept,   vertical ? ACTION_ACCEPT_LANDSCAPE_VERTICAL_CALIBRATION : ACTION_ACCEPT_LANDSCAPE_HORIZONTAL_CALIBRATION);
 		setupPendingIntent(updateView, widgetUri, R.id.portrait_accept,    vertical ? ACTION_ACCEPT_PORTRAIT_VERTICAL_CALIBRATION  : ACTION_ACCEPT_PORTRAIT_HORIZONTAL_CALIBRATION);
-		
+
 		updateView.setTextViewText(R.id.portraitText, "Portrait/" + (vertical ? "Vertical" : "Horizontal") + "\n" + portraitDimensions.x + "x" + portraitDimensions.y);
 		updateView.setTextViewText(R.id.landscapeText, "Landscape/" + (vertical ? "Vertical" : "Horizontal") + "\n" + landscapeDimensions.x + "x" + landscapeDimensions.y);
-		
+
 		updateView.setImageViewUri(R.id.landscapeCalibrationImage, landscapeUri);
 		updateView.setImageViewUri(R.id.portraitCalibrationImage, portraitUri);
-		
-		AppWidgetManager.getInstance(this).updateAppWidget(appWidgetId, updateView);
-	}
-	
-	private void setupPendingIntent(RemoteViews remoteViews, Uri widgetUri, int resource, String action) {
-		Intent intent = new Intent(action, widgetUri, this, AfServiceReceiver.class);
-		remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(this, 0, intent, AfUtils.PI_FLAG_IMMUTABLE));
+
+		AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, updateView);
 	}
 
+	private void setupPendingIntent(RemoteViews remoteViews, Uri widgetUri, int resource, String action) {
+        Context context = getApplicationContext();
+		Intent intent = new Intent(action, widgetUri, context, AfServiceReceiver.class);
+		remoteViews.setOnClickPendingIntent(resource, PendingIntent.getBroadcast(context, 0, intent, AfUtils.PI_FLAG_IMMUTABLE));
+	}
 }
