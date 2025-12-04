@@ -1,11 +1,13 @@
 package net.gitsaibot.af;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import net.gitsaibot.af.util.AfWidgetInfo;
 
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -121,7 +123,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		
 		mInvalidEditTextColor = ContextCompat.getColor(this, R.color.invalid_dimension_color);
 		
-		mModelTextView.setText(String.format("%s (%s)", Build.MODEL, Build.PRODUCT));
+		mModelTextView.setText(String.format(Locale.US, "%s (%s)", Build.MODEL, Build.PRODUCT));
 		
 		mValidPortraitWidth = true;
 		mValidPortraitHeight = true;
@@ -273,7 +275,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		}
 		else
 		{
-			mPortraitWidthEditText.getBackground().setColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY);
+			mPortraitWidthEditText.getBackground().setColorFilter(new PorterDuffColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY));
 		}
 		if (mValidPortraitHeight)
 		{
@@ -281,7 +283,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		}
 		else
 		{
-			mPortraitHeightEditText.getBackground().setColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY);
+			mPortraitHeightEditText.getBackground().setColorFilter(new PorterDuffColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY));
 		}
 		if (mValidLandscapeWidth)
 		{
@@ -289,7 +291,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		}
 		else
 		{
-			mLandscapeWidthEditText.getBackground().setColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY);
+			mLandscapeWidthEditText.getBackground().setColorFilter(new PorterDuffColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY));
 		}
 		if (mValidLandscapeHeight)
 		{
@@ -297,7 +299,7 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		}
 		else
 		{
-			mLandscapeHeightEditText.getBackground().setColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY);
+			mLandscapeHeightEditText.getBackground().setColorFilter(new PorterDuffColorFilter(mInvalidEditTextColor, PorterDuff.Mode.MULTIPLY));
 		}
 	}
 	
@@ -329,12 +331,12 @@ public class AfDeviceProfileActivity extends AppCompatActivity
 		
 		if (updateEditTextBoxes) {
 			Point portraitDimensions = mAfSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, false);
-			mPortraitWidthEditText.setText(Integer.toString(portraitDimensions.x));
-			mPortraitHeightEditText.setText(Integer.toString(portraitDimensions.y));
+			mPortraitWidthEditText.setText(String.format(Locale.US, "%d", portraitDimensions.x));
+			mPortraitHeightEditText.setText(String.format(Locale.US, "%d", portraitDimensions.y));
 			
 			Point landscapeDimensions = mAfSettings.getPixelDimensionsPreferenceOrStandard(mNumColumns, mNumRows, true);
-			mLandscapeWidthEditText.setText(Integer.toString(landscapeDimensions.x));
-			mLandscapeHeightEditText.setText(Integer.toString(landscapeDimensions.y));
+			mLandscapeWidthEditText.setText(String.format(Locale.US, "%d", landscapeDimensions.x));
+			mLandscapeHeightEditText.setText(String.format(Locale.US, "%d", landscapeDimensions.y));
 		}
 		
 		updateEditTextBackgroundColors();

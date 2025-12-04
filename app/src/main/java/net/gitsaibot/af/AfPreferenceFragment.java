@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -29,9 +31,6 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
         Preference.OnPreferenceChangeListener {
 
     private static final String TAG = "AfPrefFragment";
-
-    private final static int SELECT_LOCATION = 1;
-    private final static int DEVICE_PROFILES = 2;
 
     public final static int EXIT_CONFIGURATION = 77;
 
@@ -49,6 +48,9 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
     private boolean mActionEdit = false;
     private boolean mActivateCalibrationMode = false;
 
+    private ActivityResultLauncher<Intent> deviceProfileLauncher;
+    private ActivityResultLauncher<Intent> selectLocationLauncher;
+
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
 
@@ -65,6 +67,64 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        deviceProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == EXIT_CONFIGURATION) {
+                        mActivateCalibrationMode = true;
+
+                        boolean editMode = Intent.ACTION_EDIT.equals(getActivity().getIntent().getAction());
+
+                        if (editMode) {
+                            int activeCalibrationTarget = mAfSettings.getCalibrationTarget();
+
+                            boolean isProviderModified = mAfSettings.isProviderPreferenceModified();
+                            boolean globalSettingModified = mAfSettings.saveAllPreferences(mActivateCalibrationMode);
+
+                            if (activeCalibrationTarget != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                                // Redraw the currently active calibration widget
+                                AfWorkManager.enqueueWork(getContext(), new Intent(
+                                        AfWorker.ACTION_UPDATE_WIDGET)
+                                        .setData(ContentUris.withAppendedId(AfProvider.AfWidgets.CONTENT_URI, activeCalibrationTarget)));
+                            }
+
+                            Uri widgetUri = mAfWidgetInfo.getWidgetUri();
+
+                            if (isProviderModified || globalSettingModified) {
+                                AfWorkManager.enqueueWork(
+                                        getActivity().getApplicationContext(),
+                                        new Intent(isProviderModified
+                                                ? AfWorker.ACTION_UPDATE_ALL_PROVIDER_CHANGE
+                                                : AfWorker.ACTION_UPDATE_ALL)
+                                                .setData(widgetUri));
+                            } else {
+                                AfWorkManager.enqueueWork(
+                                        getActivity().getApplicationContext(),
+                                        new Intent(AfWorker.ACTION_UPDATE_WIDGET)
+                                                .setData(widgetUri));
+                            }
+
+                        }
+                    }
+                });
+
+        selectLocationLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri locationUri = Uri.parse(result.getData().getStringExtra("location"));
+                        try {
+                            AfLocationInfo afLocationInfo = AfLocationInfo.build(getActivity().getApplicationContext(), locationUri);
+                            mAfWidgetInfo.setViewInfo(afLocationInfo, AfProvider.AfViews.TYPE_DETAILED);
+                            Log.d(TAG, "onActivityResult(): locationInfo=" + afLocationInfo);
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "Failed to set up location info", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onActivityResult(): Failed to get location data.");
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
         getActivity().setResult(Activity.RESULT_CANCELED);
 
@@ -199,65 +259,6 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case SELECT_LOCATION: {
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri locationUri = Uri.parse(data.getStringExtra("location"));
-                    try {
-                        AfLocationInfo afLocationInfo = AfLocationInfo.build(getActivity().getApplicationContext(), locationUri);
-                        mAfWidgetInfo.setViewInfo(afLocationInfo, AfProvider.AfViews.TYPE_DETAILED);
-                        Log.d(TAG, "onActivityResult(): locationInfo=" + afLocationInfo);
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), "Failed to set up location info", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "onActivityResult(): Failed to get location data.");
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            }
-            case DEVICE_PROFILES: {
-                if (resultCode == EXIT_CONFIGURATION) {
-                    mActivateCalibrationMode = true;
-
-                    boolean editMode = Intent.ACTION_EDIT.equals(getActivity().getIntent().getAction());
-
-                    if (editMode) {
-                        int activeCalibrationTarget = mAfSettings.getCalibrationTarget();
-
-                        boolean isProviderModified = mAfSettings.isProviderPreferenceModified();
-                        boolean globalSettingModified = mAfSettings.saveAllPreferences(mActivateCalibrationMode);
-
-                        if (activeCalibrationTarget != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                            // Redraw the currently active calibration widget
-                            AfWorkManager.enqueueWork(getContext(), new Intent(
-                                    AfWorker.ACTION_UPDATE_WIDGET)
-                                    .setData(ContentUris.withAppendedId(AfProvider.AfWidgets.CONTENT_URI, activeCalibrationTarget)));
-                        }
-
-                        Uri widgetUri = mAfWidgetInfo.getWidgetUri();
-
-                        if (isProviderModified || globalSettingModified) {
-                            AfWorkManager.enqueueWork(
-                                    getActivity().getApplicationContext(),
-                                    new Intent(isProviderModified
-                                            ? AfWorker.ACTION_UPDATE_ALL_PROVIDER_CHANGE
-                                            : AfWorker.ACTION_UPDATE_ALL)
-                                            .setData(widgetUri));
-                        } else {
-                            AfWorkManager.enqueueWork(
-                                    getActivity().getApplicationContext(),
-                                    new Intent(AfWorker.ACTION_UPDATE_WIDGET)
-                                            .setData(widgetUri));
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public boolean onPreferenceTreeClick(Preference preference) {
 
         if (preference == mUnitPref) {
@@ -273,12 +274,12 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
             Intent intent = new Intent(getContext(), AfDeviceProfileActivity.class);
             intent.setAction(getActivity().getIntent().getAction());
             intent.setData(mAfWidgetInfo.getWidgetUri());
-            startActivityForResult(intent, DEVICE_PROFILES);
+            deviceProfileLauncher.launch(intent);
             return true;
 
         } else if (preference == mLocationPref) {
             Intent intent = new Intent(getContext(), AfLocationSelectionActivity.class);
-            startActivityForResult(intent, SELECT_LOCATION);
+            selectLocationLauncher.launch(intent);
             return true;
         }
 

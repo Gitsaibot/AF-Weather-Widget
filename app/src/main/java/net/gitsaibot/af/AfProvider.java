@@ -416,7 +416,7 @@ public class AfProvider extends ContentProvider {
 					+ AfPointDataForecastColumns.TEMPERATURE + " REAL,"
 					+ AfPointDataForecastColumns.HUMIDITY + " REAL,"
 					+ AfPointDataForecastColumns.PRESSURE + " REAL);");
-			
+
 			db.execSQL("CREATE TABLE " + TABLE_AIXINTERVALDATAFORECASTS + " ("
 					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ AfIntervalDataForecastColumns.LOCATION + " INTEGER,"
@@ -427,7 +427,7 @@ public class AfProvider extends ContentProvider {
 					+ AfIntervalDataForecastColumns.RAIN_MINVAL + " REAL,"
 					+ AfIntervalDataForecastColumns.RAIN_MAXVAL + " REAL,"
 					+ AfIntervalDataForecastColumns.WEATHER_ICON + " INTEGER);");
-			
+
 			db.execSQL("CREATE TABLE " + TABLE_AIXSUNMOONDATA + " ("
 					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ AfSunMoonDataColumns.LOCATION + " INTEGER,"
@@ -438,6 +438,11 @@ public class AfProvider extends ContentProvider {
 					+ AfSunMoonDataColumns.MOON_RISE + " INTEGER,"
 					+ AfSunMoonDataColumns.MOON_SET + " INTEGER,"
 					+ AfSunMoonDataColumns.MOON_PHASE + " INTEGER);");
+
+			// Add indexes for faster queries by location
+			db.execSQL("CREATE INDEX idx_point_location ON " + TABLE_AIXPOINTDATAFORECASTS + "(" + AfPointDataForecastColumns.LOCATION + ");");
+			db.execSQL("CREATE INDEX idx_interval_location ON " + TABLE_AIXINTERVALDATAFORECASTS + "(" + AfIntervalDataForecastColumns.LOCATION + ");");
+			db.execSQL("CREATE INDEX idx_sunmoon_location ON " + TABLE_AIXSUNMOONDATA + "(" + AfSunMoonDataColumns.LOCATION + ");");
 		}
 		
 		private void migrateProperty(ContentValues values, Cursor cursor, String id, int column) {
@@ -1135,11 +1140,11 @@ public class AfProvider extends ContentProvider {
 						new String[]{uri.getPathSegments().get(1)});
 			}
 			case AIXPOINTDATAFORECASTS -> {
-				return db.delete(TABLE_AIXPOINTDATAFORECASTS, "exists " +
-								"(select 1 from aixpointdataforecasts x where " +
-								"aixpointdataforecasts.location=x.location and " +
-								"aixpointdataforecasts.time=x.time and " +
-								"aixpointdataforecasts.timeAdded < x.timeAdded)",
+				return db.delete(TABLE_AIXPOINTDATAFORECASTS,
+						BaseColumns._ID + " NOT IN (" +
+								"SELECT MAX(" + BaseColumns._ID + ") FROM " + TABLE_AIXPOINTDATAFORECASTS +
+								" GROUP BY " + AfPointDataForecastColumns.LOCATION + ", " + AfPointDataForecastColumns.TIME +
+								")",
 						null);
 			}
 			case AIXPOINTDATAFORECASTS_ID -> {
@@ -1150,12 +1155,12 @@ public class AfProvider extends ContentProvider {
 						new String[]{uri.getPathSegments().get(1)});
 			}
 			case AIXINTERVALDATAFORECASTS -> {
-				return db.delete(TABLE_AIXINTERVALDATAFORECASTS, "exists " +
-						"(select 1 from aixintervaldataforecasts x where " +
-						"aixintervaldataforecasts.location=x.location and " +
-						"aixintervaldataforecasts.timeFrom=x.timeFrom and " +
-						"aixintervaldataforecasts.timeTo=x.timeTo and " +
-						"aixintervaldataforecasts.timeAdded < x.timeAdded);", null);
+				return db.delete(TABLE_AIXINTERVALDATAFORECASTS,
+						BaseColumns._ID + " NOT IN (" +
+								"SELECT MAX(" + BaseColumns._ID + ") FROM " + TABLE_AIXINTERVALDATAFORECASTS +
+								" GROUP BY " + AfIntervalDataForecastColumns.LOCATION + ", " + AfIntervalDataForecastColumns.TIME_FROM + ", " + AfIntervalDataForecastColumns.TIME_TO +
+								")",
+						null);
 			}
 			case AIXINTERVALDATAFORECASTS_ID -> {
 				return db.update(

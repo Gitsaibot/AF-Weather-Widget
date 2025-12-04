@@ -30,12 +30,11 @@ public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements
         mBorderThicknessPreference.setOnPreferenceChangeListener(this);
         mBorderRoundingPreference.setOnPreferenceChangeListener(this);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String bts = pref.getString(getString(R.string.border_thickness_string), "5");
         mBorderThicknessPreference.setSummary(bts + "px");
         String brs = pref.getString(getString(R.string.border_rounding_string), "4");
         mBorderRoundingPreference.setSummary(brs + "px");
-
     }
 
     @Override
@@ -84,6 +83,7 @@ public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof ColorPreference) {
             DialogFragment dialogFragment = ColorPreferenceFragment.newInstance(preference.getKey());
