@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.DialogPreference;
 import androidx.preference.PreferenceDialogFragmentCompat;
@@ -18,14 +20,12 @@ import java.util.Locale;
 public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat implements ColorView.OnValueChangeListener {
 
     private int mValue;
-    private int mDefaultValue;
-
-    private ColorView mColorView;
-    private View mRevertView;
 
     private boolean showHexDialog = false;
 
-    /* Dialog stuff */
+    private View mColorPickerContainer;
+    private View mHexInputContainer;
+
     private ColorView mAlphaSlider;
     private ColorView mColorNew;
     private ColorView mColorOld;
@@ -54,16 +54,25 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("showHexDialog", showHexDialog);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            showHexDialog = savedInstanceState.getBoolean("showHexDialog", false);
+        }
+    }
+
+    @Override
     public void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-
-            // Get the related Preference and save the value
             DialogPreference preference = getPreference();
             if (preference instanceof ColorPreference colorPreference) {
-                // This allows the client to ignore the user value.
-                // Save the value
-                colorPreference.setValue(Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV));
-
+                colorPreference.setValue(mValue);
             }
         }
     }
@@ -71,65 +80,71 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
-
-        if (showHexDialog) {
-            builder.setTitle("Input Hex Color");
-        }
-
+        builder.setTitle(showHexDialog ? "Input Hex Color" : "Select Color");
         builder.setPositiveButton(android.R.string.ok, this);
         builder.setNegativeButton(android.R.string.cancel, this);
+        builder.setNeutralButton(showHexDialog ? "Color Picker" : "Hex Input", null);
+    }
 
-        //ToDo Get this running again!
-        //if (!showHexDialog) {
-        //    builder.setNeutralButton("Hex Input", this);
-        //}
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog dialog = (AlertDialog) getDialog();
+        if (dialog != null) {
+            Button neutralButton = dialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+            neutralButton.setOnClickListener(v -> {
+                showHexDialog = !showHexDialog;
+                updateViewVisibility();
+                dialog.setTitle(showHexDialog ? "Input Hex Color" : "Select Color");
+                neutralButton.setText(showHexDialog ? "Color Picker" : "Hex Input");
+            });
+        }
     }
 
     @Override
     protected void onBindDialogView(View view) {
+        super.onBindDialogView(view);
 
+        mColorPickerContainer = view.findViewById(R.id.colorPickerContainer);
+        mHexInputContainer = view.findViewById(R.id.hexInputContainer);
+
+        mAlphaSlider = view.findViewById(R.id.alphaSlider);
+        mHueSlider = view.findViewById(R.id.hueSlider);
+        mSvMap = view.findViewById(R.id.svMap);
+        mAlphaTextView = view.findViewById(R.id.alphaText);
+        mHueTextView = view.findViewById(R.id.hueText);
+        mSaturationTextView = view.findViewById(R.id.saturationText);
+        mValueTextView = view.findViewById(R.id.valueText);
+        mColorOld = view.findViewById(R.id.colorOld);
+        mColorNew = view.findViewById(R.id.colorNew);
+        mEditText = view.findViewById(R.id.edittext);
+
+        mAlphaSlider.setOnValueChangeListener(this);
+        mHueSlider.setOnValueChangeListener(this);
+        mSvMap.setOnValueChangeListener(this);
+
+        setupDialogValues();
+        updateLabels();
+        updateViewVisibility();
+    }
+
+    private void updateViewVisibility() {
+        mHexInputContainer.setVisibility(showHexDialog ? View.VISIBLE : View.GONE);
+        mColorPickerContainer.setVisibility(showHexDialog ? View.GONE : View.VISIBLE);
         if (showHexDialog) {
             int color = Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV);
-
-            mEditText = view.findViewById(R.id.edittext);
             mEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            mEditText.setText(String.format("#%08X", color));
-        } else {
-            mAlphaSlider = view.findViewById(R.id.alphaSlider);
-            mAlphaSlider.setOnValueChangeListener(this);
-            mHueSlider = view.findViewById(R.id.hueSlider);
-            mHueSlider.setOnValueChangeListener(this);
-
-            mSvMap = view.findViewById(R.id.svMap);
-            mSvMap.setOnValueChangeListener(this);
-
-            mAlphaTextView = view.findViewById(R.id.alphaText);
-            mHueTextView = view.findViewById(R.id.hueText);
-            mSaturationTextView = view.findViewById(R.id.saturationText);
-            mValueTextView = view.findViewById(R.id.valueText);
-
-            mColorOld = view.findViewById(R.id.colorOld);
-            mColorNew = view.findViewById(R.id.colorNew);
-
-            setupDialogValues();
-            updateLabels();
+            mEditText.setText(String.format(Locale.getDefault(), "#%08X", color));
         }
     }
 
     private void setupDialogValues() {
-        mHSV = new float[3];
-        // Get the color from the related Preference
-        Integer mValue = null;
         DialogPreference preference = getPreference();
         if (preference instanceof ColorPreference) {
             mValue = ((ColorPreference) preference).getValue();
         }
-        Color.RGBToHSV(
-                Color.red(mValue),
-                Color.green(mValue),
-                Color.blue(mValue),
-                mHSV);
 
+        Color.colorToHSV(mValue, mHSV);
         mAlpha = (float)Color.alpha(mValue) / 255.0f;
 
         mHueSlider.setValue(new float[] { mHSV[0] / 360.0f });
@@ -143,43 +158,28 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
 
     private void updateLabels() {
         mAlphaTextView.setText(String.format(Locale.getDefault(),"A: %.0f%%", mAlpha * 100.0f));
-        mHueTextView.setText(String.format(Locale.getDefault(),"H: %.0f\u00b0", mHSV[0]));
+        mHueTextView.setText(String.format(Locale.getDefault(),"H: %.0f°", mHSV[0]));
         mSaturationTextView.setText(String.format(Locale.getDefault(),"S: %.0f%%", mHSV[1] * 100.0f));
         mValueTextView.setText(String.format(Locale.getDefault(),"V: %.0f%%", mHSV[2] * 100.0f));
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        super.onClick(dialog, which);
-
-        switch (which) {
-            case DialogInterface.BUTTON_POSITIVE:
-                if (showHexDialog) {
-                    try {
-                        setValue(Color.parseColor(mEditText.getText().toString()));
-                    } catch (Exception e) {
-                        Toast.makeText(getContext(), "Invalid color code entered", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    setValue(Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV));
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            if (showHexDialog) {
+                try {
+                    mValue = Color.parseColor(mEditText.getText().toString());
+                } catch (Exception e) {
+                    // This is not ideal, as the dialog will close. A better implementation
+                    // would also override the positive button's click listener.
+                    Toast.makeText(getContext(), "Invalid color code entered", Toast.LENGTH_SHORT).show();
+                    return; // Don't close dialog by not calling super
                 }
-                break;
-            case DialogInterface.BUTTON_NEUTRAL:
-                View view = View.inflate(getActivity(), R.layout.preference_widget_color,null);
-                mRevertView = view.findViewById(R.id.revert);
-                mRevertView.postDelayed(() -> showHexDialog = true, 100);
-                break;
-            case DialogInterface.BUTTON_NEGATIVE:
-                // TODO: End the world?
-                break;
+            } else {
+                mValue = Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV);
+            }
         }
-    }
-
-    private void setValue(int value) {
-        mValue = value;
-        if (mColorView != null) {
-            mColorView.setColor(value);
-        }
+        super.onClick(dialog, which);
     }
 
     @Override

@@ -176,8 +176,9 @@ public class AfPreferenceFragment extends PreferenceFragmentCompat implements
         }
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout v = (LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
 
         mAddWidgetButton = new Button(getActivity().getApplicationContext());
