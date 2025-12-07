@@ -1,6 +1,5 @@
 package net.gitsaibot.af;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -316,7 +315,7 @@ public class AfProvider extends ContentProvider {
 //		public static final String ABOVE_FREEZING_COLOR = "aboveFreezingColor";
 //		public static final String BELOW_FREEZING_COLOR = "belowFreezingColor";
 	}
-	
+
 	public static class AfViewSettings extends AfSettings {
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/aixviewsettings");
 	}
@@ -686,7 +685,7 @@ public class AfProvider extends ContentProvider {
 				return AfSunMoonData.CONTENT_TYPE;
 			}
             case AIXRENDER -> {
-				return " ";
+				return "image/webp";
 			}
 		}
 		throw new IllegalStateException();

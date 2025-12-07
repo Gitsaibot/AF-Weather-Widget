@@ -43,6 +43,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -626,7 +627,11 @@ public class AfUtils {
 			out = new BufferedOutputStream(new FileOutputStream(f));
 			
 			bitmap.setDensity(Bitmap.DENSITY_NONE);
-			bitmap.compress(Bitmap.CompressFormat.WEBP, 100, out);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+				bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, out);
+			} else {
+				bitmap.compress(Bitmap.CompressFormat.WEBP, 90, out);
+			}
 			
 			out.flush();
 		}
