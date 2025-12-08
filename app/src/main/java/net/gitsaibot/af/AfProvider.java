@@ -329,8 +329,7 @@ public class AfProvider extends ContentProvider {
 	private static final String TABLE_AIXPOINTDATAFORECASTS = "aixpointdataforecasts";
 	private static final String TABLE_AIXINTERVALDATAFORECASTS = "aixintervaldataforecasts";
 	private static final String TABLE_AIXSUNMOONDATA = "aixsunmoondata";
-	
-	public static final String AIX_RENDER_FORMATTER = "content://" + AUTHORITY + "/aixrender/%d/%d/%s";
+
 	
 	private DatabaseHelper mOpenHelper;
 	
