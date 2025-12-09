@@ -293,27 +293,6 @@ public class AfProvider extends ContentProvider {
 	
 	public static class AfWidgetSettingsDatabase extends AfSettings {
 		public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/aixwidgetsettings");
-		
-//		public static final String TEMPERATURE_UNITS = "temperatureUnits";
-		public static final int TEMPERATURE_UNITS_CELSIUS = 1;
-		public static final int TEMPERATURE_UNITS_FAHRENHEIT = 2;
-//		
-//		public static final String PRECIPITATION_UNITS = "precipitationUnits";
-		public static final int PRECIPITATION_UNITS_MM = 1;
-		public static final int PRECIPITATION_UNITS_INCHES = 2;
-
-//		public static final String PRECIPITATION_SCALE = "precipitationScale";
-//		
-//		public static final String BACKGROUND_COLOR = "backgroundColor";
-//		public static final String TEXT_COLOR = "textColor";
-//		public static final String LOCATION_BACKGROUND_COLOR = "locationBackgroundColor";
-//		public static final String LOCATION_TEXT_COLOR = "locationTextColor";
-//		public static final String GRID_COLOR = "gridColor";
-//		public static final String GRID_OUTLINE_COLOR = "gridOutlineColor";
-//		public static final String MAX_RAIN_COLOR = "maxRainColor";
-//		public static final String MIN_RAIN_COLOR = "minRainColor";
-//		public static final String ABOVE_FREEZING_COLOR = "aboveFreezingColor";
-//		public static final String BELOW_FREEZING_COLOR = "belowFreezingColor";
 	}
 
 	public static class AfViewSettings extends AfSettings {
@@ -1439,9 +1418,6 @@ public class AfProvider extends ContentProvider {
 	private static final int AIXVIEWS_ID = 302;
 	private static final int AIXVIEWS_ID_SETTINGS = 303;
 	private static final int AIXVIEWS_LOCATION = 304;
-	//private static final int AIXVIEWS_POINTDATAFORECASTS = 305;
-	//private static final int AIXVIEWS_INTERVALDATAFORECASTS = 306;
-	//private static final int AIXVIEWS_SUNMOONDATA = 307;
 	
 	private static final int AIXVIEWSETTINGS = 401;
 	private static final int AIXVIEWSETTINGS_ID = 402;
@@ -1475,9 +1451,6 @@ public class AfProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, "aixviews/#", AIXVIEWS_ID);
 		sUriMatcher.addURI(AUTHORITY, "aixviews/#/settings", AIXVIEWS_ID_SETTINGS);
 		sUriMatcher.addURI(AUTHORITY, "aixviews/#/location", AIXVIEWS_LOCATION);
-//		sUriMatcher.addURI(AUTHORITY, "aixviews/#/pointdata_forecasts", AIXVIEWS_POINTDATAFORECASTS);
-//		sUriMatcher.addURI(AUTHORITY, "aixviews/#/intervaldata_forecasts", AIXVIEWS_INTERVALDATAFORECASTS);
-//		sUriMatcher.addURI(AUTHORITY, "aixviews/#/sunmoondata", AIXVIEWS_SUNMOONDATA);
 		
 		sUriMatcher.addURI(AUTHORITY, "aixviewsettings", AIXVIEWSETTINGS);
 		sUriMatcher.addURI(AUTHORITY, "aixviewsettings/#", AIXVIEWSETTINGS_ID);
