@@ -97,4 +97,8 @@
     <string name="device_profiles_orientation_mode">Ausrichtungsmodus:</string>
     <string name="widget_no_weather_data">Keine Wetterdaten gefunden.</string>
     <string name="location_list_context_edit">Anzeigetitel ändern</string>
+    <string name="input_hex_color">Hex-Farbe eingeben</string>
+    <string name="select_color">Farbe auswählen</string>
+    <string name="color_picker">Farbwähler</string>
+    <string name="hex_input">Hex-Eingabe</string>
 </resources>

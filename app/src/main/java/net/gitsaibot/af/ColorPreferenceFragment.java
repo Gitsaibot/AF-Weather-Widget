@@ -90,10 +90,10 @@ public class ColorPreferenceFragment extends AppCompatDialogFragment implements 
         bindView(view);
 
         builder.setView(view);
-        builder.setTitle(showHexDialog ? "Input Hex Color" : "Select Color");
+        builder.setTitle(showHexDialog ? getString(R.string.input_hex_color) : getString(R.string.select_color));
         builder.setPositiveButton(android.R.string.ok, this);
         builder.setNegativeButton(android.R.string.cancel, null);
-        builder.setNeutralButton(showHexDialog ? "Color Picker" : "Hex Input", null);
+        builder.setNeutralButton(showHexDialog ? getString(R.string.color_picker) : getString(R.string.hex_input), null);
 
         return builder.create();
     }
@@ -107,8 +107,8 @@ public class ColorPreferenceFragment extends AppCompatDialogFragment implements 
             neutralButton.setOnClickListener(v -> {
                 showHexDialog = !showHexDialog;
                 updateViewVisibility();
-                dialog.setTitle(showHexDialog ? "Input Hex Color" : "Select Color");
-                neutralButton.setText(showHexDialog ? "Color Picker" : "Hex Input");
+                dialog.setTitle(showHexDialog ? getString(R.string.input_hex_color) : getString(R.string.select_color));
+                neutralButton.setText(showHexDialog ? getString(R.string.color_picker) : getString(R.string.hex_input));
             });
         }
     }

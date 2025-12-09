@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
 
     <string name="app_description">Weather widget showing detailed 24-hour forecasts in a 4x1 format.</string>
-    
+
     <string name="widget_name" translatable="false">AF Weather</string>
     <string name="widget_loading">Loading AF...</string>
 
@@ -83,7 +83,7 @@
  	<string name="location_search_results_select_dialog_title">Select a location</string>
  	<string name="location_search_no_results">No results found, please try a different search!</string>
  	<string name="location_empty_search_string_toast">Error: Empty search string.</string>
- 	<string name="location_search_progress_dialog_title">Please wait...</string>
+	<string name="location_search_progress_dialog_title">Please wait...</string>
  	<string name="location_search_progress_dialog_message">Searching...</string>
  	<string name="location_search_no_connection_toast">Error: No internet connection</string>
 	<string name="location_search_error_toast">An error occurred during search.</string>
@@ -105,6 +105,11 @@
 
 	<string name="dialog_color_alpha">Alpha:</string>
 	<string name="dialog_color_code">HTML color code:</string>
+
+	<string name="input_hex_color">Input Hex Color</string>
+	<string name="select_color">Select Color</string>
+	<string name="color_picker">Color Picker</string>
+	<string name="hex_input">Hex Input</string>
 
 	<string name="apply_changes">Apply Changes</string>
 	<string name="add_widget">Add Widget</string>
