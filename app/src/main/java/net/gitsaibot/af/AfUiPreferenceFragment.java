@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
@@ -35,6 +36,19 @@ public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements
         mBorderThicknessPreference.setSummary(bts + "px");
         String brs = pref.getString(getString(R.string.border_rounding_string), "4");
         mBorderRoundingPreference.setSummary(brs + "px");
+
+        getParentFragmentManager().setFragmentResultListener("COLOR_RESULT_KEY", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                String key = result.getString("key");
+                int value = result.getInt("value");
+
+                Preference pref = findPreference(key);
+                if (pref instanceof ColorPreference) {
+                    ((ColorPreference) pref).setValue(value);
+                }
+            }
+        });
     }
 
     @Override
@@ -83,11 +97,12 @@ public class AfUiPreferenceFragment extends PreferenceFragmentCompat implements
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onDisplayPreferenceDialog(Preference preference) {
         if (preference instanceof ColorPreference) {
-            DialogFragment dialogFragment = ColorPreferenceFragment.newInstance(preference.getKey());
-            dialogFragment.setTargetFragment(this, 0);
+            ColorPreferenceFragment dialogFragment = ColorPreferenceFragment.newInstance(
+                    preference.getKey(),
+                    ((ColorPreference) preference).getValue()
+            );
             dialogFragment.show(getParentFragmentManager(), null);
         } else super.onDisplayPreferenceDialog(preference);
     }

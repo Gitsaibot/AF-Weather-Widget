@@ -1,9 +1,11 @@
 package net.gitsaibot.af;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,14 +14,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.preference.DialogPreference;
-import androidx.preference.PreferenceDialogFragmentCompat;
+import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.util.Locale;
 
-public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat implements ColorView.OnValueChangeListener {
+public class ColorPreferenceFragment extends AppCompatDialogFragment implements ColorView.OnValueChangeListener, DialogInterface.OnClickListener {
 
+    private static final String ARG_KEY = "key";
+    private static final String ARG_VALUE = "initial_value";
     private int mValue;
+    private String mKey;
 
     private boolean showHexDialog = false;
 
@@ -42,14 +46,12 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
 
     private EditText mEditText;
 
-    public static ColorPreferenceFragment newInstance(
-            String key) {
-        final ColorPreferenceFragment
-                fragment = new ColorPreferenceFragment();
-        final Bundle b = new Bundle(1);
+    public static ColorPreferenceFragment newInstance(String key, int initialValue) {
+        final ColorPreferenceFragment fragment = new ColorPreferenceFragment();
+        final Bundle b = new Bundle(2);
         b.putString(ARG_KEY, key);
+        b.putInt(ARG_VALUE, initialValue);
         fragment.setArguments(b);
-
         return fragment;
     }
 
@@ -57,6 +59,7 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("showHexDialog", showHexDialog);
+        outState.putInt("currentValue", mValue);
     }
 
     @Override
@@ -67,23 +70,32 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
         }
     }
 
+    @NonNull
     @Override
-    public void onDialogClosed(boolean positiveResult) {
-        if (positiveResult) {
-            DialogPreference preference = getPreference();
-            if (preference instanceof ColorPreference colorPreference) {
-                colorPreference.setValue(mValue);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            mKey = getArguments().getString(ARG_KEY);
+            if (savedInstanceState != null && savedInstanceState.containsKey("currentValue")) {
+                mValue = savedInstanceState.getInt("currentValue");
+                showHexDialog = savedInstanceState.getBoolean("showHexDialog", false);
+            } else {
+                mValue = getArguments().getInt(ARG_VALUE);
             }
         }
-    }
 
-    @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
-        super.onPrepareDialogBuilder(builder);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_color, null);
+        bindView(view);
+
+        builder.setView(view);
         builder.setTitle(showHexDialog ? "Input Hex Color" : "Select Color");
         builder.setPositiveButton(android.R.string.ok, this);
-        builder.setNegativeButton(android.R.string.cancel, this);
+        builder.setNegativeButton(android.R.string.cancel, null);
         builder.setNeutralButton(showHexDialog ? "Color Picker" : "Hex Input", null);
+
+        return builder.create();
     }
 
     @Override
@@ -101,9 +113,7 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
         }
     }
 
-    @Override
-    protected void onBindDialogView(View view) {
-        super.onBindDialogView(view);
+    private void bindView(View view) {
 
         mColorPickerContainer = view.findViewById(R.id.colorPickerContainer);
         mHexInputContainer = view.findViewById(R.id.hexInputContainer);
@@ -139,11 +149,6 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
     }
 
     private void setupDialogValues() {
-        DialogPreference preference = getPreference();
-        if (preference instanceof ColorPreference) {
-            mValue = ((ColorPreference) preference).getValue();
-        }
-
         Color.colorToHSV(mValue, mHSV);
         mAlpha = (float)Color.alpha(mValue) / 255.0f;
 
@@ -163,23 +168,24 @@ public class ColorPreferenceFragment extends PreferenceDialogFragmentCompat impl
         mValueTextView.setText(String.format(Locale.getDefault(),"V: %.0f%%", mHSV[2] * 100.0f));
     }
 
-    @Override
     public void onClick(DialogInterface dialog, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             if (showHexDialog) {
                 try {
                     mValue = Color.parseColor(mEditText.getText().toString());
                 } catch (Exception e) {
-                    // This is not ideal, as the dialog will close. A better implementation
-                    // would also override the positive button's click listener.
                     Toast.makeText(getContext(), "Invalid color code entered", Toast.LENGTH_SHORT).show();
-                    return; // Don't close dialog by not calling super
+                    return;
                 }
             } else {
                 mValue = Color.HSVToColor(Math.round(mAlpha * 255.0f), mHSV);
             }
+
+            Bundle result = new Bundle();
+            result.putString("key", mKey);
+            result.putInt("value", mValue);
+            getParentFragmentManager().setFragmentResult("COLOR_RESULT_KEY", result);
         }
-        super.onClick(dialog, which);
     }
 
     @Override
