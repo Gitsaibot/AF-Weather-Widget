@@ -15,7 +15,6 @@ public class AfPreferenceActivity extends AppCompatActivity implements Preferenc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // View-Elemente aus XML-Layout Datei erzeugen lassen
         setContentView(R.layout.activity_preference);
     }
 
