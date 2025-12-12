@@ -1,0 +1,7 @@
+- Change to met and noaa json api
+- Reactivate Hex color input
+- Rework location search
+- Fix "Max rain not displayed at all when too high"
+- Replace JobIntentService with WorkManager
+- Add all met icons
+- Fix minor bugs
