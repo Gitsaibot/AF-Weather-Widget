@@ -44,10 +44,10 @@ public class AfWidgetInfo {
 					size = cursor.getInt(columnIndex);
 				}
 				// Size may be invalid due to old versions. If non-valid, default to 4x1		
-				if (!(size >= 1 && size <= 16))
-				{
-					size = AfWidgetsColumns.SIZE_LARGE_TINY;
-				}
+                if (size < 1)
+                {
+                    size = AfWidgetsColumns.SIZE_LARGE_TINY;
+                }
 				
 				AfViewInfo afViewInfo = null;
 				columnIndex = cursor.getColumnIndex(AfWidgetsColumns.VIEWS);

@@ -174,91 +174,100 @@ public class AfDetailedWidget {
 		
 		return this;
 	}
-	
-	public Bitmap render(int width, int height, boolean isLandscape) throws AfWidgetDrawException {
-		setupWidgetDimensions(width, height);
-		Bitmap bitmap = Bitmap.createBitmap(mWidgetWidth, mWidgetHeight, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
 
-		float borderPadding = 1.0f;
-		mBorderRect.set(
-				Math.round(mWidgetBounds.left + borderPadding),
-				Math.round(mWidgetBounds.top + borderPadding),
-				Math.round(mWidgetBounds.right - borderPadding),
-				Math.round(mWidgetBounds.bottom - borderPadding));
-		
-		float borderRounding = mWidgetSettings.getBorderRounding();
-		float borderThickness = mWidgetSettings.getBorderThickness();
-		
-		float widgetBorder = Math.round(borderPadding + borderRounding + (borderThickness - borderRounding));
-		mBackgroundRect.set(
-				Math.round(mWidgetBounds.left + widgetBorder),
-				Math.round(mWidgetBounds.top + widgetBorder),
-				Math.round(mWidgetBounds.right - widgetBorder),
-				Math.round(mWidgetBounds.bottom - widgetBorder));
-		
-		boolean drawTopText = mWidgetSettings.drawTopText(isLandscape);
-		
-		double minimumCellWidth = 8.0 * mDP;
-		double minimumCellHeight = 8.0 * mDP;
-		
-		double reservedSpaceAboveGraph = mIconHeight + mIconSpacingY;
-		double reservedSpaceBelowGraph = 2.0f * mDP; // 0.5 * minimumCellHeight;
-		
-		calculateDimensions(isLandscape, drawTopText, minimumCellWidth, minimumCellHeight, reservedSpaceAboveGraph, reservedSpaceBelowGraph);
-		
-		drawBackground(canvas);
-		drawGrid(canvas);
+    public Bitmap render(int width, int height, boolean isLandscape) throws AfWidgetDrawException {
+        setupWidgetDimensions(width, height);
 
-		if (mWidgetSettings.drawDayLightEffect()) {
-			drawDayAndNight(canvas);
-		}
-		
-		Path minRainPath = new Path();
-		Path maxRainPath = new Path();
-		buildRainPaths(minRainPath, maxRainPath);
-		drawRainPaths(canvas, minRainPath, maxRainPath);
-		
-		PointF[] temperaturePointArray = buildTemperaturePointArray(mPointData, mTimeFrom, mTimeTo, (float)mTemperatureRangeMax, (float)mTemperatureRangeMin);
-		Path temperaturePath = CatmullRomSpline.buildPath(temperaturePointArray);
-		
-		Matrix scaleMatrix = new Matrix();
-		scaleMatrix.setScale(mGraphRect.width(), mGraphRect.height());
-		temperaturePath.transform(scaleMatrix);
-		temperaturePath.offset(mGraphRect.left, mGraphRect.top);
-		drawTemperature(canvas, temperaturePath);
-		
-		drawGridOutline(canvas);
-		drawTemperatureLabels(canvas);
-		drawHourLabels(canvas);
-		drawWeatherIcons(canvas);
-		
-		if (drawTopText) {
-			Float pressure = null, humidity = null, temperature = null;
-			
-			long error = Long.MAX_VALUE;
-			
-			for (PointData p : mPointData) {
-				if (p.time != null)
-				{
-					long e = p.time - mTimeNow;
-					
-					if ((e >= 0) && (e < error) &&
-						(e <= mNumHoursBetweenSamples * DateUtils.HOUR_IN_MILLIS))
-					{
-						pressure = p.pressure;
-						humidity = p.humidity;
-						temperature = p.temperature;
-						error = e;
-					}
-				}
-			}
-			
-			drawInfoText(canvas, pressure, humidity, temperature);
-		}
-		
-		return bitmap;
-	}
+        float referenceHeight = 100.0f * mDP;
+        float scaleFactor = 1.0f;
+
+        if (mWidgetHeight < referenceHeight && mWidgetHeight > 0) {
+            scaleFactor = (float) mWidgetHeight / referenceHeight;
+            scaleFactor = Math.max(0.1f, scaleFactor);
+        }
+
+        updateDynamicDimensions(scaleFactor);
+
+        Bitmap bitmap = Bitmap.createBitmap(mWidgetWidth, mWidgetHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        float borderPadding = 1.0f;
+        mBorderRect.set(
+                Math.round(mWidgetBounds.left + borderPadding),
+                Math.round(mWidgetBounds.top + borderPadding),
+                Math.round(mWidgetBounds.right - borderPadding),
+                Math.round(mWidgetBounds.bottom - borderPadding));
+
+        float borderRounding = mWidgetSettings.getBorderRounding();
+        float borderThickness = mWidgetSettings.getBorderThickness();
+
+        float widgetBorder = Math.round(borderPadding + borderRounding + (borderThickness - borderRounding));
+        mBackgroundRect.set(
+                Math.round(mWidgetBounds.left + widgetBorder),
+                Math.round(mWidgetBounds.top + widgetBorder),
+                Math.round(mWidgetBounds.right - widgetBorder),
+                Math.round(mWidgetBounds.bottom - widgetBorder));
+
+        boolean drawTopText = mWidgetSettings.drawTopText(isLandscape);
+
+        double minimumCellWidth = 8.0 * mDP * scaleFactor;
+        double minimumCellHeight = 8.0 * mDP * scaleFactor;
+
+        double reservedSpaceAboveGraph = mIconHeight + mIconSpacingY;
+        double reservedSpaceBelowGraph = 2.0f * mDP * scaleFactor;
+
+        calculateDimensions(isLandscape, drawTopText, minimumCellWidth, minimumCellHeight, reservedSpaceAboveGraph, reservedSpaceBelowGraph);
+
+        drawBackground(canvas);
+        drawGrid(canvas);
+
+        if (mWidgetSettings.drawDayLightEffect()) {
+            drawDayAndNight(canvas);
+        }
+
+        Path minRainPath = new Path();
+        Path maxRainPath = new Path();
+        buildRainPaths(minRainPath, maxRainPath);
+        drawRainPaths(canvas, minRainPath, maxRainPath);
+
+        PointF[] temperaturePointArray = buildTemperaturePointArray(mPointData, mTimeFrom, mTimeTo, (float)mTemperatureRangeMax, (float)mTemperatureRangeMin);
+        Path temperaturePath = CatmullRomSpline.buildPath(temperaturePointArray);
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(mGraphRect.width(), mGraphRect.height());
+        temperaturePath.transform(scaleMatrix);
+        temperaturePath.offset(mGraphRect.left, mGraphRect.top);
+        drawTemperature(canvas, temperaturePath);
+
+        drawGridOutline(canvas);
+        drawTemperatureLabels(canvas);
+        drawHourLabels(canvas);
+        drawWeatherIcons(canvas);
+
+        if (drawTopText) {
+            Float pressure = null, humidity = null, temperature = null;
+
+            long error = Long.MAX_VALUE;
+
+            for (PointData p : mPointData) {
+                if (p.time != null)
+                {
+                    long e = p.time - mTimeNow;
+
+                    if ((e >= 0) && (e < error) &&
+                            (e <= mNumHoursBetweenSamples * DateUtils.HOUR_IN_MILLIS))
+                    {
+                        pressure = p.pressure;
+                        humidity = p.humidity;
+                        temperature = p.temperature;
+                        error = e;
+                    }
+                }
+            }
+            drawInfoText(canvas, pressure, humidity, temperature);
+        }
+        return bitmap;
+    }
 
 	private void buildRainPaths(Path minRainPath, Path maxRainPath) {
 		Float[] rainValues = new Float[mNumHorizontalCells];
@@ -1461,7 +1470,22 @@ public class AfDetailedWidget {
 
 		mPointData = pointData;
 	}
-	
+
+    private void updateDynamicDimensions(float scaleFactor) {
+        mTextSize = 10.0f * mDP * scaleFactor;
+        mLabelTextSize = 9.0f * mDP * scaleFactor;
+        mIconHeight = 19.0f * mDP * scaleFactor;
+        mIconWidth = 19.0f * mDP * scaleFactor;
+        mIconSpacingY = 2.0f * mDP * scaleFactor;
+
+        mTextPaint.setTextSize(mTextSize);
+        mLabelPaint.setTextSize(mLabelTextSize);
+
+        mAboveFreezingTemperaturePaint.setStrokeWidth(2.0f * mDP * scaleFactor);
+        mBelowFreezingTemperaturePaint.setStrokeWidth(2.0f * mDP * scaleFactor);
+        mMaxRainPaint.setStrokeWidth(Math.max(1.0f, mDP * scaleFactor));
+    }
+
 	private void setupWidgetDimensions(int width, int height) {
 		mWidgetWidth = width;
 		mWidgetHeight = height;

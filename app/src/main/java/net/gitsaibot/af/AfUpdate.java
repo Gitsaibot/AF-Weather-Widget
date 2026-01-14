@@ -256,7 +256,12 @@ public class AfUpdate {
     private Uri renderWidget(AfDetailedWidget widget, boolean isLandscape) throws AfWidgetDrawException, IOException {
         Point dimensions;
 
-        if (mAfSettings.getCachedUseSpecificDimensions()) {
+        Point exactDimensions = mAfSettings.getExactDimensions(mAfWidgetInfo.getAppWidgetId(), isLandscape);
+
+        if (exactDimensions != null) {
+            dimensions = exactDimensions;
+        }
+        else if (mAfSettings.getCachedUseSpecificDimensions()) {
             dimensions = mAfSettings.getPixelDimensionsOrStandard(isLandscape);
         } else {
             dimensions = mAfSettings.getStandardPixelDimensions(mAfWidgetInfo.getNumColumns(), mAfWidgetInfo.getNumRows(), isLandscape, true);

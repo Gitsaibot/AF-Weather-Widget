@@ -224,15 +224,14 @@ public class AfSettings {
 	public Editor editClear(Editor editor, Map<String, ?> settingsMap) {
 		for (Entry<String, ?> setting : settingsMap.entrySet()) {
 			String key = setting.getKey();
-			if (	  key.startsWith("global_temp") ||
-					(!key.startsWith("global") && !key.startsWith("backup")))
-			{
-				editor.remove(key);
-			}
-		}
-		
-		return editor;
-	}
+            if (key.startsWith("global_temp") || (!key.startsWith("global") && !key.startsWith("backup") && !key.startsWith("exact")))
+            {
+                editor.remove(key);
+            }
+        }
+
+        return editor;
+    }
 	
 	public Editor editClearBackup(Editor editor, Map<String, ?> settingsMap) {
 		for (Entry<String, ?> setting : settingsMap.entrySet()) {
@@ -1087,5 +1086,24 @@ public class AfSettings {
 	}
 	
 	/* END PIXEL DIMENSION STUFF */
-	
+
+    public static void saveExactDimensions(Context context, int appWidgetId, int portW, int portH, int landW, int landH) {
+        android.content.SharedPreferences.Editor editor = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putInt("exact_port_w_" + appWidgetId, portW);
+        editor.putInt("exact_port_h_" + appWidgetId, portH);
+        editor.putInt("exact_land_w_" + appWidgetId, landW);
+        editor.putInt("exact_land_h_" + appWidgetId, landH);
+        editor.apply();
+    }
+
+    public Point getExactDimensions(int appWidgetId, boolean isLandscape) {
+        String prefix = isLandscape ? "exact_land_" : "exact_port_";
+        int w = mSharedPreferences.getInt(prefix + "w_" + appWidgetId, -1);
+        int h = mSharedPreferences.getInt(prefix + "h_" + appWidgetId, -1);
+
+        if (w > 0 && h > 0) {
+            return new Point(w, h);
+        }
+        return null;
+    }
 }
