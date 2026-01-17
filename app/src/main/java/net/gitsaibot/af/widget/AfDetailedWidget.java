@@ -1472,8 +1472,8 @@ public class AfDetailedWidget {
 	}
 
     private void updateDynamicDimensions(float scaleFactor) {
-        mTextSize = 10.0f * mDP * scaleFactor;
-        mLabelTextSize = 9.0f * mDP * scaleFactor;
+        mTextSize = 11.0f * mDP * scaleFactor;
+        mLabelTextSize = 10.0f * mDP * scaleFactor;
         mIconHeight = 19.0f * mDP * scaleFactor;
         mIconWidth = 19.0f * mDP * scaleFactor;
         mIconSpacingY = 2.0f * mDP * scaleFactor;
