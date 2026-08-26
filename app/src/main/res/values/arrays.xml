@@ -15,6 +15,17 @@
 		<item>4</item>
 	</string-array>
 
+	<string-array name="graph_time_range_readable">
+		<item>@string/graph_time_range_24h</item>
+		<item>@string/graph_time_range_48h</item>
+	</string-array>
+
+	<!-- Values are the number of hours themselves, not an index. -->
+	<string-array name="graph_time_range_code" translatable="false">
+		<item>24</item>
+		<item>48</item>
+	</string-array>
+
 	<string-array name="temperature_units_readable">
 		<item>@string/temperature_units_celsius</item>
 		<item>@string/temperature_units_fahrenheit</item>

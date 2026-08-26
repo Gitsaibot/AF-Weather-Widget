@@ -26,6 +26,16 @@
             android:persistent="true" />
 
         <ListPreference
+            android:key="@string/graph_time_range_string"
+            android:title="@string/graph_time_range_title"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/graph_time_range_readable"
+            android:entryValues="@array/graph_time_range_code"
+            android:defaultValue="48" />
+
+        <ListPreference
             android:key="@string/top_text_visibility_string"
             android:title="@string/top_text_visibility_title"
             android:layout="@layout/preference_title"

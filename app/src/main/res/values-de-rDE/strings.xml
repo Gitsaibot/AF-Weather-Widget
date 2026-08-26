@@ -91,6 +91,9 @@
     <string name="top_text_visibility_landscape_only">Nur Querformat</string>
     <string name="top_text_visibility_portrait_only">Nur Hochformat</string>
     <string name="top_text_visibility_always">Immer</string>
+    <string name="graph_time_range_title">Zeitraum des Diagramms</string>
+    <string name="graph_time_range_24h">24 Stunden</string>
+    <string name="graph_time_range_48h">48 Stunden</string>
     <string name="device_profiles_calibrate_button">Kalibrieren</string>
     <string name="device_profiles_activate_specific_dimensions">Aktiviere gerätespezifische Abmessungen</string>
     <string name="device_profiles_model">"Modell: "</string>

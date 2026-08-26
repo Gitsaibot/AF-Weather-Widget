@@ -66,7 +66,10 @@ import androidx.core.content.res.ResourcesCompat;
 public class AfDetailedWidget {
 	
 	private static final String TAG = "AfDetailedWidget";
-	
+
+	/* Hours between samples, finest first. Every option divides both 24 and 48 evenly. */
+	private static final int[] SAMPLE_RESOLUTION_OPTIONS_HRS = { 2, 3, 4, 6 };
+
 	/* Initial Properties */
 	
 	private final int mNumHours;
@@ -135,13 +138,13 @@ public class AfDetailedWidget {
 	
 	private AfDetailedWidget(final Context context, AfWidgetInfo widgetInfo, AfLocationInfo locationInfo) {
 		mContext = context;
-		
-		mNumHours = 24;
-		mNumWeatherDataBufferHours = 6;
-		
+
 		mAfLocationInfo = locationInfo;
-		
+
 		mWidgetSettings = widgetInfo.getWidgetSettings();
+
+		mNumHours = mWidgetSettings.getNumHours();
+		mNumWeatherDataBufferHours = 6;
 	}
 	
 	public static AfDetailedWidget build(final Context context, AfWidgetInfo widgetInfo, AfLocationInfo locationInfo) throws AfWidgetDrawException, AfWidgetDataException {
@@ -217,6 +220,7 @@ public class AfDetailedWidget {
         double reservedSpaceBelowGraph = 2.0f * mDP * scaleFactor;
 
         calculateDimensions(isLandscape, drawTopText, minimumCellWidth, minimumCellHeight, reservedSpaceAboveGraph, reservedSpaceBelowGraph);
+        updateSampleResolution();
 
         drawBackground(canvas);
         drawGrid(canvas);
@@ -224,6 +228,8 @@ public class AfDetailedWidget {
         if (mWidgetSettings.drawDayLightEffect()) {
             drawDayAndNight(canvas);
         }
+
+        drawDayBoundaries(canvas);
 
         Path minRainPath = new Path();
         Path maxRainPath = new Path();
@@ -696,6 +702,34 @@ public class AfDetailedWidget {
 		canvas.restore();
 	}
 	
+	/**
+	 * Marks local midnight, so that a graph spanning more than one day still says which day
+	 * the hour labels belong to. At 24 hours this is usually a single line, or none at all.
+	 */
+	private void drawDayBoundaries(Canvas canvas) {
+		long timeRange = mTimeTo - mTimeFrom;
+		if (timeRange <= 0) return;
+
+		Calendar calendar = Calendar.getInstance(mAfLocationInfo.buildTimeZone());
+		calendar.setTimeInMillis(mTimeFrom);
+		truncateDay(calendar);
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+		Path path = new Path();
+
+		while (calendar.getTimeInMillis() < mTimeTo) {
+			float x = mGraphRect.left + Math.round(
+					mGraphRect.width() * (float)(calendar.getTimeInMillis() - mTimeFrom) / (float)timeRange);
+
+			path.moveTo(x, mGraphRect.top);
+			path.lineTo(x, mGraphRect.bottom);
+
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+		}
+
+		canvas.drawPath(path, mGridOutlinePaint);
+	}
+
 	private void drawGridOutline(Canvas canvas) {
 		Path gridOutline = new Path();
 		gridOutline.moveTo(mGraphRect.left, mGraphRect.top);
@@ -725,10 +759,8 @@ public class AfDetailedWidget {
 		int numCellsBetweenHorizontalLabels = mNumHoursBetweenSamples < hoursPerCell
 				? 1 : (int)Math.floor((float)mNumHoursBetweenSamples / hoursPerCell);
 		
-		// HARDCODED LIMIT
-		if (mNumHours == 24) {
-			numCellsBetweenHorizontalLabels = lcap(numCellsBetweenHorizontalLabels, 2);
-		}
+		// Never label every single cell, regardless of the time range in view.
+		numCellsBetweenHorizontalLabels = lcap(numCellsBetweenHorizontalLabels, 2);
 		
 		boolean useShortLabel;
 		boolean use24hours = DateFormat.is24HourFormat(mContext);
@@ -1410,14 +1442,39 @@ public class AfDetailedWidget {
 	}
 
 	private void setupSampleTimes() throws AfWidgetDataException {
-		long sampleResolutionHrs = 2;
-		Log.d(TAG, "Forcing sample resolution to " + sampleResolutionHrs + "hrs for correct icon and label layout.");
+		/* Start at the finest resolution we ever draw. The actual resolution depends on how
+		 * much horizontal room the graph turns out to have, which is only known once the
+		 * widget is being rendered; see updateSampleResolution().
+		 */
+		long sampleResolutionHrs = SAMPLE_RESOLUTION_OPTIONS_HRS[0];
 
 		if ((sampleResolutionHrs < 1) || (sampleResolutionHrs > mNumHours / 2)) {
 			throw new AfWidgetDataException("Invalid sample resolution");
 		}
 
 		mNumHoursBetweenSamples = (int)sampleResolutionHrs;
+	}
+
+	/**
+	 * Widens the sample resolution until the weather icons fit side by side in the graph.
+	 * At 24 hours the finest option normally wins; at 48 hours a narrow widget would
+	 * otherwise try to draw 24 icons in the space of 12.
+	 */
+	private void updateSampleResolution() {
+		int resolution = SAMPLE_RESOLUTION_OPTIONS_HRS[SAMPLE_RESOLUTION_OPTIONS_HRS.length - 1];
+
+		for (int option : SAMPLE_RESOLUTION_OPTIONS_HRS) {
+			if (mNumHours % option != 0) continue;
+
+			int numIcons = mNumHours / option;
+
+			if (numIcons > 0 && (float)mGraphRect.width() / (float)numIcons >= mIconWidth) {
+				resolution = option;
+				break;
+			}
+		}
+
+		mNumHoursBetweenSamples = resolution;
 	}
 
 	private void setupTimesAndPointData() {

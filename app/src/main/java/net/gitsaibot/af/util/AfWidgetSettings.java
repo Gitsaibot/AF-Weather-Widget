@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat;
 
 public class AfWidgetSettings {
 
+	private static final int DEFAULT_NUM_HOURS = 48;
+
 	private Context mContext;
 	private Map<String, Object> mSettings;
 
@@ -35,6 +37,7 @@ public class AfWidgetSettings {
 		mIntegerKeys.add(context.getString(R.string.temperature_units_string));
 		mIntegerKeys.add(context.getString(R.string.precipitation_units_string));
 		mIntegerKeys.add(context.getString(R.string.top_text_visibility_string));
+		mIntegerKeys.add(context.getString(R.string.graph_time_range_string));
 	}
 	
 	private boolean addSetting(String key, String value)
@@ -88,7 +91,8 @@ public class AfWidgetSettings {
 		settings.put(context.getString(R.string.temperature_units_string), 1);
 		settings.put(context.getString(R.string.precipitation_units_string), 1);
 		settings.put(context.getString(R.string.top_text_visibility_string), 4);
-		
+		settings.put(context.getString(R.string.graph_time_range_string), DEFAULT_NUM_HOURS);
+
 		settings.put(context.getString(R.string.day_effect_bool), Boolean.TRUE);
 		settings.put(context.getString(R.string.border_enabled_bool), Boolean.TRUE);
 		
@@ -235,6 +239,12 @@ public class AfWidgetSettings {
 		}
 	}
 	
+	public int getNumHours() {
+		Integer value = getIntegerSetting(mContext.getString(R.string.graph_time_range_string));
+		if (value == null || (value != 24 && value != 48)) value = DEFAULT_NUM_HOURS;
+		return value;
+	}
+
 	public boolean drawTopText(boolean isLandscape) {
 		Integer topTextVisibility = getIntegerSetting(mContext.getString(R.string.top_text_visibility_string));
 		if (topTextVisibility != null)

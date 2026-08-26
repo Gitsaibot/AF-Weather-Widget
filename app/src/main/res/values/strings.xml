@@ -144,7 +144,10 @@
 	<string name="top_text_visibility_landscape_only">Landscape Only</string>
 	<string name="top_text_visibility_portrait_only">Portrait Only</string>
 	<string name="top_text_visibility_always">Always</string>
-	
+	<string name="graph_time_range_title">Graph time range</string>
+	<string name="graph_time_range_24h">24 hours</string>
+	<string name="graph_time_range_48h">48 hours</string>
+
 	<string name="ui_settings_category_border">Border settings</string>
 	<string name="border_enabled_title">Widget border</string>
 	<string name="border_enabled_summary_on">Border enabled</string>
@@ -205,7 +208,8 @@
     <string name="precipitation_scaling_string" translatable="false">rain_scale_string</string>
     
     <string name="top_text_visibility_string" translatable="false">top_text_visibility_string</string>
-    
+    <string name="graph_time_range_string" translatable="false">graph_time_range_string</string>
+
     <string name="border_enabled_bool" translatable="false">border_enabled_bool</string>
     <string name="border_color_int" translatable="false">border_color_int</string>
     <string name="border_thickness_string" translatable="false">border_thickness_string</string>
