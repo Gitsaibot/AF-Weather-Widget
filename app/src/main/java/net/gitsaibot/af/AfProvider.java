@@ -443,17 +443,15 @@ public class AfProvider extends ContentProvider {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			Log.d(TAG, "onUpdate() oldVersion=" + oldVersion + ",newVersion=" + newVersion);
 
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXWIDGETS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXVIEWS);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXLOCATIONS);
+			/* Widget/view/location/settings tables hold user configuration and must
+			 * survive upgrades. Only the forecast tables are caches: drop them so the
+			 * new wind columns get created, then let the next update refetch the data. */
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXFORECASTS);
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXWIDGETSETTINGS);
-			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXVIEWSETTINGS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXPOINTDATAFORECASTS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXINTERVALDATAFORECASTS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXSUNMOONDATA);
 
-            onCreate(db);
+            createForecastTable(db);
 
 			// All forecast data has been deleted.
             ContentValues values = new ContentValues();
