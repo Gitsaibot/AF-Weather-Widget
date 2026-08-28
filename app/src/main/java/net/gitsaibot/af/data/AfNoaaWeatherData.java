@@ -140,6 +140,9 @@ public class AfNoaaWeatherData implements AfDataSource {
 				if (data.temperature != null) pointData.temperature = data.temperature;
 				if (data.humidity != null) pointData.humidity = data.humidity;
 				if (data.pressure != null) pointData.pressure = data.pressure;
+				if (data.windSpeed != null) pointData.windSpeed = data.windSpeed;
+				if (data.windGust != null) pointData.windGust = data.windGust;
+				if (data.windDirection != null) pointData.windDirection = data.windDirection;
 				pointDataList.add(pointData.buildContentValues(afLocationInfo.getId()));
 
 				IntervalData intervalData = new IntervalData();
@@ -213,6 +216,11 @@ public class AfNoaaWeatherData implements AfDataSource {
 						if (ts.data.instant != null && ts.data.instant.details != null && ts.data.instant.details.air_pressure_at_sea_level != null) {
 							data.pressure = ts.data.instant.details.air_pressure_at_sea_level;
 						}
+						if (ts.data.instant != null && ts.data.instant.details != null) {
+							data.windSpeed = ts.data.instant.details.wind_speed;
+							data.windGust = ts.data.instant.details.wind_speed_of_gust;
+							data.windDirection = ts.data.instant.details.wind_from_direction;
+						}
 						if (ts.data.next1Hours != null) {
 							if (ts.data.next1Hours.summary != null) {
 								data.icon = mapWeatherIconSymbol(ts.data.next1Hours.summary.symbol_code);
@@ -253,6 +261,9 @@ public class AfNoaaWeatherData implements AfDataSource {
 					data.temperature = ts.data.instant.details.air_temperature;
 					data.humidity = ts.data.instant.details.relative_humidity;
 					data.pressure = ts.data.instant.details.air_pressure_at_sea_level;
+					data.windSpeed = ts.data.instant.details.wind_speed;
+					data.windGust = ts.data.instant.details.wind_speed_of_gust;
+					data.windDirection = ts.data.instant.details.wind_from_direction;
 				}
 				if (ts.data.next1Hours != null) {
 					if (ts.data.next1Hours.summary != null) {
@@ -279,6 +290,8 @@ public class AfNoaaWeatherData implements AfDataSource {
 		interpolateFloatValue(dataList, (data) -> data.temperature, (data, val) -> data.temperature = val);
 		interpolateFloatValue(dataList, (data) -> data.humidity, (data, val) -> data.humidity = val);
 		interpolateFloatValue(dataList, (data) -> data.pressure, (data, val) -> data.pressure = val);
+		interpolateFloatValue(dataList, (data) -> data.windSpeed, (data, val) -> data.windSpeed = val);
+		interpolateFloatValue(dataList, (data) -> data.windGust, (data, val) -> data.windGust = val);
 	}
 
 	private void interpolateFloatValue(List<CombinedData> dataList, java.util.function.Function<CombinedData, Float> getter, java.util.function.BiConsumer<CombinedData, Float> setter) {
@@ -353,6 +366,9 @@ public class AfNoaaWeatherData implements AfDataSource {
 		Float temperature = null;
 		Float humidity = null;
 		Float pressure = null;
+		Float windSpeed = null;
+		Float windGust = null;
+		Float windDirection = null;
 		float rainValue = 0.0f;
 		float rainMinValue = 0.0f;
 		float rainMaxValue = 0.0f;
@@ -408,6 +424,9 @@ public class AfNoaaWeatherData implements AfDataSource {
 				@SerializedName("air_temperature") public Float air_temperature;
 				@SerializedName("relative_humidity") public Float relative_humidity;
 				@SerializedName("air_pressure_at_sea_level") public Float air_pressure_at_sea_level;
+				@SerializedName("wind_speed") public Float wind_speed;
+				@SerializedName("wind_speed_of_gust") public Float wind_speed_of_gust;
+				@SerializedName("wind_from_direction") public Float wind_from_direction;
 			}
 		}
 		private static class NextHoursData {

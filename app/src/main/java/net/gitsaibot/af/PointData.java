@@ -14,6 +14,10 @@ public class PointData {
 	public Float humidity = null;
 	public Float pressure = null;
 	
+	public Float windSpeed = null;
+	public Float windGust = null;
+	public Float windDirection = null;
+	
 	public PointData() { }
 	
 	public ContentValues buildContentValues(long locationId)
@@ -27,6 +31,9 @@ public class PointData {
 		if (temperature != null) contentValues.put(AfPointDataForecastColumns.TEMPERATURE, temperature);
 		if (humidity != null) contentValues.put(AfPointDataForecastColumns.HUMIDITY, humidity);
 		if (pressure != null) contentValues.put(AfPointDataForecastColumns.PRESSURE, pressure);
+		if (windSpeed != null) contentValues.put(AfPointDataForecastColumns.WIND_SPEED, windSpeed);
+		if (windGust != null) contentValues.put(AfPointDataForecastColumns.WIND_GUST, windGust);
+		if (windDirection != null) contentValues.put(AfPointDataForecastColumns.WIND_DIRECTION, windDirection);
 		
 		return contentValues;
 	}
@@ -48,6 +55,15 @@ public class PointData {
 		
 		columnIndex = c.getColumnIndex(AfPointDataForecastColumns.PRESSURE);
 		if (columnIndex != -1 && !c.isNull(columnIndex)) pointData.pressure = c.getFloat(columnIndex);
+		
+		columnIndex = c.getColumnIndex(AfPointDataForecastColumns.WIND_SPEED);
+		if (columnIndex != -1 && !c.isNull(columnIndex)) pointData.windSpeed = c.getFloat(columnIndex);
+		
+		columnIndex = c.getColumnIndex(AfPointDataForecastColumns.WIND_GUST);
+		if (columnIndex != -1 && !c.isNull(columnIndex)) pointData.windGust = c.getFloat(columnIndex);
+		
+		columnIndex = c.getColumnIndex(AfPointDataForecastColumns.WIND_DIRECTION);
+		if (columnIndex != -1 && !c.isNull(columnIndex)) pointData.windDirection = c.getFloat(columnIndex);
 
 		return pointData;
 	}

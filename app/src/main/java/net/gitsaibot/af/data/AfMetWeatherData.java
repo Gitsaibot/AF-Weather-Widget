@@ -197,6 +197,15 @@ public class AfMetWeatherData implements AfDataSource {
 					if (ts.data.instant.details.air_pressure_at_sea_level != null) {
 						cvPoint.put(AfPointDataForecastColumns.PRESSURE, ts.data.instant.details.air_pressure_at_sea_level);
 					}
+					if (ts.data.instant.details.wind_speed != null) {
+						cvPoint.put(AfPointDataForecastColumns.WIND_SPEED, ts.data.instant.details.wind_speed);
+					}
+					if (ts.data.instant.details.wind_speed_of_gust != null) {
+						cvPoint.put(AfPointDataForecastColumns.WIND_GUST, ts.data.instant.details.wind_speed_of_gust);
+					}
+					if (ts.data.instant.details.wind_from_direction != null) {
+						cvPoint.put(AfPointDataForecastColumns.WIND_DIRECTION, ts.data.instant.details.wind_from_direction);
+					}
 					pointDataValues.add(cvPoint);
 				}
 
@@ -317,6 +326,12 @@ public class AfMetWeatherData implements AfDataSource {
 		public Float relative_humidity;
 		@SerializedName("air_pressure_at_sea_level")
 		public Float air_pressure_at_sea_level;
+		@SerializedName("wind_speed")
+		public Float wind_speed;
+		@SerializedName("wind_speed_of_gust")
+		public Float wind_speed_of_gust;
+		@SerializedName("wind_from_direction")
+		public Float wind_from_direction;
 	}
 
 	private static class NextHoursData {

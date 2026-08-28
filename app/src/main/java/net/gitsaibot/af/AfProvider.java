@@ -170,6 +170,9 @@ public class AfProvider extends ContentProvider {
 		String TEMPERATURE = "temperature";
 		String HUMIDITY = "humidity";
 		String PRESSURE = "pressure";
+		String WIND_SPEED = "wind_speed";
+		String WIND_GUST = "wind_speed_of_gust";
+		String WIND_DIRECTION = "wind_from_direction";
 		
 		int LOCATION_COLUMN = 1;
 		int TIME_ADDED_COLUMN = 2;
@@ -177,9 +180,13 @@ public class AfProvider extends ContentProvider {
 		int TEMPERATURE_COLUMN = 4;
 		int HUMIDITY_COLUMN = 5;
 		int PRESSURE_COLUMN = 6;
+		int WIND_SPEED_COLUMN = 7;
+		int WIND_GUST_COLUMN = 8;
+		int WIND_DIRECTION_COLUMN = 9;
 
 		String[] ALL_COLUMNS = new String[] {
-				BaseColumns._ID, LOCATION, TIME_ADDED, TIME, TEMPERATURE, HUMIDITY, PRESSURE };
+				BaseColumns._ID, LOCATION, TIME_ADDED, TIME, TEMPERATURE, HUMIDITY, PRESSURE,
+				WIND_SPEED, WIND_GUST, WIND_DIRECTION };
 	}
 	
 	public static class AfPointDataForecasts implements BaseColumns, AfPointDataForecastColumns {
@@ -314,7 +321,7 @@ public class AfProvider extends ContentProvider {
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		private static final String DATABASE_NAME = "aix_database.db";
-		private static final int DATABASE_VERSION = 9;
+		private static final int DATABASE_VERSION = 10;
 		// 0.1.6 = version 8
 		// 0.1.5 = version 7
 		// 0.1.4 = version 6
@@ -392,7 +399,10 @@ public class AfProvider extends ContentProvider {
 					+ AfPointDataForecastColumns.TIME + " INTEGER,"
 					+ AfPointDataForecastColumns.TEMPERATURE + " REAL,"
 					+ AfPointDataForecastColumns.HUMIDITY + " REAL,"
-					+ AfPointDataForecastColumns.PRESSURE + " REAL);");
+					+ AfPointDataForecastColumns.PRESSURE + " REAL,"
+					+ AfPointDataForecastColumns.WIND_SPEED + " REAL,"
+					+ AfPointDataForecastColumns.WIND_GUST + " REAL,"
+					+ AfPointDataForecastColumns.WIND_DIRECTION + " REAL);");
 
 			db.execSQL("CREATE TABLE " + TABLE_AIXINTERVALDATAFORECASTS + " ("
 					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -1361,8 +1371,11 @@ public class AfProvider extends ContentProvider {
 						+ AfPointDataForecasts.TIME + ","
 						+ AfPointDataForecasts.TEMPERATURE + ","
 						+ AfPointDataForecasts.HUMIDITY + ","
-						+ AfPointDataForecasts.PRESSURE + ") "
-						+ "VALUES (?,?,?,?,?,?)");
+						+ AfPointDataForecasts.PRESSURE + ","
+						+ AfPointDataForecasts.WIND_SPEED + ","
+						+ AfPointDataForecasts.WIND_GUST + ","
+						+ AfPointDataForecasts.WIND_DIRECTION + ") "
+						+ "VALUES (?,?,?,?,?,?,?,?,?)");
 		
 		for (ContentValues value : values)
 		{
@@ -1395,6 +1408,27 @@ public class AfProvider extends ContentProvider {
 					insert.bindDouble(6, pressure);
 				} else {
 					insert.bindNull(6);
+				}
+				
+				Double windSpeed = value.getAsDouble(AfPointDataForecasts.WIND_SPEED);
+				if (windSpeed != null) {
+					insert.bindDouble(7, windSpeed);
+				} else {
+					insert.bindNull(7);
+				}
+				
+				Double windGust = value.getAsDouble(AfPointDataForecasts.WIND_GUST);
+				if (windGust != null) {
+					insert.bindDouble(8, windGust);
+				} else {
+					insert.bindNull(8);
+				}
+				
+				Double windDirection = value.getAsDouble(AfPointDataForecasts.WIND_DIRECTION);
+				if (windDirection != null) {
+					insert.bindDouble(9, windDirection);
+				} else {
+					insert.bindNull(9);
 				}
 				
 				insert.execute();
