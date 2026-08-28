@@ -21,6 +21,11 @@ public class AfWidgetSettings {
 
 	private static final int DEFAULT_NUM_HOURS = 48;
 
+	public static final int WIND_UNITS_MS = 1;
+	public static final int WIND_UNITS_KMH = 2;
+	public static final int WIND_UNITS_MPH = 3;
+	public static final int WIND_UNITS_KN = 4;
+
 	private Context mContext;
 	private Map<String, Object> mSettings;
 
@@ -38,6 +43,7 @@ public class AfWidgetSettings {
 		mIntegerKeys.add(context.getString(R.string.precipitation_units_string));
 		mIntegerKeys.add(context.getString(R.string.top_text_visibility_string));
 		mIntegerKeys.add(context.getString(R.string.graph_time_range_string));
+		mIntegerKeys.add(context.getString(R.string.wind_units_string));
 	}
 	
 	private boolean addSetting(String key, String value)
@@ -92,9 +98,11 @@ public class AfWidgetSettings {
 		settings.put(context.getString(R.string.precipitation_units_string), 1);
 		settings.put(context.getString(R.string.top_text_visibility_string), 4);
 		settings.put(context.getString(R.string.graph_time_range_string), DEFAULT_NUM_HOURS);
+		settings.put(context.getString(R.string.wind_units_string), 1);
 
 		settings.put(context.getString(R.string.day_effect_bool), Boolean.TRUE);
 		settings.put(context.getString(R.string.border_enabled_bool), Boolean.TRUE);
+		settings.put(context.getString(R.string.wind_enabled_bool), Boolean.TRUE);
 		
 		AfWidgetSettings afWidgetSettings = new AfWidgetSettings(context);
 		afWidgetSettings.mSettings = settings;
@@ -204,7 +212,9 @@ public class AfWidgetSettings {
 				{ R.string.max_rain_color_int, R.color.maximum_rain },
 				{ R.string.min_rain_color_int, R.color.minimum_rain },
 				{ R.string.above_freezing_color_int, R.color.above_freezing },
-				{ R.string.below_freezing_color_int, R.color.below_freezing } };
+				{ R.string.below_freezing_color_int, R.color.below_freezing },
+				{ R.string.wind_line_color_int, R.color.wind_line },
+				{ R.string.wind_gust_color_int, R.color.wind_gust } };
 
 		for (int[] defaultColor : defaultColors) {
 			String key = r.getString(defaultColor[0]);
@@ -369,6 +379,30 @@ public class AfWidgetSettings {
 	public int getBelowFreezingColor() {
 		Integer color = getIntegerSetting(mContext.getString(R.string.below_freezing_color_int));
 		if (color == null) color = ContextCompat.getColor(mContext, R.color.below_freezing);
+		return color;
+	}
+	
+	public boolean drawWindPanel() {
+		Boolean value = getBooleanSetting(mContext.getString(R.string.wind_enabled_bool));
+		if (value == null) value = true;
+		return value;
+	}
+	
+	public int getWindUnits() {
+		Integer value = getIntegerSetting(mContext.getString(R.string.wind_units_string));
+		if (value == null || value < WIND_UNITS_MS || value > WIND_UNITS_KN) value = WIND_UNITS_MS;
+		return value;
+	}
+	
+	public int getWindLineColor() {
+		Integer color = getIntegerSetting(mContext.getString(R.string.wind_line_color_int));
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.wind_line);
+		return color;
+	}
+	
+	public int getWindGustColor() {
+		Integer color = getIntegerSetting(mContext.getString(R.string.wind_gust_color_int));
+		if (color == null) color = ContextCompat.getColor(mContext, R.color.wind_gust);
 		return color;
 	}
 	

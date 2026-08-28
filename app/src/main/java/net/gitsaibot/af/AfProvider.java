@@ -446,15 +446,15 @@ public class AfProvider extends ContentProvider {
 			/* Widget/view/location/settings tables hold user configuration and must
 			 * survive upgrades. Only the forecast tables are caches: drop them so the
 			 * new wind columns get created, then let the next update refetch the data. */
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXFORECASTS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXFORECASTS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXPOINTDATAFORECASTS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXINTERVALDATAFORECASTS);
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIXSUNMOONDATA);
 
-            createForecastTable(db);
+			createForecastTable(db);
 
 			// All forecast data has been deleted.
-            ContentValues values = new ContentValues();
+			ContentValues values = new ContentValues();
 			values.put(AfLocationsColumns.LAST_FORECAST_UPDATE, 0);
 			values.put(AfLocationsColumns.FORECAST_VALID_TO, 0);
 			values.put(AfLocationsColumns.NEXT_FORECAST_UPDATE, 0);

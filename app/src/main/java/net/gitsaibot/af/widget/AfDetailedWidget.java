@@ -61,6 +61,7 @@ import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 public class AfDetailedWidget {
@@ -115,6 +116,8 @@ public class AfDetailedWidget {
 	
 	private Paint mMinRainPaint, mMaxRainPaint;
 	private Paint mWindPaint;
+	private Paint mWindGustPaint;
+	private Paint mWindDirectionPaint;
 	
 	private TimeZone mUtcTimeZone = TimeZone.getTimeZone("UTC");
 	
@@ -126,6 +129,9 @@ public class AfDetailedWidget {
 	private boolean mDrawWindPanel;
 	private boolean mHasWindData;
 	private double mWindRangeMax;
+	private String mWindLabelText;
+	private int mNumCellsBetweenHorizontalLabels;
+	private boolean mUseShortHourLabel;
 	
 	private int mNumHorizontalCells, mNumVerticalCells;
 	private double mCellSizeX, mCellSizeY;
@@ -199,7 +205,7 @@ public class AfDetailedWidget {
 
         updateDynamicDimensions(scaleFactor);
 
-        mDrawWindPanel = mHasWindData && mWidgetHeight >= Math.round(80.0f * mDP);
+        mDrawWindPanel = mWidgetSettings.drawWindPanel() && mHasWindData && mWidgetHeight >= Math.round(80.0f * mDP);
 
         Bitmap bitmap = Bitmap.createBitmap(mWidgetWidth, mWidgetHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -231,6 +237,7 @@ public class AfDetailedWidget {
 
         calculateDimensions(isLandscape, drawTopText, minimumCellWidth, minimumCellHeight, reservedSpaceAboveGraph, reservedSpaceBelowGraph);
         updateSampleResolution();
+        calculateHorizontalLabelStep();
 
         drawBackground(canvas);
         drawGrid(canvas);
@@ -255,6 +262,8 @@ public class AfDetailedWidget {
         temperaturePath.offset(mGraphRect.left, mGraphRect.top);
         drawTemperature(canvas, temperaturePath);
         drawWind(canvas);
+        drawWindDirection(canvas);
+        drawWindLabel(canvas);
 
         drawGridOutline(canvas);
         drawTemperatureLabels(canvas);
@@ -581,6 +590,7 @@ public class AfDetailedWidget {
 	{
 		double[] degreesPerCellOptions = { 0.5, 1.0, 2.0, 2.5, 5.0, 10.0, 20.0, 25.0, 50.0, 100.0 };
 		double textLabelWidth = 0.0;
+		double windLabelWidth = mDrawWindPanel ? mLabelPaint.measureText(mWindLabelText) : 0.0;
 		
 		// timeoutCounter is used to ensure that the loop will not run forever
 		
@@ -616,11 +626,11 @@ public class AfDetailedWidget {
 			
 			double tempMaxLabelWidth = createVerticalGraphLabels(mNumVerticalCells, mTemperatureRangeMin, degreesPerCell, mLabelPaint);
 			
-			if (tempMaxLabelWidth <= textLabelWidth) {
+			if (tempMaxLabelWidth <= textLabelWidth && windLabelWidth <= textLabelWidth) {
 				return;
 			}
 			
-			textLabelWidth = tempMaxLabelWidth;
+			textLabelWidth = Math.max(tempMaxLabelWidth, windLabelWidth);
 		}
 		
 		throw new AfWidgetDrawException("Failed to calculate graph dimensions");
@@ -794,47 +804,10 @@ public class AfDetailedWidget {
 		int startHour = calendar.get(Calendar.HOUR_OF_DAY);
 
 		float hoursPerCell = (float)mNumHours / (float)mNumHorizontalCells;
-		int numCellsBetweenHorizontalLabels = mNumHoursBetweenSamples < hoursPerCell
-				? 1 : (int)Math.floor((float)mNumHoursBetweenSamples / hoursPerCell);
+		int numCellsBetweenHorizontalLabels = mNumCellsBetweenHorizontalLabels;
 		
-		// Never label every single cell, regardless of the time range in view.
-		numCellsBetweenHorizontalLabels = lcap(numCellsBetweenHorizontalLabels, 2);
-		
-		boolean useShortLabel;
+		boolean useShortLabel = mUseShortHourLabel;
 		boolean use24hours = DateFormat.is24HourFormat(mContext);
-		
-		float longLabelWidth = mLabelPaint.measureText(use24hours ? "24" : "12 pm");
-		float shortLabelWidth = mLabelPaint.measureText("12p");
-		
-		while (true) {
-			/* Ensure that labels can be evenly spaced, given the number of cells, and make
-			 * sure that each label step is a full number of hours.
-			 */
-			while ((mNumHorizontalCells % numCellsBetweenHorizontalLabels != 0) ||
-					((hoursPerCell * numCellsBetweenHorizontalLabels) !=
-							Math.round(hoursPerCell * numCellsBetweenHorizontalLabels)))
-			{
-				if (numCellsBetweenHorizontalLabels > mNumHorizontalCells)
-				{
-					throw new AfWidgetDrawException("Failed to space horizontal cells");
-				}
-				else
-				{
-					numCellsBetweenHorizontalLabels++;
-				}
-			}
-			
-			double spaceBetweenLabels = numCellsBetweenHorizontalLabels * mCellSizeX;
-			if (spaceBetweenLabels > longLabelWidth * 1.25f) {
-				useShortLabel = false;
-				break;
-			} else if (!use24hours && spaceBetweenLabels > shortLabelWidth * 1.25f) {
-				useShortLabel = true;
-				break;
-			}
-			
-			numCellsBetweenHorizontalLabels++;
-		}
 		
 		for (int i = numCellsBetweenHorizontalLabels;
 				 i < mNumHorizontalCells;
@@ -861,6 +834,54 @@ public class AfDetailedWidget {
 			}
 			canvas.drawText(hourLabel, notchX, (float)Math.floor(((float)mGraphAreaRect.bottom + mBackgroundRect.bottom) / 2.0f + mLabelPaint.getTextSize() / 2.0f), mLabelPaint);
 		}
+	}
+
+	private int calculateHorizontalLabelStep() throws AfWidgetDrawException {
+		float hoursPerCell = (float)mNumHours / (float)mNumHorizontalCells;
+
+		int numCellsBetweenHorizontalLabels = mNumHoursBetweenSamples < hoursPerCell
+				? 1 : (int)Math.floor((float)mNumHoursBetweenSamples / hoursPerCell);
+		
+		// Never label every single cell, regardless of the time range in view.
+		numCellsBetweenHorizontalLabels = lcap(numCellsBetweenHorizontalLabels, 2);
+		
+		boolean use24hours = DateFormat.is24HourFormat(mContext);
+		
+		float longLabelWidth = mLabelPaint.measureText(use24hours ? "24" : "12 pm");
+		float shortLabelWidth = mLabelPaint.measureText("12p");
+		
+		while (true) {
+			/* Ensure that labels can be evenly spaced, given the number of cells, and make
+			 * sure that each label step is a full number of hours.
+			 */
+			while ((mNumHorizontalCells % numCellsBetweenHorizontalLabels != 0) ||
+					((hoursPerCell * numCellsBetweenHorizontalLabels) !=
+							Math.round(hoursPerCell * numCellsBetweenHorizontalLabels)))
+			{
+				if (numCellsBetweenHorizontalLabels > mNumHorizontalCells)
+				{
+					throw new AfWidgetDrawException("Failed to space horizontal cells");
+				}
+				else
+				{
+					numCellsBetweenHorizontalLabels++;
+				}
+			}
+			
+			double spaceBetweenLabels = numCellsBetweenHorizontalLabels * mCellSizeX;
+			if (spaceBetweenLabels > longLabelWidth * 1.25f) {
+				mUseShortHourLabel = false;
+				break;
+			} else if (!use24hours && spaceBetweenLabels > shortLabelWidth * 1.25f) {
+				mUseShortHourLabel = true;
+				break;
+			}
+			
+			numCellsBetweenHorizontalLabels++;
+		}
+		
+		mNumCellsBetweenHorizontalLabels = numCellsBetweenHorizontalLabels;
+		return numCellsBetweenHorizontalLabels;
 	}
 
 	private void drawInfoText(Canvas canvas, Float pressure, Float humidity, Float temperature)
@@ -1020,16 +1041,21 @@ public class AfDetailedWidget {
 	}
 
 	/**
-	 * Straight polyline of sustained wind speed in a panel below the temperature graph.
-	 * Deliberately bare for the stage 2 tracer: no units, no gust band, no labels yet.
+	 * Straight polyline of sustained wind speed plus a filled band between sustained
+	 * and gust speed, in a panel below the temperature graph.
 	 */
 	private void drawWind(Canvas canvas) {
 		if (!mDrawWindPanel) return;
 
-		Path windPath = new Path();
+		float windFactor = getWindFactor();
 		long timeRange = mTimeTo - mTimeFrom;
 
-		boolean hasStart = false;
+		Path windPath = new Path();
+		boolean hasWindStart = false;
+
+		Path gustBandPath = new Path();
+		ArrayList<PointF> bandTop = new ArrayList<>();
+		ArrayList<PointF> bandBottom = new ArrayList<>();
 
 		for (PointData p : mPointData) {
 			if (p.time == null || p.windSpeed == null) continue;
@@ -1037,23 +1063,156 @@ public class AfDetailedWidget {
 
 			float x = mWindPanelRect.left + mWindPanelRect.width()
 					* (float)(p.time - mTimeFrom) / (float)timeRange;
-			float y = mWindPanelRect.bottom - mWindPanelRect.height()
-					* (float)(p.windSpeed / mWindRangeMax);
+			float yWind = mWindPanelRect.bottom - mWindPanelRect.height()
+					* (float)(p.windSpeed * windFactor / mWindRangeMax);
 
-			if (!hasStart) {
-				windPath.moveTo(x, y);
-				hasStart = true;
+			if (!hasWindStart) {
+				windPath.moveTo(x, yWind);
+				hasWindStart = true;
 			} else {
-				windPath.lineTo(x, y);
+				windPath.lineTo(x, yWind);
+			}
+
+			if (p.windGust != null && p.windGust >= p.windSpeed) {
+				float yGust = mWindPanelRect.bottom - mWindPanelRect.height()
+						* (float)(p.windGust * windFactor / mWindRangeMax);
+				bandTop.add(new PointF(x, yGust));
+				bandBottom.add(new PointF(x, yWind));
+			} else {
+				appendWindGustBand(gustBandPath, bandTop, bandBottom);
+				bandTop.clear();
+				bandBottom.clear();
 			}
 		}
-
-		if (!hasStart) return;
+		appendWindGustBand(gustBandPath, bandTop, bandBottom);
 
 		canvas.save();
 		canvas.clipRect(mWindPanelRect.left + 1, mWindPanelRect.top, mWindPanelRect.right, mWindPanelRect.bottom);
+		if (!gustBandPath.isEmpty()) canvas.drawPath(gustBandPath, mWindGustPaint);
 		canvas.drawPath(windPath, mWindPaint);
 		canvas.restore();
+	}
+
+	private void appendWindGustBand(Path bandPath, ArrayList<PointF> bandTop, ArrayList<PointF> bandBottom) {
+		if (bandTop.size() < 2) return;
+
+		bandPath.moveTo(bandTop.get(0).x, bandTop.get(0).y);
+		for (int i = 1; i < bandTop.size(); i++) bandPath.lineTo(bandTop.get(i).x, bandTop.get(i).y);
+		for (int i = bandBottom.size() - 1; i >= 0; i--) bandPath.lineTo(bandBottom.get(i).x, bandBottom.get(i).y);
+		bandPath.close();
+	}
+
+	private float getWindFactor() {
+		switch (mWidgetSettings.getWindUnits()) {
+			case AfWidgetSettings.WIND_UNITS_KMH: return 3.6f;
+			case AfWidgetSettings.WIND_UNITS_MPH: return 2.2369363f;
+			case AfWidgetSettings.WIND_UNITS_KN: return 1.9438445f;
+			default: return 1.0f;
+		}
+	}
+
+	private String getWindUnitString() {
+		switch (mWidgetSettings.getWindUnits()) {
+			case AfWidgetSettings.WIND_UNITS_KMH: return mContext.getString(R.string.wind_unit_kmh);
+			case AfWidgetSettings.WIND_UNITS_MPH: return mContext.getString(R.string.wind_unit_mph);
+			case AfWidgetSettings.WIND_UNITS_KN: return mContext.getString(R.string.wind_unit_kn);
+			default: return mContext.getString(R.string.wind_unit_ms);
+		}
+	}
+
+	/**
+	 * Labels the top of the wind scale in the left gutter, shared with the
+	 * temperature labels.
+	 */
+	private void drawWindLabel(Canvas canvas) {
+		if (!mDrawWindPanel) return;
+
+		float labelTextPaddingX = 2.5f * mDP;
+
+		mLabelPaint.setTextAlign(Paint.Align.RIGHT);
+
+		Rect bounds = new Rect();
+		mLabelPaint.getTextBounds(mWindLabelText, 0, mWindLabelText.length(), bounds);
+
+		canvas.drawText(mWindLabelText,
+				mGraphRect.left - labelTextPaddingX,
+				mWindPanelRect.top + 2.0f * mDP - bounds.top,
+				mLabelPaint);
+	}
+
+	/**
+	 * Small arrow at each hour-label position along the bottom of the wind panel,
+	 * pointing where the wind blows (yr.no style). wind_from_direction is where
+	 * the wind comes FROM, so the arrow is rotated 180 degrees.
+	 */
+	private void drawWindDirection(Canvas canvas) {
+		if (!mDrawWindPanel) return;
+
+		int numCellsBetweenHorizontalLabels = mNumCellsBetweenHorizontalLabels;
+		if (numCellsBetweenHorizontalLabels <= 0) return;
+
+		float hoursPerCell = (float)mNumHours / (float)mNumHorizontalCells;
+		float arrowLength = mLabelTextSize * 0.9f;
+		float arrowHead = arrowLength * 0.45f;
+		float centerY = mWindPanelRect.bottom - arrowLength * 0.75f;
+
+		Path arrowPath = new Path();
+
+		canvas.save();
+		canvas.clipRect(mWindPanelRect.left + 1, mWindPanelRect.top, mWindPanelRect.right, mWindPanelRect.bottom);
+
+		for (int i = numCellsBetweenHorizontalLabels;
+				 i < mNumHorizontalCells;
+				 i += numCellsBetweenHorizontalLabels)
+		{
+			long time = mTimeFrom + Math.round(hoursPerCell * i * DateUtils.HOUR_IN_MILLIS);
+			Float direction = findWindDirection(time);
+			if (direction == null) continue;
+
+			float x = mGraphRect.left + Math.round(i * mCellSizeX);
+
+			double angleRad = Math.toRadians(direction + 180.0);
+			float dx = (float)Math.sin(angleRad);
+			float dy = -(float)Math.cos(angleRad);
+
+			float headX = x + dx * arrowLength / 2.0f;
+			float headY = centerY + dy * arrowLength / 2.0f;
+			float tailX = x - dx * arrowLength / 2.0f;
+			float tailY = centerY - dy * arrowLength / 2.0f;
+
+			float px = -dy;
+			float py = dx;
+			float wing1X = headX - dx * arrowHead + px * arrowHead * 0.7f;
+			float wing1Y = headY - dy * arrowHead + py * arrowHead * 0.7f;
+			float wing2X = headX - dx * arrowHead - px * arrowHead * 0.7f;
+			float wing2Y = headY - dy * arrowHead - py * arrowHead * 0.7f;
+
+			arrowPath.moveTo(tailX, tailY);
+			arrowPath.lineTo(headX, headY);
+			arrowPath.moveTo(headX, headY);
+			arrowPath.lineTo(wing1X, wing1Y);
+			arrowPath.moveTo(headX, headY);
+			arrowPath.lineTo(wing2X, wing2Y);
+		}
+
+		canvas.drawPath(arrowPath, mWindDirectionPaint);
+		canvas.restore();
+	}
+
+	private Float findWindDirection(long time) {
+		PointData best = null;
+		long bestDiff = Long.MAX_VALUE;
+
+		for (PointData p : mPointData) {
+			if (p.time == null || p.windDirection == null) continue;
+			long diff = Math.abs(p.time - time);
+			if (diff < bestDiff) {
+				bestDiff = diff;
+				best = p;
+			}
+		}
+
+		return best != null ? best.windDirection : null;
 	}
 
 	private void drawTemperature(Canvas canvas, Path temperaturePath)
@@ -1116,6 +1275,10 @@ public class AfDetailedWidget {
 					mGraphRect.left - notchWidth / 2, notchY,
 					mGraphRect.left + notchWidth / 2, notchY,
 					mGridOutlinePaint);
+			
+			/* The wind scale label sits just below this line; drop the lowest
+			 * temperature text so the two don't collide. The tick stays. */
+			if (i == 0 && mDrawWindPanel) continue;
 			
 			mLabelPaint.getTextBounds(mTemperatureLabels[i], 0, mTemperatureLabels[i].length(), bounds);
 			
@@ -1338,6 +1501,7 @@ public class AfDetailedWidget {
 		mBelowFreezingTemperaturePaint.setStrokeWidth(2.0f * mDP);
 		mMaxRainPaint.setStrokeWidth(mDP);
 		mWindPaint.setStrokeWidth(1.5f * mDP);
+		mWindDirectionPaint.setStrokeWidth(1.5f * mDP);
 	}
 	
 	private void setupPaints() {
@@ -1400,7 +1564,18 @@ public class AfDetailedWidget {
 		}};
 		mWindPaint = new Paint() {{
 			setAntiAlias(true);
-			setColor(0xFFAA00F2);
+			setColor(mWidgetSettings.getWindLineColor());
+			setStrokeCap(Paint.Cap.ROUND);
+			setStyle(Paint.Style.STROKE);
+		}};
+		mWindGustPaint = new Paint() {{
+			setAntiAlias(true);
+			setColor(mWidgetSettings.getWindGustColor());
+			setStyle(Paint.Style.FILL);
+		}};
+		mWindDirectionPaint = new Paint() {{
+			setAntiAlias(true);
+			setColor(ContextCompat.getColor(mContext, R.color.colorAccent));
 			setStrokeCap(Paint.Cap.ROUND);
 			setStyle(Paint.Style.STROKE);
 		}};
@@ -1624,6 +1799,7 @@ public class AfDetailedWidget {
         mBelowFreezingTemperaturePaint.setStrokeWidth(2.0f * mDP * scaleFactor);
         mMaxRainPaint.setStrokeWidth(Math.max(1.0f, mDP * scaleFactor));
         mWindPaint.setStrokeWidth(Math.max(1.0f, 1.5f * mDP * scaleFactor));
+        mWindDirectionPaint.setStrokeWidth(Math.max(1.0f, 1.5f * mDP * scaleFactor));
     }
 
 	private void setupWidgetDimensions(int width, int height) {
@@ -1646,15 +1822,30 @@ public class AfDetailedWidget {
 		for (PointData p : mPointData) {
 			if (p.time != null && p.windSpeed != null && p.time >= mTimeFrom && p.time <= mTimeTo) {
 				maxWindSpeed = Math.max(maxWindSpeed, p.windSpeed);
+				if (p.windGust != null) maxWindSpeed = Math.max(maxWindSpeed, p.windGust);
 				windSamples++;
 			}
 		}
 
 		mHasWindData = windSamples >= 2;
 
-		/* Auto-scale with a floor of 0-10 m/s so calm days don't look dramatic.
-		 * Rounded up to a multiple of 2 so future labels land on even numbers. */
-		mWindRangeMax = Math.max(10.0, Math.ceil(maxWindSpeed / 2.0) * 2.0);
+		/* Auto-scale with a floor equivalent to ~0-10 m/s so calm days don't look
+		 * dramatic. Rounded up to a multiple of 2 so labels land on even numbers. */
+		float windFactor = getWindFactor();
+		float displayFloor = 10.0f * windFactor;
+		float displayMax = maxWindSpeed * windFactor;
+		mWindRangeMax = Math.max(
+				roundUpToEven(displayFloor),
+				roundUpToEven(displayMax));
+
+		String valueString = (mWindRangeMax == Math.floor(mWindRangeMax))
+				? String.format(Locale.US, "%.0f", mWindRangeMax)
+				: String.format(Locale.US, "%.1f", mWindRangeMax);
+		mWindLabelText = valueString + " " + getWindUnitString();
+	}
+
+	private static double roundUpToEven(double value) {
+		return Math.ceil(value / 2.0) * 2.0;
 	}
 
 	private void validatePointData() throws AfWidgetDataException {

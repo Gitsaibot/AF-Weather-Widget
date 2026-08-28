@@ -48,6 +48,34 @@
         </PreferenceCategory>
 
         <PreferenceCategory
+            android:title="@string/ui_settings_category_wind">
+
+                <CheckBoxPreference
+                    android:key="@string/wind_enabled_bool"
+                    android:title="@string/wind_enabled_title"
+                    android:layout="@layout/preference_title_checkbox"
+                    android:persistent="true"
+                    android:defaultValue="true"
+                    android:summaryOn="@string/wind_enabled_summary_on"
+                    android:summaryOff="@string/wind_enabled_summary_off" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/wind_line_color_int"
+                    android:title="@string/wind_line_color_title"
+                    android:dependency="@string/wind_enabled_bool"
+                    android:defaultValue="@color/wind_line"
+                    android:persistent="true" />
+
+                <net.gitsaibot.af.ColorPreference
+                    android:key="@string/wind_gust_color_int"
+                    android:title="@string/wind_gust_color_title"
+                    android:dependency="@string/wind_enabled_bool"
+                    android:defaultValue="@color/wind_gust"
+                    android:persistent="true" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
             android:title="@string/ui_settings_category_border">
 
                 <CheckBoxPreference

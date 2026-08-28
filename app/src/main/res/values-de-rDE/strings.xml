@@ -94,6 +94,17 @@
     <string name="graph_time_range_title">Zeitraum des Diagramms</string>
     <string name="graph_time_range_24h">24 Stunden</string>
     <string name="graph_time_range_48h">48 Stunden</string>
+    <string name="ui_settings_category_wind">Wind</string>
+    <string name="wind_enabled_title">Wind-Panel</string>
+    <string name="wind_enabled_summary_on">Windgeschwindigkeit und Böen unterhalb des Temperaturdiagramms anzeigen</string>
+    <string name="wind_enabled_summary_off">Wind-Panel ausgeblendet</string>
+    <string name="wind_line_color_title">Farbe der Windlinie</string>
+    <string name="wind_gust_color_title">Farbe der Windböen</string>
+    <string name="wind_units_title">Einheit der Windgeschwindigkeit</string>
+    <string name="wind_units_ms">Meter pro Sekunde (m/s)</string>
+    <string name="wind_units_kmh">Kilometer pro Stunde (km/h)</string>
+    <string name="wind_units_mph">Meilen pro Stunde (mph)</string>
+    <string name="wind_units_kn">Knoten (kn)</string>
     <string name="device_profiles_calibrate_button">Kalibrieren</string>
     <string name="device_profiles_activate_specific_dimensions">Aktiviere gerätespezifische Abmessungen</string>
     <string name="device_profiles_model">"Modell: "</string>

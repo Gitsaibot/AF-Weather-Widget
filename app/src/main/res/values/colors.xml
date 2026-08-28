@@ -17,5 +17,7 @@
     <color name="minimum_rain">#CC68CFE8</color>
     <color name="above_freezing">#FFF01C1C</color>
     <color name="below_freezing">#FF0280D9</color>
+    <color name="wind_line">#FFAA00F2</color>
+    <color name="wind_gust">#66AA00F2</color>
     <color name="invalid_dimension_color">#FFCE2029</color>
 </resources>

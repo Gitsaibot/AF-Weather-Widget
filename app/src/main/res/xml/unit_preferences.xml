@@ -24,6 +24,16 @@
             android:entryValues="@array/precipitation_units_code"
             android:defaultValue="1" />
 
+        <ListPreference
+            android:key="@string/wind_units_string"
+            android:title="@string/wind_units_title"
+            android:layout="@layout/preference_title"
+            android:persistent="true"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/wind_units_readable"
+            android:entryValues="@array/wind_units_code"
+            android:defaultValue="1" />
+
         <EditTextPreference
             android:key="@string/precipitation_scaling_string"
             android:title="@string/precipitation_scaling_title_mm"

@@ -46,6 +46,20 @@
 		<item>2</item>
 	</string-array>
 
+	<string-array name="wind_units_readable">
+		<item>@string/wind_units_ms</item>
+		<item>@string/wind_units_kmh</item>
+		<item>@string/wind_units_mph</item>
+		<item>@string/wind_units_kn</item>
+	</string-array>
+
+	<string-array name="wind_units_code" translatable="false">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+	</string-array>
+
 	<string-array name="preference_update_rates_readable">
 		<item>Auto</item>
 		<item>3 hours</item>
