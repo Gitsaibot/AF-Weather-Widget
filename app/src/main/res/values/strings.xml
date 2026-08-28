@@ -269,12 +269,12 @@
 	<string name="calibrationLandscapeDimension_string" translatable="false">global_dp_calibrationLandscapeDimension_string</string>
 	<string name="preference_calibrationLandscapeDimension_string" translatable="false">global_temp_dp_calibrationLandscapeDimension_string</string>
 
-	<string name="contentDescriptionPortraitCalibrationImage" translatable="false">AF Weather Widget Calibration (Portrait)</string>
-	<string name="contentDescriptionLandscapeCalibrationImage" translatable="false">AF Weather Widget Calibration (Landscape)</string>
+	<string name="contentDescriptionPortraitCalibrationImage" translatable="false">Wettergraph Calibration (Portrait)</string>
+	<string name="contentDescriptionLandscapeCalibrationImage" translatable="false">Wettergraph Calibration (Landscape)</string>
 	
-	<string name="contentDescriptionImage" translatable="false">AF Weather Widget</string>
-	<string name="contentDescriptionPortraitImage" translatable="false">AF Weather Widget (Portrait)</string>
-	<string name="contentDescriptionLandscapeImage" translatable="false">AF Weather Widget (Landscape)</string>
+	<string name="contentDescriptionImage" translatable="false">Wettergraph</string>
+	<string name="contentDescriptionPortraitImage" translatable="false">Wettergraph (Portrait)</string>
+	<string name="contentDescriptionLandscapeImage" translatable="false">Wettergraph (Landscape)</string>
 	
 	<string name="calibrationIncrementSymbol" translatable="false">\u002B</string>
 	<string name="calibrationDecrementSymbol" translatable="false">\u2212</string>

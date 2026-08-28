@@ -531,7 +531,7 @@ public class AfUtils {
 	{
 		StringBuilder userAgent = new StringBuilder();
 		
-		userAgent.append("AF Weather Widget");
+		userAgent.append("Wettergraph");
 
 		try {
 			PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
